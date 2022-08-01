@@ -1,7 +1,12 @@
 import 'package:flutter/material.dart';
 import 'package:shuroop_client_app/map/view/map.dart';
+import 'package:flutter/services.dart';
 
 void main() {
+  // 상단 상태창 투명화
+  SystemChrome.setSystemUIOverlayStyle(
+      SystemUiOverlayStyle(statusBarColor: Colors.transparent));
+
   runApp(const MyApp());
 }
 
@@ -14,6 +19,7 @@ class MyApp extends StatelessWidget {
     return MaterialApp(
       title: 'Flutter Demo',
       theme: ThemeData(
+        primaryColor: const Color(0xFFFCB93F),
         // This is the theme of your application.
         //
         // Try running your application with "flutter run". You'll see the
@@ -23,7 +29,6 @@ class MyApp extends StatelessWidget {
         // or simply save your changes to "hot reload" in a Flutter IDE).
         // Notice that the counter didn't reset back to zero; the application
         // is not restarted.
-        primarySwatch: Colors.blue,
       ),
       home: MainMapPage(),
     );

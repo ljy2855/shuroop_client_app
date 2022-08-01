@@ -14,19 +14,53 @@ class _MainMapPageState extends State<MainMapPage> {
   final scaffoldKey = GlobalKey<ScaffoldState>();
   Completer<NaverMapController> _controller = Completer();
 
-  MapType _mapType = MapType.Basic;
-  LocationTrackingMode _trackingMode = LocationTrackingMode.NoFollow;
+  List<Marker> rentalMarkers = [];
 
   @override
+  void initState() {
+    WidgetsBinding.instance.addPostFrameCallback((_) {
+      OverlayImage.fromAssetImage(
+        assetName: "assets/images/rentalMarker.png",
+      ).then((image) {
+        setState(() {
+          rentalMarkers.add(Marker(
+            markerId: 'id',
+            position: const LatLng(37.563600, 126.962370),
+            icon: image,
+            alpha: 1.0,
+            flat: true,
+            captionText: "5",
+            captionTextSize: 13,
+            captionColor: Colors.white,
+            captionOffset: -27,
+
+            anchor: AnchorPoint(0.5, 1),
+            width: 30,
+            height: 43,
+            infoWindow: '인포 윈도우',
+            //onMarkerTab: _onMarkerTap)
+          ));
+        });
+      });
+    });
+    super.initState();
+  }
+
+  MapType _mapType = MapType.Basic;
+  LocationTrackingMode _trackingMode = LocationTrackingMode.NoFollow;
+  @override
   Widget build(BuildContext context) {
+    print(rentalMarkers);
     return Scaffold(
       key: scaffoldKey,
-      appBar: AppBar(),
+      appBar: AppBar(
+        backgroundColor: Colors.white,
+      ),
       body: Stack(
         children: <Widget>[
           NaverMap(
             initialCameraPosition: const CameraPosition(
-              target: LatLng(37.566570, 126.978442),
+              target: LatLng(37.563600, 126.962370),
               zoom: 17,
             ),
             onMapCreated: onMapCreated,
@@ -45,12 +79,8 @@ class _MainMapPageState extends State<MainMapPage> {
             minZoom: 12,
             useSurface: kReleaseMode,
             logoClickEnabled: true,
+            markers: rentalMarkers,
           ),
-          Padding(
-            padding: EdgeInsets.all(16),
-            child: _mapTypeSelector(),
-          ),
-          _trackingModeSelector(),
         ],
       ),
     );
@@ -104,102 +134,10 @@ class _MainMapPageState extends State<MainMapPage> {
     ));
   }
 
-  _mapTypeSelector() {
-    return SizedBox(
-      height: kToolbarHeight,
-      child: ListView.separated(
-        itemCount: MapType.values.length,
-        scrollDirection: Axis.horizontal,
-        separatorBuilder: (_, __) => SizedBox(width: 16),
-        itemBuilder: (_, index) {
-          final type = MapType.values[index];
-          String title;
-          switch (type) {
-            case MapType.Basic:
-              title = '기본';
-              break;
-            case MapType.Navi:
-              title = '내비';
-              break;
-            case MapType.Satellite:
-              title = '위성';
-              break;
-            case MapType.Hybrid:
-              title = '위성혼합';
-              break;
-            case MapType.Terrain:
-              title = '지형도';
-              break;
-          }
-
-          return GestureDetector(
-            onTap: () => _onTapTypeSelector(type),
-            child: Container(
-              decoration: BoxDecoration(
-                  color: Colors.white,
-                  borderRadius: BorderRadius.circular(6),
-                  boxShadow: [BoxShadow(color: Colors.black26, blurRadius: 3)]),
-              margin: EdgeInsets.only(bottom: 16),
-              padding: EdgeInsets.symmetric(vertical: 12, horizontal: 12),
-              child: Text(
-                title,
-                style: TextStyle(
-                    color: Colors.black87,
-                    fontWeight: FontWeight.w600,
-                    fontSize: 13),
-              ),
-            ),
-          );
-        },
-      ),
-    );
-  }
-
-  _trackingModeSelector() {
-    return Align(
-      alignment: Alignment.bottomRight,
-      child: GestureDetector(
-        onTap: _onTapTakeSnapShot,
-        child: Container(
-          margin: EdgeInsets.only(right: 16, bottom: 48),
-          decoration: BoxDecoration(
-              borderRadius: BorderRadius.circular(6),
-              color: Colors.white,
-              boxShadow: [
-                BoxShadow(
-                  color: Colors.black12,
-                  blurRadius: 2,
-                )
-              ]),
-          padding: EdgeInsets.all(12),
-          child: Column(
-            mainAxisSize: MainAxisSize.min,
-            crossAxisAlignment: CrossAxisAlignment.center,
-            children: <Widget>[
-              Icon(
-                Icons.photo_camera,
-                color: Colors.black54,
-              ),
-            ],
-          ),
-        ),
-      ),
-    );
-  }
-
   /// 지도 생성 완료시
   void onMapCreated(NaverMapController controller) {
     if (_controller.isCompleted) _controller = Completer();
     _controller.complete(controller);
-  }
-
-  /// 지도 유형 선택시
-  void _onTapTypeSelector(MapType type) async {
-    if (_mapType != type) {
-      setState(() {
-        _mapType = type;
-      });
-    }
   }
 
   /// my location button
@@ -217,25 +155,5 @@ class _MainMapPageState extends State<MainMapPage> {
 
   void _onCameraIdle() {
     print('카메라 움직임 멈춤');
-  }
-
-  /// 지도 스냅샷
-  void _onTapTakeSnapShot() async {
-    final controller = await _controller.future;
-    controller.takeSnapshot((path) {
-      showDialog(
-          context: context,
-          builder: (context) {
-            return AlertDialog(
-              contentPadding: EdgeInsets.zero,
-              content: path != null
-                  ? Image.file(
-                      File(path),
-                    )
-                  : Text('path is null!'),
-              titlePadding: EdgeInsets.zero,
-            );
-          });
-    });
   }
 }
