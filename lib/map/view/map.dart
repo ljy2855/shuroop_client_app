@@ -21,25 +21,16 @@ class _MainMapPageState extends State<MainMapPage> {
     WidgetsBinding.instance.addPostFrameCallback((_) {
       OverlayImage.fromAssetImage(
         assetName: "assets/images/rentalMarker.png",
+        devicePixelRatio: 4.0,
       ).then((image) {
         setState(() {
-          rentalMarkers.add(Marker(
-            markerId: 'id',
-            position: const LatLng(37.563600, 126.962370),
-            icon: image,
-            alpha: 1.0,
-            flat: true,
-            captionText: "5",
-            captionTextSize: 13,
-            captionColor: Colors.white,
-            captionOffset: -27,
-
-            anchor: AnchorPoint(0.5, 1),
-            width: 30,
-            height: 43,
-            infoWindow: '인포 윈도우',
-            //onMarkerTab: _onMarkerTap)
-          ));
+          rentalMarkers.addAll([
+            getRentalMarker(image, '1', LatLng(37.563600, 126.962370), 3),
+            getRentalMarker(
+                image, '2', LatLng(37.56402365340398, 126.96265179254601), 2),
+            getRentalMarker(
+                image, '3', LatLng(37.56286365215381, 126.96107571010032), 5),
+          ]);
         });
       });
     });
@@ -55,6 +46,11 @@ class _MainMapPageState extends State<MainMapPage> {
       key: scaffoldKey,
       appBar: AppBar(
         backgroundColor: Colors.white,
+        title: SizedBox(
+            height: kToolbarHeight * 0.7,
+            child: Image.asset("assets/images/logo.png")),
+        centerTitle: true,
+        toolbarHeight: kToolbarHeight,
       ),
       body: Stack(
         children: <Widget>[
@@ -66,7 +62,7 @@ class _MainMapPageState extends State<MainMapPage> {
             onMapCreated: onMapCreated,
             mapType: _mapType,
             initLocationTrackingMode: _trackingMode,
-            locationButtonEnable: true,
+            locationButtonEnable: false,
             indoorEnable: true,
             onCameraChange: _onCameraChange,
             onCameraIdle: _onCameraIdle,
@@ -78,13 +74,85 @@ class _MainMapPageState extends State<MainMapPage> {
             maxZoom: 17,
             minZoom: 12,
             useSurface: kReleaseMode,
-            logoClickEnabled: true,
             markers: rentalMarkers,
           ),
+          Align(
+            alignment: Alignment.bottomRight,
+            child: Padding(
+              padding: const EdgeInsets.only(
+                right: 30,
+                bottom: 180,
+              ),
+              child: FloatingActionButton(
+                backgroundColor: Colors.white,
+                child: const Icon(
+                  Icons.my_location,
+                  size: 30,
+                  color: Color(0xFFACACAC),
+                ),
+                onPressed: _onTapLocation,
+              ),
+            ),
+          ),
+          Align(
+            alignment: Alignment.bottomCenter,
+            child: bottomBar(),
+          )
         ],
       ),
     );
   }
+
+  Widget bottomBar() {
+    return SizedBox(
+      height: 150,
+      width: double.infinity,
+      child: Container(
+        decoration: const BoxDecoration(
+          borderRadius: BorderRadius.only(
+            topLeft: Radius.circular(20),
+            topRight: Radius.circular(20),
+          ),
+          color: Colors.white,
+        ),
+        child: Column(
+          mainAxisAlignment: MainAxisAlignment.center,
+          children: [
+            MaterialButton(
+              minWidth: 250,
+              onPressed: () => {},
+              color: Theme.of(context).primaryColor,
+              child: const Text(
+                '우산 대여하기',
+                style: TextStyle(
+                  color: Colors.white,
+                  fontWeight: FontWeight.bold,
+                ),
+              ),
+            )
+          ],
+        ),
+      ),
+    );
+  }
+
+  Marker getRentalMarker(
+          OverlayImage image, String id, LatLng position, int count) =>
+      Marker(
+        markerId: id,
+        position: position,
+        icon: image,
+        alpha: 1.0,
+        flat: true,
+        captionText: "$count",
+        captionTextSize: 13,
+        captionColor: Colors.white,
+        captionOffset: -27,
+        anchor: AnchorPoint(0.5, 1),
+        width: 30,
+        height: 43,
+        infoWindow: '인포 윈도우',
+      );
 
   _onMapTap(LatLng position) async {
     await (await _controller.future).moveCamera(
@@ -141,10 +209,10 @@ class _MainMapPageState extends State<MainMapPage> {
   }
 
   /// my location button
-  // void _onTapLocation() async {
-  //   final controller = await _controller.future;
-  //   controller.setLocationTrackingMode(LocationTrackingMode.Follow);
-  // }
+  void _onTapLocation() async {
+    final controller = await _controller.future;
+    controller.setLocationTrackingMode(LocationTrackingMode.Follow);
+  }
 
   void _onCameraChange(
       LatLng? latLng, CameraChangeReason reason, bool? isAnimated) {
