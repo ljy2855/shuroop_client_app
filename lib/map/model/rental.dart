@@ -1,6 +1,6 @@
 import 'package:flutter_naver_map/flutter_naver_map.dart';
 
-class Rental {
+class Place {
   final int? id; // pk
   final String? name;
   final String? address;
@@ -12,7 +12,7 @@ class Rental {
   final String? description;
   final String? imageUrl;
 
-  Rental({
+  Place({
     this.id,
     this.name,
     this.address,
@@ -25,7 +25,7 @@ class Rental {
     this.imageUrl,
   });
 
-  factory Rental.fromJson(Map<String, dynamic> json) => Rental(
+  factory Place.fromJson(Map<String, dynamic> json) => Place(
         id: json['id'],
         position: json['position'],
         umbrellaCount: json['umbrella_count'],

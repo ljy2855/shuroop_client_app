@@ -32,6 +32,9 @@ dependencies:
 
   flutter_naver_map: 
     git: https://github.com/note11g/flutter_naver_map.git
+  
+  qr_code_scanner: ^1.0.0
+  intl: ^0.17.0
 
   # The following adds the Cupertino Icons font to your application.
   # Use with the CupertinoIcons class for iOS style icons.

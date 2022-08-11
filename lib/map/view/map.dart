@@ -4,6 +4,8 @@ import 'dart:io';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_naver_map/flutter_naver_map.dart';
+import 'package:shuroop_client_app/rental/view/scanner.dart';
+import 'package:shuroop_client_app/rental/view/success_page.dart';
 
 class MainMapPage extends StatefulWidget {
   @override
@@ -25,11 +27,11 @@ class _MainMapPageState extends State<MainMapPage> {
       ).then((image) {
         setState(() {
           rentalMarkers.addAll([
-            getRentalMarker(image, '1', LatLng(37.563600, 126.962370), 3),
-            getRentalMarker(
-                image, '2', LatLng(37.56402365340398, 126.96265179254601), 2),
-            getRentalMarker(
-                image, '3', LatLng(37.56286365215381, 126.96107571010032), 5),
+            getRentalMarker(image, '1', const LatLng(37.563600, 126.962370), 3),
+            getRentalMarker(image, '2',
+                const LatLng(37.56402365340398, 126.96265179254601), 2),
+            getRentalMarker(image, '3',
+                const LatLng(37.56286365215381, 126.96107571010032), 5),
           ]);
         });
       });
@@ -41,7 +43,7 @@ class _MainMapPageState extends State<MainMapPage> {
   LocationTrackingMode _trackingMode = LocationTrackingMode.NoFollow;
   @override
   Widget build(BuildContext context) {
-    print(rentalMarkers);
+    // print(rentalMarkers);
     return Scaffold(
       key: scaffoldKey,
       appBar: AppBar(
@@ -85,12 +87,12 @@ class _MainMapPageState extends State<MainMapPage> {
               ),
               child: FloatingActionButton(
                 backgroundColor: Colors.white,
+                onPressed: _onTapLocation,
                 child: const Icon(
                   Icons.my_location,
                   size: 30,
                   color: Color(0xFFACACAC),
                 ),
-                onPressed: _onTapLocation,
               ),
             ),
           ),
@@ -120,7 +122,14 @@ class _MainMapPageState extends State<MainMapPage> {
           children: [
             MaterialButton(
               minWidth: 250,
-              onPressed: () => {},
+              onPressed: () => {
+                Navigator.push(
+                  context,
+                  MaterialPageRoute(
+                    builder: (context) => const QRScanPage(),
+                  ),
+                )
+              },
               color: Theme.of(context).primaryColor,
               child: const Text(
                 '우산 대여하기',
@@ -151,55 +160,55 @@ class _MainMapPageState extends State<MainMapPage> {
         anchor: AnchorPoint(0.5, 1),
         width: 30,
         height: 43,
-        infoWindow: '인포 윈도우',
+        infoWindow: '경기대학교 지점\n남은 개수: $count',
       );
 
   _onMapTap(LatLng position) async {
     await (await _controller.future).moveCamera(
         CameraUpdate.toCameraPosition(CameraPosition(target: position)),
         animationDuration: 1500);
-    ScaffoldMessenger.of(context).showSnackBar(SnackBar(
-      content:
-          Text('[onTap] lat: ${position.latitude}, lon: ${position.longitude}'),
-      duration: Duration(milliseconds: 500),
-      backgroundColor: Colors.black,
-    ));
+    // ScaffoldMessenger.of(context).showSnackBar(SnackBar(
+    //   content:
+    //       Text('[onTap] lat: ${position.latitude}, lon: ${position.longitude}'),
+    //   duration: Duration(milliseconds: 500),
+    //   backgroundColor: Colors.black,
+    // ));
   }
 
   _onMapLongTap(LatLng position) {
     ScaffoldMessenger.of(context).showSnackBar(SnackBar(
       content: Text(
           '[onLongTap] lat: ${position.latitude}, lon: ${position.longitude}'),
-      duration: Duration(milliseconds: 500),
+      duration: const Duration(milliseconds: 500),
       backgroundColor: Colors.black,
     ));
   }
 
   _onMapDoubleTap(LatLng position) {
-    ScaffoldMessenger.of(context).showSnackBar(SnackBar(
-      content: Text(
-          '[onDoubleTap] lat: ${position.latitude}, lon: ${position.longitude}'),
-      duration: Duration(milliseconds: 500),
-      backgroundColor: Colors.black,
-    ));
+    // ScaffoldMessenger.of(context).showSnackBar(SnackBar(
+    //   content: Text(
+    //       '[onDoubleTap] lat: ${position.latitude}, lon: ${position.longitude}'),
+    //   duration: Duration(milliseconds: 500),
+    //   backgroundColor: Colors.black,
+    // ));
   }
 
   _onMapTwoFingerTap(LatLng position) {
-    ScaffoldMessenger.of(context).showSnackBar(SnackBar(
-      content: Text(
-          '[onTwoFingerTap] lat: ${position.latitude}, lon: ${position.longitude}'),
-      duration: Duration(milliseconds: 500),
-      backgroundColor: Colors.black,
-    ));
+    // ScaffoldMessenger.of(context).showSnackBar(SnackBar(
+    //   content: Text(
+    //       '[onTwoFingerTap] lat: ${position.latitude}, lon: ${position.longitude}'),
+    //   duration: Duration(milliseconds: 500),
+    //   backgroundColor: Colors.black,
+    // ));
   }
 
   _onSymbolTap(LatLng? position, String? caption) {
-    ScaffoldMessenger.of(context).showSnackBar(SnackBar(
-      content: Text(
-          '[onSymbolTap] caption: $caption, lat: ${position?.latitude}, lon: ${position?.longitude}'),
-      duration: Duration(milliseconds: 500),
-      backgroundColor: Colors.black,
-    ));
+    // ScaffoldMessenger.of(context).showSnackBar(SnackBar(
+    //   content: Text(
+    //       '[onSymbolTap] caption: $caption, lat: ${position?.latitude}, lon: ${position?.longitude}'),
+    //   duration: Duration(milliseconds: 500),
+    //   backgroundColor: Colors.black,
+    // ));
   }
 
   /// 지도 생성 완료시
