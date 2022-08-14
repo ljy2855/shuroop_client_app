@@ -1,6 +1,5 @@
 import 'dart:io';
 import 'package:flutter/material.dart';
-import 'package:intl/date_symbol_data_local.dart';
 import 'package:intl/intl.dart';
 
 class RentalSuccessPage extends StatelessWidget {
@@ -8,16 +7,14 @@ class RentalSuccessPage extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    initializeDateFormatting(Localizations.localeOf(context).languageCode);
-
     DateTime now = DateTime.now();
-    var t = now.add(const Duration(days: 1));
+    DateTime timeReturn = now.add(const Duration(days: 1));
 
     DateFormat dateFormat =
         DateFormat("24시간 후, MM월 dd일 a HH시mm분까지", Platform.localeName);
     return Scaffold(
         appBar: AppBar(
-          backgroundColor: Color(0xFFFCB93F),
+          backgroundColor: Theme.of(context).primaryColor,
           centerTitle: true,
           title: const Text("대여 완료"),
           leading: Container(),
@@ -43,18 +40,20 @@ class RentalSuccessPage extends StatelessWidget {
               //현재 시간 + 결재시간 계산
               margin: const EdgeInsets.fromLTRB(30, 0, 0, 0),
 
-              child: Text(dateFormat.format(t), style: TextStyle(fontSize: 16)),
+              child: Text(dateFormat.format(timeReturn),
+                  style: const TextStyle(fontSize: 16)),
             ),
             Container(
               //현재 시간 + 결재시간 계산
 
               margin: const EdgeInsets.fromLTRB(30, 0, 0, 0),
 
-              child: Text('반납하는 것을 잊지 마세요', style: TextStyle(fontSize: 16)),
+              child:
+                  const Text('반납하는 것을 잊지 마세요', style: TextStyle(fontSize: 16)),
             ),
             Container(
               //현재 시간 + 결재시간 계산
-              margin: EdgeInsets.fromLTRB(30, 0, 30, 10),
+              margin: const EdgeInsets.fromLTRB(30, 0, 30, 10),
 
               child: const Text(
                 '대여 시간 초과 시 추가요금이 발생해요. 걱정마세요, 30분 전에 미리 알려드릴게요. 반납 시에도 대여소의 QR인식을 통해 반납할 수 있어요.',

@@ -5,7 +5,7 @@ import 'package:flutter/services.dart';
 void main() {
   // 상단 상태창 투명화
   SystemChrome.setSystemUIOverlayStyle(
-      SystemUiOverlayStyle(statusBarColor: Colors.transparent));
+      const SystemUiOverlayStyle(statusBarColor: Colors.transparent));
 
   runApp(const MyApp());
 }

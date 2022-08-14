@@ -36,7 +36,7 @@ class _QRScanPageState extends State<QRScanPage> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-          backgroundColor: Color(0xFFFCB93F),
+          backgroundColor: Theme.of(context).primaryColor,
           centerTitle: true,
           title: const Text("대여하기"),
           leading: IconButton(
