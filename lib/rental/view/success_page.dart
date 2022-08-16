@@ -17,7 +17,6 @@ class RentalSuccessPage extends StatelessWidget {
           backgroundColor: Theme.of(context).primaryColor,
           centerTitle: true,
           title: const Text("대여 완료"),
-          leading: Container(),
         ),
         body: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
