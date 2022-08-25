@@ -36,13 +36,13 @@ class _QRScanPageState extends State<QRScanPage> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-          backgroundColor: Color(0xFFFCB93F),
+          backgroundColor: Theme.of(context).primaryColor,
           centerTitle: true,
           title: const Text("대여하기"),
           leading: IconButton(
             icon: const Icon(Icons.arrow_back_ios),
             onPressed: () {
-              Navigator.of(context).pop();
+              Navigator.of(context, rootNavigator: true).pop(context);
             },
           )),
       floatingActionButton: FloatingActionButton(
@@ -81,17 +81,22 @@ class _QRScanPageState extends State<QRScanPage> {
     );
   }
 
+  //TODO
+  // #1 success 페이지로 넘어간 뒤에도 스캔이 계속되는 버그
   void _onQRViewCreated(QRViewController controller) {
     setState(() {
       this.controller = controller;
+      reassemble();
     });
     controller.scannedDataStream.listen((scanData) async {
+      setState(() {
+        result = scanData;
+      });
+      await controller.pauseCamera();
+      if (!mounted) return;
       await Navigator.of(context).push(
           MaterialPageRoute(builder: (context) => const RentalSuccessPage()));
-
-      setState(() {
-        this.controller = controller;
-      });
+      await controller.resumeCamera();
     });
   }
 

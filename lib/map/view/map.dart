@@ -4,8 +4,8 @@ import 'dart:io';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_naver_map/flutter_naver_map.dart';
+import 'package:intl/date_symbol_data_local.dart';
 import 'package:shuroop_client_app/rental/view/scanner.dart';
-import 'package:shuroop_client_app/rental/view/success_page.dart';
 
 class MainMapPage extends StatefulWidget {
   @override
@@ -43,6 +43,7 @@ class _MainMapPageState extends State<MainMapPage> {
   LocationTrackingMode _trackingMode = LocationTrackingMode.NoFollow;
   @override
   Widget build(BuildContext context) {
+    initializeDateFormatting(Localizations.localeOf(context).languageCode);
     // print(rentalMarkers);
     return Scaffold(
       key: scaffoldKey,
