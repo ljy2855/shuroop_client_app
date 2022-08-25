@@ -2,12 +2,22 @@ import 'dart:convert';
 
 import 'package:flutter/material.dart';
 import 'package:shuroop_client_app/auth/provider/token.dart';
+import 'package:shuroop_client_app/auth/view/sign_up.dart';
 import 'package:shuroop_client_app/colors.dart';
 import 'package:http/http.dart' as http;
 import 'package:shuroop_client_app/url.dart';
 
-class LoginPage extends StatelessWidget {
+class LoginPage extends StatefulWidget {
   const LoginPage({Key? key}) : super(key: key);
+
+  @override
+  State<LoginPage> createState() => _LoginPageState();
+}
+
+class _LoginPageState extends State<LoginPage> {
+  bool isEmailCheck = false;
+  final emailInputController = TextEditingController();
+  final passwordInputController = TextEditingController();
 
   @override
   Widget build(BuildContext context) {
@@ -73,11 +83,39 @@ class LoginPage extends StatelessWidget {
                   width: 274,
                   height: 41,
                   decoration: BoxDecoration(
-                      borderRadius: BorderRadius.all(Radius.circular(5)),
+                      borderRadius: const BorderRadius.all(Radius.circular(5)),
                       border: Border.all(
                           color: ZeplinColors.text_filed_dividing_stroke_gray,
-                          width: 2))),
+                          width: 2)),
+                  child: TextField(
+                    controller: emailInputController,
+                    enabled: !isEmailCheck,
+                    decoration: const InputDecoration(
+                      border: InputBorder.none,
+                      contentPadding:
+                          EdgeInsets.symmetric(vertical: 15, horizontal: 10),
+                    ),
+                  )),
               const Padding(padding: EdgeInsets.only(top: 5)),
+              if (isEmailCheck)
+                Container(
+                    width: 274,
+                    height: 41,
+                    decoration: BoxDecoration(
+                        borderRadius:
+                            const BorderRadius.all(Radius.circular(5)),
+                        border: Border.all(
+                            color: ZeplinColors.text_filed_dividing_stroke_gray,
+                            width: 2)),
+                    child: TextField(
+                      controller: passwordInputController,
+                      obscureText: true,
+                      decoration: const InputDecoration(
+                        border: InputBorder.none,
+                        contentPadding:
+                            EdgeInsets.symmetric(vertical: 15, horizontal: 10),
+                      ),
+                    )),
               TextButton(
                   style: TextButton.styleFrom(
                     backgroundColor: ZeplinColors.base_yellow,
@@ -86,9 +124,16 @@ class LoginPage extends StatelessWidget {
                     ),
                     minimumSize: const Size(274, 41),
                   ),
-                  onPressed: () {},
-                  child: const Text("이메일로 시작하기",
-                      style: TextStyle(
+                  onPressed: () async {
+                    if (isEmailCheck) {
+                      await login(emailInputController.text,
+                          passwordInputController.text);
+                    } else {
+                      await checkEmail(emailInputController.text);
+                    }
+                  },
+                  child: Text(isEmailCheck ? "시작하기" : "이메일로 시작하기",
+                      style: const TextStyle(
                           color: Colors.white,
                           fontWeight: FontWeight.w700,
                           fontFamily: "IBMPlexSans",
@@ -112,7 +157,18 @@ class LoginPage extends StatelessWidget {
         "email": email,
       }),
     );
-    if (response.statusCode == 200) {}
+    if (response.statusCode == 200) {
+      print("email check");
+      setState(() {
+        isEmailCheck = true;
+      });
+    } else if (response.statusCode == 404) {
+      print("회원가입");
+      Navigator.of(context).push(MaterialPageRoute(
+          builder: ((context) => SignUpPage(
+                email: email,
+              ))));
+    }
   }
 
   login(String email, String password) async {
@@ -130,7 +186,16 @@ class LoginPage extends StatelessWidget {
     if (response.statusCode == 200) {
       final data = json.decode(utf8.decode(response.bodyBytes));
       setToken(data['token']);
+      Navigator.pop(context);
     }
     // TODO 404 error
+  }
+
+  @override
+  void dispose() {
+    // TODO: implement dispose
+    emailInputController.dispose();
+    passwordInputController.dispose();
+    super.dispose();
   }
 }
