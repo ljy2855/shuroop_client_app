@@ -1,5 +1,6 @@
 import 'dart:developer';
 import 'dart:io';
+import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:qr_code_scanner/qr_code_scanner.dart';
 import 'package:shuroop_client_app/rental/view/success_page.dart';
@@ -55,6 +56,12 @@ class _QRScanPageState extends State<QRScanPage> {
       body: Column(
         children: <Widget>[
           Expanded(flex: 10, child: _buildQrView(context)),
+          //To check qr data
+          if (result != null)
+            Text(
+                'Barcode Type: ${describeEnum(result!.format)}   Data: ${result!.code}')
+          else
+            const Text('Scan a code'),
         ],
       ),
     );
