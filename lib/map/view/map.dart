@@ -5,6 +5,7 @@ import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_naver_map/flutter_naver_map.dart';
 import 'package:intl/date_symbol_data_local.dart';
+import 'package:shuroop_client_app/auth/view/login.dart';
 import 'package:shuroop_client_app/rental/view/scanner.dart';
 
 class MainMapPage extends StatefulWidget {
@@ -127,7 +128,7 @@ class _MainMapPageState extends State<MainMapPage> {
                 Navigator.push(
                   context,
                   MaterialPageRoute(
-                    builder: (context) => const QRScanPage(),
+                    builder: (context) => const LoginPage(),
                   ),
                 )
               },
