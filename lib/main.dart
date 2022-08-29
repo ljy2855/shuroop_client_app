@@ -3,6 +3,7 @@ import 'package:provider/provider.dart';
 import 'package:shuroop_client_app/auth/provider/profile_provider.dart';
 import 'package:shuroop_client_app/map/view/map.dart';
 import 'package:flutter/services.dart';
+import 'package:shuroop_client_app/rental/view/return_completed.dart';
 
 void main() {
   // 상단 상태창 투명화
@@ -35,7 +36,7 @@ class MyApp extends StatelessWidget {
         // Notice that the counter didn't reset back to zero; the application
         // is not restarted.
       ),
-      home: MainMapPage(),
+      home: ReturnCompleted(),
     );
   }
 }

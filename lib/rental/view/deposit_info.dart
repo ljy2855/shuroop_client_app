@@ -81,9 +81,9 @@ class DepositInformation extends StatelessWidget {
               child: const Text("하루 뒤에 반납할 수도 있고, 이틀 뒤에 반납할 수도 있어요.",
                   style: TextStyle(
                       color: Colors.grey,
-                      fontFamily: 'IBMPlexSans',
-                      fontWeight: FontWeight.w400,
-                      fontSize: 11)),
+                      fontFamily: 'IBMPlexSansKR',
+                      fontWeight: FontWeight.w700,
+                      fontSize: 16)),
             ),
             Container(
               margin: const EdgeInsets.fromLTRB(99.2, 0, 100.14, 82),
