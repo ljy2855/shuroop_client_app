@@ -7,6 +7,8 @@ import 'package:flutter_naver_map/flutter_naver_map.dart';
 import 'package:intl/date_symbol_data_local.dart';
 import 'package:shuroop_client_app/auth/view/login.dart';
 import 'package:shuroop_client_app/rental/view/scanner.dart';
+import '../../rental/view/deposit_info.dart';
+
 
 class MainMapPage extends StatefulWidget {
   @override
@@ -128,7 +130,11 @@ class _MainMapPageState extends State<MainMapPage> {
                 Navigator.push(
                   context,
                   MaterialPageRoute(
+
                     builder: (context) => const LoginPage(),
+
+
+
                   ),
                 )
               },
