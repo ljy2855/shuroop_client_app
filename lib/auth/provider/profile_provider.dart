@@ -6,9 +6,11 @@ class ProfileProvider with ChangeNotifier {
 
   bool? getIsRenting() => profile?.isRenting;
   Duration? getLeftTime() => profile?.leftTime;
+  Profile? getProfile() => profile;
 
   setProfile(String token) async {
     profile = await getProfileDataAPI();
+    print(profile);
     notifyListeners();
   }
 }
