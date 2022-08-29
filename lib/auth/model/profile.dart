@@ -1,5 +1,4 @@
 import 'dart:convert';
-
 import 'package:http/http.dart' as http;
 import 'package:shuroop_client_app/auth/provider/token.dart';
 import 'package:shuroop_client_app/url.dart';
