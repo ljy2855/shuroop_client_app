@@ -4,8 +4,7 @@ import 'dart:io';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_naver_map/flutter_naver_map.dart';
-import 'package:shuroop_client_app/rental/view/scanner.dart';
-import 'package:shuroop_client_app/rental/view/success_page.dart';
+import '../../rental/view/deposit_info.dart';
 
 class MainMapPage extends StatefulWidget {
   @override
@@ -126,7 +125,7 @@ class _MainMapPageState extends State<MainMapPage> {
                 Navigator.push(
                   context,
                   MaterialPageRoute(
-                    builder: (context) => const QRScanPage(),
+                    builder: (context) => const DepositInformation(),
                   ),
                 )
               },
