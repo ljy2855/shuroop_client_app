@@ -43,7 +43,7 @@ class _QRScanPageState extends State<QRScanPage> {
           leading: IconButton(
             icon: const Icon(Icons.arrow_back_ios),
             onPressed: () {
-              Navigator.of(context, rootNavigator: true).pop(context);
+              Navigator.popUntil(context, (route) => route.isFirst);
             },
           )),
       floatingActionButton: FloatingActionButton(

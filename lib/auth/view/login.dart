@@ -1,10 +1,15 @@
 import 'dart:convert';
 
 import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
+import 'package:shuroop_client_app/auth/model/profile.dart';
+import 'package:shuroop_client_app/auth/provider/profile_provider.dart';
 import 'package:shuroop_client_app/auth/provider/token.dart';
 import 'package:shuroop_client_app/auth/view/sign_up.dart';
 import 'package:shuroop_client_app/colors.dart';
 import 'package:http/http.dart' as http;
+import 'package:shuroop_client_app/rental/view/deposit_info.dart';
+import 'package:shuroop_client_app/rental/view/scanner.dart';
 import 'package:shuroop_client_app/url.dart';
 
 class LoginPage extends StatefulWidget {
@@ -186,8 +191,17 @@ class _LoginPageState extends State<LoginPage> {
     if (response.statusCode == 200) {
       final data = json.decode(utf8.decode(response.bodyBytes));
       setToken(data['token']);
-      Navigator.pop(context);
+      final profile = Provider.of<ProfileProvider>(context, listen: false);
+      profile.setProfile(data['token']);
+      if (profile.getLeftTime() == Duration.zero) {
+        Navigator.of(context).push(MaterialPageRoute(
+            builder: ((context) => const DepositInformation())));
+      } else {
+        Navigator.of(context).push(
+            MaterialPageRoute(builder: ((context) => const QRScanPage())));
+      }
     }
+
     // TODO 404 error
   }
 

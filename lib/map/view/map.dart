@@ -5,7 +5,11 @@ import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_naver_map/flutter_naver_map.dart';
 import 'package:intl/date_symbol_data_local.dart';
+import 'package:provider/provider.dart';
+import 'package:shuroop_client_app/auth/provider/profile_provider.dart';
 import 'package:shuroop_client_app/auth/view/login.dart';
+import 'package:shuroop_client_app/map/model/place.dart';
+import 'package:shuroop_client_app/rental/view/deposit_info.dart';
 import 'package:shuroop_client_app/rental/view/scanner.dart';
 
 class MainMapPage extends StatefulWidget {
@@ -19,24 +23,10 @@ class _MainMapPageState extends State<MainMapPage> {
 
   List<Marker> rentalMarkers = [];
 
+  late ProfileProvider profile;
+
   @override
   void initState() {
-    WidgetsBinding.instance.addPostFrameCallback((_) {
-      OverlayImage.fromAssetImage(
-        assetName: "assets/images/rentalMarker.png",
-        devicePixelRatio: 4.0,
-      ).then((image) {
-        setState(() {
-          rentalMarkers.addAll([
-            getRentalMarker(image, '1', const LatLng(37.563600, 126.962370), 3),
-            getRentalMarker(image, '2',
-                const LatLng(37.56402365340398, 126.96265179254601), 2),
-            getRentalMarker(image, '3',
-                const LatLng(37.56286365215381, 126.96107571010032), 5),
-          ]);
-        });
-      });
-    });
     super.initState();
   }
 
@@ -45,7 +35,7 @@ class _MainMapPageState extends State<MainMapPage> {
   @override
   Widget build(BuildContext context) {
     initializeDateFormatting(Localizations.localeOf(context).languageCode);
-    // print(rentalMarkers);
+    profile = Provider.of<ProfileProvider>(context, listen: true);
     return Scaffold(
       key: scaffoldKey,
       appBar: AppBar(
@@ -56,54 +46,73 @@ class _MainMapPageState extends State<MainMapPage> {
         centerTitle: true,
         toolbarHeight: kToolbarHeight,
       ),
-      body: Stack(
-        children: <Widget>[
-          NaverMap(
-            initialCameraPosition: const CameraPosition(
-              target: LatLng(37.563600, 126.962370),
-              zoom: 17,
-            ),
-            onMapCreated: onMapCreated,
-            mapType: _mapType,
-            initLocationTrackingMode: _trackingMode,
-            locationButtonEnable: false,
-            indoorEnable: true,
-            onCameraChange: _onCameraChange,
-            onCameraIdle: _onCameraIdle,
-            onMapTap: _onMapTap,
-            onMapLongTap: _onMapLongTap,
-            onMapDoubleTap: _onMapDoubleTap,
-            onMapTwoFingerTap: _onMapTwoFingerTap,
-            onSymbolTap: _onSymbolTap,
-            maxZoom: 17,
-            minZoom: 12,
-            useSurface: kReleaseMode,
-            markers: rentalMarkers,
-          ),
-          Align(
-            alignment: Alignment.bottomRight,
-            child: Padding(
-              padding: const EdgeInsets.only(
-                right: 30,
-                bottom: 180,
-              ),
-              child: FloatingActionButton(
-                backgroundColor: Colors.white,
-                onPressed: _onTapLocation,
-                child: const Icon(
-                  Icons.my_location,
-                  size: 30,
-                  color: Color(0xFFACACAC),
-                ),
-              ),
-            ),
-          ),
-          Align(
-            alignment: Alignment.bottomCenter,
-            child: bottomBar(),
-          )
-        ],
-      ),
+      body: FutureBuilder<List<Place>>(
+          future: getPlaceDataAPI(),
+          builder: (context, snapshot) {
+            if (snapshot.connectionState == ConnectionState.done &&
+                snapshot.hasData) {
+              final List<Place>? places = snapshot.data;
+              OverlayImage.fromAssetImage(
+                assetName: "assets/images/rentalMarker.png",
+                devicePixelRatio: 4.0,
+              ).then((image) {
+                rentalMarkers.addAll(places!
+                    .map<Marker>((place) => getRentalMarker(image, place))
+                    .toList());
+              });
+              return Stack(
+                children: <Widget>[
+                  NaverMap(
+                    initialCameraPosition: const CameraPosition(
+                      target: LatLng(37.563600, 126.962370),
+                      zoom: 17,
+                    ),
+                    onMapCreated: onMapCreated,
+                    mapType: _mapType,
+                    initLocationTrackingMode: _trackingMode,
+                    locationButtonEnable: false,
+                    indoorEnable: true,
+                    onCameraChange: _onCameraChange,
+                    onCameraIdle: _onCameraIdle,
+                    onMapTap: _onMapTap,
+                    onMapLongTap: _onMapLongTap,
+                    onMapDoubleTap: _onMapDoubleTap,
+                    onMapTwoFingerTap: _onMapTwoFingerTap,
+                    onSymbolTap: _onSymbolTap,
+                    maxZoom: 17,
+                    minZoom: 12,
+                    useSurface: kReleaseMode,
+                    markers: rentalMarkers,
+                  ),
+                  Align(
+                    alignment: Alignment.bottomRight,
+                    child: Padding(
+                      padding: const EdgeInsets.only(
+                        right: 30,
+                        bottom: 180,
+                      ),
+                      child: FloatingActionButton(
+                        backgroundColor: Colors.white,
+                        onPressed: _onTapLocation,
+                        child: const Icon(
+                          Icons.my_location,
+                          size: 30,
+                          color: Color(0xFFACACAC),
+                        ),
+                      ),
+                    ),
+                  ),
+                  Align(
+                    alignment: Alignment.bottomCenter,
+                    child: bottomBar(),
+                  )
+                ],
+              );
+            } else {
+              // Otherwise, display a loading indicator.
+              return const Center(child: CircularProgressIndicator());
+            }
+          }),
     );
   }
 
@@ -125,12 +134,28 @@ class _MainMapPageState extends State<MainMapPage> {
             MaterialButton(
               minWidth: 250,
               onPressed: () => {
-                Navigator.push(
-                  context,
-                  MaterialPageRoute(
-                    builder: (context) => const LoginPage(),
-                  ),
-                )
+                if (profile.getProfile() == null)
+                  {
+                    Navigator.push(
+                      context,
+                      MaterialPageRoute(
+                        builder: (context) => const LoginPage(),
+                      ),
+                    )
+                  }
+                else
+                  {
+                    if (profile.getLeftTime() == Duration.zero)
+                      {
+                        Navigator.of(context).push(MaterialPageRoute(
+                            builder: ((context) => const DepositInformation())))
+                      }
+                    else
+                      {
+                        Navigator.of(context).push(MaterialPageRoute(
+                            builder: ((context) => const QRScanPage())))
+                      }
+                  }
               },
               color: Theme.of(context).primaryColor,
               child: const Text(
@@ -147,22 +172,20 @@ class _MainMapPageState extends State<MainMapPage> {
     );
   }
 
-  Marker getRentalMarker(
-          OverlayImage image, String id, LatLng position, int count) =>
-      Marker(
-        markerId: id,
-        position: position,
+  Marker getRentalMarker(OverlayImage image, Place place) => Marker(
+        markerId: place.id.toString(),
+        position: place.position,
         icon: image,
         alpha: 1.0,
         flat: true,
-        captionText: "$count",
+        captionText: place.umbrellaCount.toString(),
         captionTextSize: 13,
         captionColor: Colors.white,
         captionOffset: -27,
         anchor: AnchorPoint(0.5, 1),
         width: 30,
         height: 43,
-        infoWindow: '경기대학교 지점\n남은 개수: $count',
+        infoWindow: '${place.name} 지점\n남은 개수: ${place.umbrellaCount}',
       );
 
   _onMapTap(LatLng position) async {
