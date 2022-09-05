@@ -1,91 +1,20 @@
-
 import 'package:flutter/material.dart';
 
 import 'deposit_payment_completed.dart';
 
-class DepositPayment extends StatelessWidget {
+class DepositPayment extends StatefulWidget {
   const DepositPayment({Key? key}) : super(key: key);
   static const String _title = 'Radio buttons';
 
   @override
-  Widget build(BuildContext context) {
-    return Scaffold(
-      appBar: AppBar(
-          backgroundColor: const Color(0xFFFCB93F),
-          centerTitle: true,
-          title: const Text("보증금 결제",
-              style: TextStyle(
-                  fontFamily: 'IBMPlexSans',
-                  fontSize: 20,
-                  fontWeight: FontWeight.w700)),
-          leading: IconButton(
-            icon: const Icon(Icons.arrow_back_ios),
-            onPressed: () {
-              Navigator.of(context).pop();
-            },
-          )),
-      body: Column(
-        children: [
-          const Center(
-            child: MyStatefulWidget(),
-          ),
-          Container(
-            width: 52,
-            height: 21,
-            margin: const EdgeInsets.fromLTRB(0, 39, 277, 5),
-            child: const Text("결제수단",
-                style: TextStyle(
-                    fontFamily: 'IBMPlexSans',
-                    fontWeight: FontWeight.w600,
-                    fontSize: 14)),
-          ),
-          Container(
-            margin: const EdgeInsets.fromLTRB(20, 0, 0, 0),
-            child: const RadioButtons(),
-          ),
-          const AgreeOnAdditionalCharges(),
-        ],
-      ),
-      bottomNavigationBar: Container(
-        margin: const EdgeInsets.fromLTRB(26, 16, 26, 36),
-        child: ElevatedButton(
-            style: ElevatedButton.styleFrom(
-                minimumSize: const Size(350, 50),
-                primary: const Color(0xFFFCB93F),
-                shape: RoundedRectangleBorder(
-                    borderRadius: BorderRadius.circular(50))),
-            onPressed: () {
-              Navigator.of(context).push(MaterialPageRoute(
-                  builder: (context) => const DepositPaymentCompleted()));
-            },
-            child: (_MyStatefulWidgetState.value == 1)
-                ? const Text('5,000원 결제하기',
-                style: TextStyle(
-                    fontFamily: 'IBMPlexSans',
-                    fontWeight: FontWeight.w700,
-                    fontSize: 16))
-                : const Text('8,000원 결제하기',
-                style: TextStyle(
-                    fontFamily: 'IBMPlexSans',
-                    fontWeight: FontWeight.w700,
-                    fontSize: 16))),
-      ),
-    );
-  }
+  State<DepositPayment> createState() => _DepositPaymentState();
 }
 
-class AgreeOnAdditionalCharges extends StatefulWidget {
-  const AgreeOnAdditionalCharges({Key? key}) : super(key: key);
-
-  @override
-  _AgreeOnAdditionalCharges createState() => _AgreeOnAdditionalCharges();
-}
-
-class _AgreeOnAdditionalCharges extends State<AgreeOnAdditionalCharges> {
+class _DepositPaymentState extends State<DepositPayment> {
+  int value = 1; // 1 -> 1시간 대여, 2 -> 2시간 대여
   bool _isChecked = false;
 
-  @override
-  Widget build(BuildContext context) {
+  Widget _AgreeOnAdditionalCharges(){
     return Row(
       children: [
         Padding(
@@ -94,6 +23,8 @@ class _AgreeOnAdditionalCharges extends State<AgreeOnAdditionalCharges> {
             mainAxisAlignment: MainAxisAlignment.center,
             children: <Widget>[
               Checkbox(
+                  checkColor: Colors.white,
+                  fillColor: MaterialStateProperty.all(const Color(0xFFFCB93F)),
                   value: _isChecked,
                   onChanged: (value) {
                     setState(() {
@@ -127,17 +58,7 @@ class _AgreeOnAdditionalCharges extends State<AgreeOnAdditionalCharges> {
       ],
     );
   }
-}
 
-class MyStatefulWidget extends StatefulWidget {
-  const MyStatefulWidget({Key? key}) : super(key: key);
-
-  @override
-  State<MyStatefulWidget> createState() => _MyStatefulWidgetState();
-}
-
-class _MyStatefulWidgetState extends State<MyStatefulWidget> {
-  static int value = 1; // 1 -> 1시간 대여, 2 -> 2시간 대여
 
   Widget CustomRadioButton(String text, int index) {
     return OutlinedButton(
@@ -150,7 +71,8 @@ class _MyStatefulWidgetState extends State<MyStatefulWidget> {
             backgroundColor:
             (value == index) ? Colors.transparent : Colors.black12,
             side: BorderSide(
-                color: (value == index) ? const Color(0xFFFCB93F) : Colors.white),
+                color: (value == index) ? const Color(0xFFFCB93F) : Colors
+                    .white),
             padding: const EdgeInsets.fromLTRB(20, 20, 20, 14)),
         child: Column(
           children: [
@@ -192,37 +114,98 @@ class _MyStatefulWidgetState extends State<MyStatefulWidget> {
 
   @override
   Widget build(BuildContext context) {
-    return Column(
-      children: <Widget>[
-        Container(
-          width: 39,
-          height: 21,
-          margin: const EdgeInsets.fromLTRB(0, 39, 291, 7),
-          child: const Text("보증금",
+    return Scaffold(
+      appBar: AppBar(
+          backgroundColor: const Color(0xFFFCB93F),
+          centerTitle: true,
+          title: const Text("보증금 결제",
               style: TextStyle(
                   fontFamily: 'IBMPlexSans',
-                  fontWeight: FontWeight.w600,
-                  fontSize: 14)),
-        ),
-        Container(
-          width: 197,
-          height: 13,
-          margin: const EdgeInsets.fromLTRB(0, 0, 133, 25),
-          child: const Text("대여소에서 우산을 빌려가는 시간부터 계산돼요.",
-              style: TextStyle(
-                  color: Colors.grey,
-                  fontFamily: 'IBMPlexSans',
-                  fontWeight: FontWeight.w400,
-                  fontSize: 10)),
-        ),
-        Row(
-          mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-          children: [
-            CustomRadioButton("5,000원/24시간", 1),
-            CustomRadioButton("8,000원/48시간", 2),
-          ],
-        ),
-      ],
+                  fontSize: 20,
+                  fontWeight: FontWeight.w700)),
+          leading: IconButton(
+            icon: const Icon(Icons.arrow_back_ios),
+            onPressed: () {
+              Navigator.of(context).pop();
+            },
+          )),
+      body: Column(
+        children: [
+          Center(
+            child: Column(
+              children: <Widget>[
+                Container(
+                  width: 39,
+                  height: 21,
+                  margin: const EdgeInsets.fromLTRB(0, 39, 291, 7),
+                  child: const Text("보증금",
+                      style: TextStyle(
+                          fontFamily: 'IBMPlexSans',
+                          fontWeight: FontWeight.w600,
+                          fontSize: 14)),
+                ),
+                Container(
+                  width: 197,
+                  height: 13,
+                  margin: const EdgeInsets.fromLTRB(0, 0, 133, 25),
+                  child: const Text("대여소에서 우산을 빌려가는 시간부터 계산돼요.",
+                      style: TextStyle(
+                          color: Colors.grey,
+                          fontFamily: 'IBMPlexSans',
+                          fontWeight: FontWeight.w400,
+                          fontSize: 10)),
+                ),
+                Row(
+                  mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                  children: [
+                    CustomRadioButton("5,000원/24시간", 1),
+                    CustomRadioButton("8,000원/48시간", 2),
+                  ],
+                ),
+              ],
+            ),
+          ),
+          Container(
+            width: 52,
+            height: 21,
+            margin: const EdgeInsets.fromLTRB(0, 39, 277, 5),
+            child: const Text("결제수단",
+                style: TextStyle(
+                    fontFamily: 'IBMPlexSans',
+                    fontWeight: FontWeight.w600,
+                    fontSize: 14)),
+          ),
+          Container(
+            margin: const EdgeInsets.fromLTRB(20, 0, 0, 0),
+            child: const RadioButtons(),
+          ),
+           _AgreeOnAdditionalCharges(),
+        ],
+      ),
+      bottomNavigationBar: Container(
+        margin: const EdgeInsets.fromLTRB(26, 16, 26, 36),
+        child: ElevatedButton(
+            style: ElevatedButton.styleFrom(
+                minimumSize: const Size(350, 50),
+                primary: (_isChecked == true) ? const Color(0xFFFCB93F) : Colors.grey,
+                shape: RoundedRectangleBorder(
+                    borderRadius: BorderRadius.circular(50))),
+            onPressed: () {
+              Navigator.of(context).push(MaterialPageRoute(
+                  builder: (context) => const DepositPaymentCompleted()));
+            },
+            child: (value == 1)
+                ? const Text('5,000원 결제하기',
+                style: TextStyle(
+                    fontFamily: 'IBMPlexSans',
+                    fontWeight: FontWeight.w700,
+                    fontSize: 16))
+                : const Text('8,000원 결제하기',
+                style: TextStyle(
+                    fontFamily: 'IBMPlexSans',
+                    fontWeight: FontWeight.w700,
+                    fontSize: 16))),
+      ),
     );
   }
 }

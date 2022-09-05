@@ -11,6 +11,7 @@ import 'package:shuroop_client_app/auth/view/login.dart';
 import 'package:shuroop_client_app/map/model/place.dart';
 import 'package:shuroop_client_app/rental/view/deposit_info.dart';
 import 'package:shuroop_client_app/rental/view/scanner.dart';
+import '../../rental/view/deposit_info.dart';
 
 class MainMapPage extends StatefulWidget {
   @override
