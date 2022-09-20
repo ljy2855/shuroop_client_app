@@ -31,8 +31,8 @@ class _MainMapPageState extends State<MainMapPage> {
     super.initState();
   }
 
-  MapType _mapType = MapType.Basic;
-  LocationTrackingMode _trackingMode = LocationTrackingMode.NoFollow;
+  final MapType _mapType = MapType.Basic;
+  LocationTrackingMode _trackingMode = LocationTrackingMode.Follow;
   @override
   Widget build(BuildContext context) {
     initializeDateFormatting(Localizations.localeOf(context).languageCode);
@@ -53,19 +53,21 @@ class _MainMapPageState extends State<MainMapPage> {
             if (snapshot.connectionState == ConnectionState.done &&
                 snapshot.hasData) {
               final List<Place>? places = snapshot.data;
-              OverlayImage.fromAssetImage(
-                assetName: "assets/images/rentalMarker.png",
-                devicePixelRatio: 4.0,
-              ).then((image) {
-                rentalMarkers.addAll(places!
-                    .map<Marker>((place) => getRentalMarker(image, place))
-                    .toList());
+              WidgetsBinding.instance.addPostFrameCallback((_) {
+                OverlayImage.fromAssetImage(
+                  assetName: "assets/images/rentalMarker.png",
+                  devicePixelRatio: 4.0,
+                ).then((image) {
+                  rentalMarkers.addAll(places!
+                      .map<Marker>((place) => getRentalMarker(image, place))
+                      .toList());
+                });
               });
               return Stack(
                 children: <Widget>[
                   NaverMap(
                     initialCameraPosition: const CameraPosition(
-                      target: LatLng(37.563600, 126.962370),
+                      target: LatLng(37.5513, 126.9414),
                       zoom: 17,
                     ),
                     onMapCreated: onMapCreated,
@@ -132,41 +134,71 @@ class _MainMapPageState extends State<MainMapPage> {
         child: Column(
           mainAxisAlignment: MainAxisAlignment.center,
           children: [
-            MaterialButton(
-              minWidth: 250,
-              onPressed: () => {
-                if (profile.getProfile() == null)
-                  {
-                    Navigator.push(
-                      context,
-                      MaterialPageRoute(
-                        builder: (context) => const LoginPage(),
+            SizedBox(
+              height: 70,
+              width: double.infinity,
+            ),
+            Material(
+              elevation: 10,
+              child: SizedBox(
+                height: 80,
+                width: double.infinity,
+                child: Container(
+                  decoration: const BoxDecoration(color: Colors.white),
+                  child: Column(
+                    children: [
+                      const Padding(
+                          padding: EdgeInsets.only(
+                        top: 10,
+                      )),
+                      MaterialButton(
+                        minWidth: 200,
+                        shape: RoundedRectangleBorder(
+                            borderRadius: BorderRadius.circular(20)),
+                        height: 40,
+                        onPressed: () => {
+                          if (profile.getProfile() == null)
+                            {
+                              Navigator.push(
+                                context,
+                                MaterialPageRoute(
+                                  builder: (context) => const LoginPage(),
+                                ),
+                              )
+                            }
+                          else
+                            {
+                              if (profile.getLeftTime() == Duration.zero)
+                                {
+                                  Navigator.of(context).push(MaterialPageRoute(
+                                      builder: ((context) =>
+                                          const DepositInformation())))
+                                }
+                              else
+                                {
+                                  Navigator.of(context).push(MaterialPageRoute(
+                                      builder: ((context) =>
+                                          const QRScanPage())))
+                                }
+                            }
+                        },
+                        color: Theme.of(context).primaryColor,
+                        child: Text(
+                          profile.getProfile() == null ||
+                                  profile.getIsRenting() == false
+                              ? '우산 대여하기'
+                              : '우산 반납하기',
+                          style: TextStyle(
+                            color: Colors.white,
+                            fontWeight: FontWeight.bold,
+                          ),
+                        ),
                       ),
-                    )
-                  }
-                else
-                  {
-                    if (profile.getLeftTime() == Duration.zero)
-                      {
-                        Navigator.of(context).push(MaterialPageRoute(
-                            builder: ((context) => const DepositInformation())))
-                      }
-                    else
-                      {
-                        Navigator.of(context).push(MaterialPageRoute(
-                            builder: ((context) => const QRScanPage())))
-                      }
-                  }
-              },
-              color: Theme.of(context).primaryColor,
-              child: const Text(
-                '우산 대여하기',
-                style: TextStyle(
-                  color: Colors.white,
-                  fontWeight: FontWeight.bold,
+                    ],
+                  ),
                 ),
               ),
-            )
+            ),
           ],
         ),
       ),

@@ -1,9 +1,16 @@
+import 'dart:convert';
 import 'dart:developer';
 import 'dart:io';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
 import 'package:qr_code_scanner/qr_code_scanner.dart';
+import 'package:shuroop_client_app/auth/model/profile.dart';
+import 'package:shuroop_client_app/auth/provider/profile_provider.dart';
+import 'package:shuroop_client_app/auth/provider/token.dart';
 import 'package:shuroop_client_app/rental/view/success_page.dart';
+import 'package:shuroop_client_app/url.dart';
+import 'package:http/http.dart' as http;
 
 class QRScanPage extends StatefulWidget {
   const QRScanPage({Key? key}) : super(key: key);
@@ -69,22 +76,39 @@ class _QRScanPageState extends State<QRScanPage> {
 
   Widget _buildQrView(BuildContext context) {
     // For this example we check how width or tall the device is and change the scanArea and overlay accordingly.
-    var scanArea = (MediaQuery.of(context).size.width < 400 ||
-            MediaQuery.of(context).size.height < 400)
-        ? 150.0
-        : 300.0;
+    double height = MediaQuery.of(context).size.height;
+    double width = MediaQuery.of(context).size.width;
+    double scanArea = width * 0.65;
+
     // To ensure the Scanner view is properly sizes after rotation
     // we need to listen for Flutter SizeChanged notification and update controller
-    return QRView(
-      key: qrKey,
-      onQRViewCreated: _onQRViewCreated,
-      overlay: QrScannerOverlayShape(
-          borderColor: Colors.orange,
-          borderRadius: 0,
-          borderLength: 30,
-          borderWidth: 10,
-          cutOutSize: scanArea),
-      onPermissionSet: (ctrl, p) => _onPermissionSet(context, ctrl, p),
+    return Stack(
+      children: [
+        QRView(
+          key: qrKey,
+          onQRViewCreated: _onQRViewCreated,
+          overlay: QrScannerOverlayShape(
+              borderColor: Colors.orange,
+              borderRadius: 0,
+              borderLength: 30,
+              borderWidth: 10,
+              cutOutSize: scanArea),
+          onPermissionSet: (ctrl, p) => _onPermissionSet(context, ctrl, p),
+        ),
+        PositionedDirectional(
+          bottom: (height + scanArea) / 2,
+          start: (width - scanArea) / 2,
+          end: (width - scanArea) / 2,
+          child: const Text("대여함의 QR코드를 찍어 주세요",
+              style: TextStyle(
+                  color: Colors.white,
+                  fontWeight: FontWeight.w700,
+                  fontFamily: "LeferiBaseType",
+                  fontStyle: FontStyle.normal,
+                  fontSize: 16),
+              textAlign: TextAlign.center),
+        ),
+      ],
     );
   }
 
@@ -99,12 +123,37 @@ class _QRScanPageState extends State<QRScanPage> {
       setState(() {
         result = scanData;
       });
-      await controller.pauseCamera();
-      if (!mounted) return;
-      await Navigator.of(context).push(
-          MaterialPageRoute(builder: (context) => const RentalSuccessPage()));
-      await controller.resumeCamera();
+      if (await checkQRcode(scanData)) {
+        await controller.pauseCamera();
+        if (!mounted) return;
+
+        if (await rentalRequest(scanData.code!)) {
+          // TODO 페이지 오류 처리
+          await Navigator.of(context).push(MaterialPageRoute(
+              builder: (context) => const RentalSuccessPage()));
+        }
+      } else {
+        await controller.pauseCamera();
+        await Future.delayed(const Duration(milliseconds: 500));
+        if (!mounted) return;
+        await controller.resumeCamera();
+      }
     });
+  }
+
+  Future<bool> checkQRcode(Barcode barcode) async {
+    const errorSnackBar = SnackBar(
+      duration: Duration(milliseconds: 500),
+      content: Text('유효하지 않은 QR코드입니다.\n다시 인식해주세요.'),
+    );
+
+    if (barcode.code!.contains(UrlPrefix.urls) && barcode.code != null) {
+      print(barcode.code!.contains(UrlPrefix.urls));
+      return true;
+    } else {
+      ScaffoldMessenger.of(context).showSnackBar(errorSnackBar);
+      return false;
+    }
   }
 
   void _onPermissionSet(BuildContext context, QRViewController ctrl, bool p) {
@@ -114,6 +163,32 @@ class _QRScanPageState extends State<QRScanPage> {
         const SnackBar(content: Text('no Permission')),
       );
     }
+  }
+
+  Future<bool> rentalRequest(String url) async {
+    String? token;
+    await getToken().then((value) {
+      token = value;
+    });
+
+    try {
+      final response = await http.post(
+        Uri.parse(url),
+        headers: <String, String>{
+          'Content-Type': 'application/json; charset=UTF-8',
+          HttpHeaders.authorizationHeader: 'Token $token'
+        },
+      );
+      if (response.statusCode == 200) {
+        final data =
+            json.decode(utf8.decode(response.bodyBytes)); // TODO 대여 성공 여부 확인
+        print(data);
+        final profile = Provider.of<ProfileProvider>(context, listen: false);
+        profile.setProfile(token!);
+        return true;
+      }
+    } catch (e) {}
+    return false;
   }
 
   @override
