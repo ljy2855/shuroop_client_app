@@ -101,7 +101,7 @@ class _LoginPageState extends State<LoginPage> {
                           EdgeInsets.symmetric(vertical: 15, horizontal: 10),
                     ),
                   )),
-              const Padding(padding: EdgeInsets.only(top: 5)),
+              const Padding(padding: EdgeInsets.only(top: 10)),
               if (isEmailCheck)
                 Container(
                     width: 274,
@@ -121,6 +121,7 @@ class _LoginPageState extends State<LoginPage> {
                             EdgeInsets.symmetric(vertical: 15, horizontal: 10),
                       ),
                     )),
+              Padding(padding: EdgeInsets.only(top: 28)),
               TextButton(
                   style: TextButton.styleFrom(
                     backgroundColor: ZeplinColors.base_yellow,
