@@ -53,22 +53,13 @@ class _MainMapPageState extends State<MainMapPage> {
         centerTitle: true,
         toolbarHeight: kToolbarHeight,
       ),
-      body: FutureBuilder<List<Place>>(
+      body: FutureBuilder<List<Marker>>(
           future: getPlaceDataAPI(),
           builder: (context, snapshot) {
             if (snapshot.connectionState == ConnectionState.done &&
                 snapshot.hasData) {
-              final List<Place>? places = snapshot.data;
-              WidgetsBinding.instance.addPostFrameCallback((_) {
-                OverlayImage.fromAssetImage(
-                  assetName: "assets/images/rentalMarker.png",
-                  devicePixelRatio: 4.0,
-                ).then((image) {
-                  rentalMarkers.addAll(places!
-                      .map<Marker>((place) => getRentalMarker(image, place))
-                      .toList());
-                });
-              });
+              final List<Marker>? markers = snapshot.data;
+
               return Stack(
                 children: <Widget>[
                   NaverMap(
@@ -91,7 +82,7 @@ class _MainMapPageState extends State<MainMapPage> {
                     maxZoom: 17,
                     minZoom: 12,
                     useSurface: kReleaseMode,
-                    markers: rentalMarkers,
+                    markers: markers!,
                   ),
                   Align(
                     alignment: Alignment.bottomRight,
@@ -140,7 +131,7 @@ class _MainMapPageState extends State<MainMapPage> {
         child: Column(
           mainAxisAlignment: MainAxisAlignment.center,
           children: [
-            SizedBox(
+            const SizedBox(
               height: 70,
               width: double.infinity,
             ),
@@ -234,22 +225,6 @@ class _MainMapPageState extends State<MainMapPage> {
       ),
     );
   }
-
-  Marker getRentalMarker(OverlayImage image, Place place) => Marker(
-        markerId: place.id.toString(),
-        position: place.position,
-        icon: image,
-        alpha: 1.0,
-        flat: true,
-        captionText: place.umbrellaCount.toString(),
-        captionTextSize: 13,
-        captionColor: Colors.white,
-        captionOffset: -27,
-        anchor: AnchorPoint(0.5, 1),
-        width: 30,
-        height: 43,
-        infoWindow: '${place.name} 지점\n남은 개수: ${place.umbrellaCount}',
-      );
 
   _onMapTap(LatLng position) async {
     await (await _controller.future).moveCamera(
