@@ -7,7 +7,9 @@ import 'package:flutter_naver_map/flutter_naver_map.dart';
 import 'package:intl/date_symbol_data_local.dart';
 import 'package:provider/provider.dart';
 import 'package:shuroop_client_app/auth/provider/profile_provider.dart';
+import 'package:shuroop_client_app/auth/provider/token.dart';
 import 'package:shuroop_client_app/auth/view/login.dart';
+import 'package:shuroop_client_app/colors.dart';
 import 'package:shuroop_client_app/map/model/place.dart';
 import 'package:shuroop_client_app/rental/view/deposit_info.dart';
 import 'package:shuroop_client_app/rental/view/scanner.dart';
@@ -36,7 +38,11 @@ class _MainMapPageState extends State<MainMapPage> {
   @override
   Widget build(BuildContext context) {
     initializeDateFormatting(Localizations.localeOf(context).languageCode);
-    profile = Provider.of<ProfileProvider>(context, listen: true);
+    profile = Provider.of<ProfileProvider>(context, listen: false);
+    getToken().then((token) {
+      if (token != null) return profile.setProfile(token);
+    });
+
     return Scaffold(
       key: scaffoldKey,
       appBar: AppBar(
@@ -151,49 +157,73 @@ class _MainMapPageState extends State<MainMapPage> {
                           padding: EdgeInsets.only(
                         top: 10,
                       )),
-                      MaterialButton(
-                        minWidth: 200,
-                        shape: RoundedRectangleBorder(
-                            borderRadius: BorderRadius.circular(20)),
-                        height: 40,
-                        onPressed: () => {
-                          if (profile.getProfile() == null)
-                            {
-                              Navigator.push(
-                                context,
-                                MaterialPageRoute(
-                                  builder: (context) => const LoginPage(),
+                      profile.getProfile() == null ||
+                              profile.getIsRenting() == false
+                          ? MaterialButton(
+                              minWidth: 200,
+                              shape: RoundedRectangleBorder(
+                                  borderRadius: BorderRadius.circular(20)),
+                              height: 40,
+                              onPressed: () => {
+                                if (profile.getProfile() == null)
+                                  {
+                                    Navigator.push(
+                                      context,
+                                      MaterialPageRoute(
+                                        builder: (context) => const LoginPage(),
+                                      ),
+                                    )
+                                  }
+                                else
+                                  {
+                                    if (profile.getLeftTime() == Duration.zero)
+                                      {
+                                        Navigator.of(context).push(
+                                            MaterialPageRoute(
+                                                builder: ((context) =>
+                                                    const DepositInformation())))
+                                      }
+                                    else
+                                      {
+                                        Navigator.of(context).push(
+                                            MaterialPageRoute(
+                                                builder: ((context) =>
+                                                    const QRScanPage())))
+                                      }
+                                  }
+                              },
+                              color: Theme.of(context).primaryColor,
+                              child: const Text(
+                                '우산 대여하기',
+                                style: TextStyle(
+                                  color: Colors.white,
+                                  fontWeight: FontWeight.bold,
                                 ),
-                              )
-                            }
-                          else
-                            {
-                              if (profile.getLeftTime() == Duration.zero)
-                                {
-                                  Navigator.of(context).push(MaterialPageRoute(
-                                      builder: ((context) =>
-                                          const DepositInformation())))
-                                }
-                              else
-                                {
-                                  Navigator.of(context).push(MaterialPageRoute(
-                                      builder: ((context) =>
-                                          const QRScanPage())))
-                                }
-                            }
-                        },
-                        color: Theme.of(context).primaryColor,
-                        child: Text(
-                          profile.getProfile() == null ||
-                                  profile.getIsRenting() == false
-                              ? '우산 대여하기'
-                              : '우산 반납하기',
-                          style: TextStyle(
-                            color: Colors.white,
-                            fontWeight: FontWeight.bold,
-                          ),
-                        ),
-                      ),
+                              ),
+                            )
+                          : MaterialButton(
+                              minWidth: 200,
+                              shape: RoundedRectangleBorder(
+                                  borderRadius: BorderRadius.circular(20)),
+                              height: 40,
+                              onPressed: () => {
+                                if (profile.getProfile() == null)
+                                  {
+                                    Navigator.of(context).push(
+                                        MaterialPageRoute(
+                                            builder: ((context) =>
+                                                const QRScanPage())))
+                                  }
+                              },
+                              color: ZeplinColors.return_theme_color,
+                              child: const Text(
+                                '우산 반납하기',
+                                style: TextStyle(
+                                  color: Colors.white,
+                                  fontWeight: FontWeight.bold,
+                                ),
+                              ),
+                            ),
                     ],
                   ),
                 ),
