@@ -1,6 +1,11 @@
-import 'package:flutter/material.dart';
+import 'dart:convert';
+import 'dart:io';
 
+import 'package:flutter/material.dart';
+import 'package:http/http.dart' as http;
+import 'package:shuroop_client_app/url.dart';
 import 'deposit_payment_completed.dart';
+import 'package:shuroop_client_app/auth/provider/token.dart';
 
 class DepositPayment extends StatefulWidget {
   const DepositPayment({Key? key}) : super(key: key);
@@ -14,7 +19,7 @@ class _DepositPaymentState extends State<DepositPayment> {
   int value = 1; // 1 -> 1시간 대여, 2 -> 2시간 대여
   bool _isChecked = false;
 
-  Widget _AgreeOnAdditionalCharges(){
+  Widget _AgreeOnAdditionalCharges() {
     return Row(
       children: [
         Padding(
@@ -59,7 +64,6 @@ class _DepositPaymentState extends State<DepositPayment> {
     );
   }
 
-
   Widget CustomRadioButton(String text, int index) {
     return OutlinedButton(
         onPressed: () {
@@ -69,39 +73,40 @@ class _DepositPaymentState extends State<DepositPayment> {
         },
         style: OutlinedButton.styleFrom(
             backgroundColor:
-            (value == index) ? Colors.transparent : Colors.black12,
+                (value == index) ? Colors.transparent : Colors.black12,
             side: BorderSide(
-                color: (value == index) ? const Color(0xFFFCB93F) : Colors
-                    .white),
+                color:
+                    (value == index) ? const Color(0xFFFCB93F) : Colors.white),
             padding: const EdgeInsets.fromLTRB(20, 20, 20, 14)),
         child: Column(
           children: [
             (text == "5,000원/24시간")
                 ? Container(
-              margin: const EdgeInsets.fromLTRB(0, 14, 0, 10),
-              child: Icon(Icons.calendar_today_sharp,
-                  size: 14,
-                  color:
-                  (value == index) ? const Color(0xFFFCB93F) : Colors.grey),
-            )
-                : Container(
-              width: 50,
-              margin: const EdgeInsets.fromLTRB(0, 14, 0, 10),
-              child: Row(
-                  mainAxisAlignment: MainAxisAlignment.spaceAround,
-                  children: [
-                    Icon(Icons.calendar_today_sharp,
+                    margin: const EdgeInsets.fromLTRB(0, 14, 0, 10),
+                    child: Icon(Icons.calendar_today_sharp,
                         size: 14,
                         color: (value == index)
                             ? const Color(0xFFFCB93F)
                             : Colors.grey),
-                    Icon(Icons.calendar_today_sharp,
-                        size: 14,
-                        color: (value == index)
-                            ? const Color(0xFFFCB93F)
-                            : Colors.grey)
-                  ]),
-            ),
+                  )
+                : Container(
+                    width: 50,
+                    margin: const EdgeInsets.fromLTRB(0, 14, 0, 10),
+                    child: Row(
+                        mainAxisAlignment: MainAxisAlignment.spaceAround,
+                        children: [
+                          Icon(Icons.calendar_today_sharp,
+                              size: 14,
+                              color: (value == index)
+                                  ? const Color(0xFFFCB93F)
+                                  : Colors.grey),
+                          Icon(Icons.calendar_today_sharp,
+                              size: 14,
+                              color: (value == index)
+                                  ? const Color(0xFFFCB93F)
+                                  : Colors.grey)
+                        ]),
+                  ),
             Text(
               text,
               style: const TextStyle(
@@ -179,7 +184,7 @@ class _DepositPaymentState extends State<DepositPayment> {
             margin: const EdgeInsets.fromLTRB(20, 0, 0, 0),
             child: const RadioButtons(),
           ),
-           _AgreeOnAdditionalCharges(),
+          _AgreeOnAdditionalCharges(),
         ],
       ),
       bottomNavigationBar: Container(
@@ -187,26 +192,47 @@ class _DepositPaymentState extends State<DepositPayment> {
         child: ElevatedButton(
             style: ElevatedButton.styleFrom(
                 minimumSize: const Size(350, 50),
-                primary: (_isChecked == true) ? const Color(0xFFFCB93F) : Colors.grey,
+                primary: (_isChecked == true)
+                    ? const Color(0xFFFCB93F)
+                    : Colors.grey,
                 shape: RoundedRectangleBorder(
                     borderRadius: BorderRadius.circular(50))),
             onPressed: () {
-              Navigator.of(context).push(MaterialPageRoute(
-                  builder: (context) => const DepositPaymentCompleted()));
+              payment().then((value) => Navigator.of(context).push(
+                  MaterialPageRoute(
+                      builder: (context) => const DepositPaymentCompleted())));
             },
             child: (value == 1)
                 ? const Text('5,000원 결제하기',
-                style: TextStyle(
-                    fontFamily: 'IBMPlexSans',
-                    fontWeight: FontWeight.w700,
-                    fontSize: 16))
+                    style: TextStyle(
+                        fontFamily: 'IBMPlexSans',
+                        fontWeight: FontWeight.w700,
+                        fontSize: 16))
                 : const Text('8,000원 결제하기',
-                style: TextStyle(
-                    fontFamily: 'IBMPlexSans',
-                    fontWeight: FontWeight.w700,
-                    fontSize: 16))),
+                    style: TextStyle(
+                        fontFamily: 'IBMPlexSans',
+                        fontWeight: FontWeight.w700,
+                        fontSize: 16))),
       ),
     );
+  }
+
+  Future<void> payment() async {
+    String? token;
+    await getToken().then((value) {
+      token = value;
+    });
+    final response = await http.post(
+        Uri.parse(
+          '${UrlPrefix.urls}users/pay/',
+        ),
+        headers: <String, String>{
+          'Content-Type': 'application/json; charset=UTF-8',
+          HttpHeaders.authorizationHeader: 'Token $token'
+        },
+        body: jsonEncode({
+          "day": value,
+        }));
   }
 }
 

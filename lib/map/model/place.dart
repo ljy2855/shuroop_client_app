@@ -74,7 +74,7 @@ List<Marker> getMarkerWithImage(final List<Place> places) {
     devicePixelRatio: 4.0,
   ).then((image) {
     rentalMarkers.addAll(
-        places!.map<Marker>((place) => getRentalMarker(image, place)).toList());
+        places.map<Marker>((place) => getRentalMarker(image, place)).toList());
   });
   return rentalMarkers;
 }
