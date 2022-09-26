@@ -76,7 +76,9 @@ class DepositPaymentCompleted extends StatelessWidget {
                 onPressed: () => Navigator.push(
                     context,
                     MaterialPageRoute(
-                        builder: ((context) => const QRScanPage()))),
+                        builder: ((context) => const QRScanPage(
+                              type: QRScanType.borw,
+                            )))),
                 child: const Text('대여하기',
                     style: TextStyle(
                         fontFamily: 'IBMPlexSans',

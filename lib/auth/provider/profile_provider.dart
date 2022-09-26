@@ -9,8 +9,7 @@ class ProfileProvider with ChangeNotifier {
   Profile? getProfile() => profile;
 
   setProfile(String token) async {
-    profile = await getProfileDataAPI();
-    print(profile);
+    profile = await getProfileDataAPI(token);
     notifyListeners();
   }
 }

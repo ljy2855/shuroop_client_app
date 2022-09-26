@@ -23,9 +23,12 @@ class _LoginPageState extends State<LoginPage> {
   bool isEmailCheck = false;
   final emailInputController = TextEditingController();
   final passwordInputController = TextEditingController();
-
+  late ProfileProvider profile;
+  late Navigator navigator;
   @override
   Widget build(BuildContext context) {
+    profile = Provider.of<ProfileProvider>(context, listen: false);
+
     return Scaffold(
         body: Stack(
       children: [
@@ -191,15 +194,16 @@ class _LoginPageState extends State<LoginPage> {
         }));
     if (response.statusCode == 200) {
       final data = json.decode(utf8.decode(response.bodyBytes));
-      setToken(data['token']);
-      final profile = Provider.of<ProfileProvider>(context, listen: false);
-      profile.setProfile(data['token']);
+      await setToken(data['token']);
+      await profile.setProfile(data['token']);
       if (profile.getLeftTime() == Duration.zero) {
-        Navigator.of(context).push(MaterialPageRoute(
+        await Navigator.of(context).push(MaterialPageRoute(
             builder: ((context) => const DepositInformation())));
       } else {
-        Navigator.of(context).push(
-            MaterialPageRoute(builder: ((context) => const QRScanPage())));
+        await Navigator.of(context).push(MaterialPageRoute(
+            builder: ((context) => const QRScanPage(
+                  type: QRScanType.borw,
+                ))));
       }
     }
 

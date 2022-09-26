@@ -8,12 +8,19 @@ import 'package:qr_code_scanner/qr_code_scanner.dart';
 import 'package:shuroop_client_app/auth/model/profile.dart';
 import 'package:shuroop_client_app/auth/provider/profile_provider.dart';
 import 'package:shuroop_client_app/auth/provider/token.dart';
+import 'package:shuroop_client_app/colors.dart';
 import 'package:shuroop_client_app/rental/view/success_page.dart';
 import 'package:shuroop_client_app/url.dart';
 import 'package:http/http.dart' as http;
 
+enum QRScanType {
+  borw,
+  retrn,
+}
+
 class QRScanPage extends StatefulWidget {
-  const QRScanPage({Key? key}) : super(key: key);
+  final QRScanType type;
+  const QRScanPage({Key? key, required this.type}) : super(key: key);
 
   @override
   State<StatefulWidget> createState() => _QRScanPageState();
@@ -44,9 +51,13 @@ class _QRScanPageState extends State<QRScanPage> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-          backgroundColor: Theme.of(context).primaryColor,
+          backgroundColor: widget.type == QRScanType.borw
+              ? ZeplinColors.base_yellow
+              : ZeplinColors.return_theme_color,
           centerTitle: true,
-          title: const Text("대여하기"),
+          title: widget.type == QRScanType.borw
+              ? const Text("대여하기")
+              : const Text("반납하기"),
           leading: IconButton(
             icon: const Icon(Icons.arrow_back_ios),
             onPressed: () {

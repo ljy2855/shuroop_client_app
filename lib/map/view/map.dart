@@ -11,6 +11,7 @@ import 'package:shuroop_client_app/auth/provider/token.dart';
 import 'package:shuroop_client_app/auth/view/login.dart';
 import 'package:shuroop_client_app/colors.dart';
 import 'package:shuroop_client_app/map/model/place.dart';
+import 'package:shuroop_client_app/mypage/personal_info.dart';
 import 'package:shuroop_client_app/rental/view/deposit_info.dart';
 import 'package:shuroop_client_app/rental/view/scanner.dart';
 import '../../rental/view/deposit_info.dart';
@@ -148,73 +149,130 @@ class _MainMapPageState extends State<MainMapPage> {
                           padding: EdgeInsets.only(
                         top: 10,
                       )),
-                      profile.getProfile() == null ||
-                              profile.getIsRenting() == false
-                          ? MaterialButton(
-                              minWidth: 200,
-                              shape: RoundedRectangleBorder(
-                                  borderRadius: BorderRadius.circular(20)),
-                              height: 40,
-                              onPressed: () => {
-                                if (profile.getProfile() == null)
-                                  {
-                                    Navigator.push(
-                                      context,
-                                      MaterialPageRoute(
-                                        builder: (context) => const LoginPage(),
-                                      ),
-                                    )
-                                  }
-                                else
-                                  {
-                                    if (profile.getLeftTime() == Duration.zero)
+                      Row(
+                        mainAxisAlignment: MainAxisAlignment.center,
+                        children: [
+                          Column(
+                            children: [
+                              IconButton(
+                                  iconSize: 30,
+                                  constraints:
+                                      const BoxConstraints(maxHeight: 27),
+                                  color: ZeplinColors.inactivated_gray,
+                                  padding: const EdgeInsets.symmetric(
+                                      horizontal: 30, vertical: 0),
+                                  onPressed: () {},
+                                  icon: const Icon(
+                                    Icons.wb_sunny_outlined,
+                                  )),
+                              const Text(
+                                "날씨",
+                                style: TextStyle(
+                                    color: ZeplinColors.inactivated_gray,
+                                    fontSize: 12),
+                              )
+                            ],
+                          ),
+                          profile.getProfile() == null ||
+                                  profile.getIsRenting() == false
+                              ? MaterialButton(
+                                  minWidth: 200,
+                                  shape: RoundedRectangleBorder(
+                                      borderRadius: BorderRadius.circular(20)),
+                                  height: 40,
+                                  onPressed: () => {
+                                    if (profile.getProfile() == null)
                                       {
-                                        Navigator.of(context).push(
-                                            MaterialPageRoute(
-                                                builder: ((context) =>
-                                                    const DepositInformation())))
+                                        Navigator.push(
+                                          context,
+                                          MaterialPageRoute(
+                                            builder: (context) =>
+                                                const LoginPage(),
+                                          ),
+                                        ).then((_) => setState(() {}))
                                       }
                                     else
                                       {
-                                        Navigator.of(context).push(
-                                            MaterialPageRoute(
-                                                builder: ((context) =>
-                                                    const QRScanPage())))
+                                        if (profile.getLeftTime() ==
+                                            Duration.zero)
+                                          {
+                                            Navigator.of(context)
+                                                .push(MaterialPageRoute(
+                                                    builder: ((context) =>
+                                                        const DepositInformation())))
+                                                .then(
+                                                  (_) => setState(() {}),
+                                                )
+                                          }
+                                        else
+                                          {
+                                            Navigator.of(context)
+                                                .push(MaterialPageRoute(
+                                                    builder: ((context) =>
+                                                        const QRScanPage(
+                                                          type: QRScanType.borw,
+                                                        ))))
+                                                .then((_) => setState(() {}))
+                                          }
                                       }
-                                  }
-                              },
-                              color: Theme.of(context).primaryColor,
-                              child: const Text(
-                                '우산 대여하기',
-                                style: TextStyle(
-                                  color: Colors.white,
-                                  fontWeight: FontWeight.bold,
-                                ),
-                              ),
-                            )
-                          : MaterialButton(
-                              minWidth: 200,
-                              shape: RoundedRectangleBorder(
-                                  borderRadius: BorderRadius.circular(20)),
-                              height: 40,
-                              onPressed: () => {
-                                if (profile.getProfile() == null)
-                                  {
+                                  },
+                                  color: Theme.of(context).primaryColor,
+                                  child: const Text(
+                                    '우산 대여하기',
+                                    style: TextStyle(
+                                      color: Colors.white,
+                                      fontWeight: FontWeight.bold,
+                                    ),
+                                  ),
+                                )
+                              : MaterialButton(
+                                  minWidth: 200,
+                                  shape: RoundedRectangleBorder(
+                                      borderRadius: BorderRadius.circular(20)),
+                                  height: 40,
+                                  onPressed: () => {
                                     Navigator.of(context).push(
                                         MaterialPageRoute(
                                             builder: ((context) =>
-                                                const QRScanPage())))
-                                  }
-                              },
-                              color: ZeplinColors.return_theme_color,
-                              child: const Text(
-                                '우산 반납하기',
-                                style: TextStyle(
-                                  color: Colors.white,
-                                  fontWeight: FontWeight.bold,
+                                                const QRScanPage(
+                                                  type: QRScanType.retrn,
+                                                ))))
+                                  },
+                                  color: ZeplinColors.return_theme_color,
+                                  child: const Text(
+                                    '우산 반납하기',
+                                    style: TextStyle(
+                                      color: Colors.white,
+                                      fontWeight: FontWeight.bold,
+                                    ),
+                                  ),
                                 ),
-                              ),
-                            ),
+                          Column(
+                            children: [
+                              IconButton(
+                                  iconSize: 30,
+                                  constraints:
+                                      const BoxConstraints(maxHeight: 27),
+                                  color: ZeplinColors.inactivated_gray,
+                                  padding: const EdgeInsets.symmetric(
+                                      horizontal: 30, vertical: 0),
+                                  onPressed: () => Navigator.of(context).push(
+                                      MaterialPageRoute(
+                                          builder: ((context) =>
+                                              const PersonalInfo()))),
+                                  icon: const Icon(
+                                    Icons.people_alt_outlined,
+                                  )),
+                              const Text(
+                                "내정보",
+                                style: TextStyle(
+                                    color: ZeplinColors.inactivated_gray,
+                                    fontSize: 12),
+                              )
+                            ],
+                          )
+                        ],
+                      ),
                     ],
                   ),
                 ),
