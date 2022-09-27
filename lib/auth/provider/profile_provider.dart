@@ -12,4 +12,9 @@ class ProfileProvider with ChangeNotifier {
     profile = await getProfileDataAPI(token);
     notifyListeners();
   }
+
+  removeProfile() {
+    profile = null;
+    notifyListeners();
+  }
 }

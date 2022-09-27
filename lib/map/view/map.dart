@@ -11,6 +11,7 @@ import 'package:shuroop_client_app/auth/provider/token.dart';
 import 'package:shuroop_client_app/auth/view/login.dart';
 import 'package:shuroop_client_app/colors.dart';
 import 'package:shuroop_client_app/map/model/place.dart';
+import 'package:shuroop_client_app/mypage/notice.dart';
 import 'package:shuroop_client_app/mypage/personal_info.dart';
 import 'package:shuroop_client_app/rental/view/deposit_info.dart';
 import 'package:shuroop_client_app/rental/view/scanner.dart';
@@ -53,6 +54,17 @@ class _MainMapPageState extends State<MainMapPage> {
             child: Image.asset("assets/images/logo.png")),
         centerTitle: true,
         toolbarHeight: kToolbarHeight,
+        leading: IconButton(
+          color: ZeplinColors.base_icon_gray,
+          padding: const EdgeInsets.only(left: 12, top: 12),
+          iconSize: 30,
+          constraints: const BoxConstraints(maxHeight: 27),
+          icon: const Icon(Icons.notifications_none_sharp),
+          onPressed: () {
+            Navigator.of(context)
+                .push(MaterialPageRoute(builder: ((context) => Notice())));
+          },
+        ),
       ),
       body: FutureBuilder<List<Marker>>(
           future: getPlaceDataAPI(),
@@ -256,10 +268,14 @@ class _MainMapPageState extends State<MainMapPage> {
                                   color: ZeplinColors.inactivated_gray,
                                   padding: const EdgeInsets.symmetric(
                                       horizontal: 30, vertical: 0),
-                                  onPressed: () => Navigator.of(context).push(
-                                      MaterialPageRoute(
-                                          builder: ((context) =>
-                                              const PersonalInfo()))),
+                                  onPressed: () {
+                                    if (profile.getProfile() != null) {
+                                      Navigator.of(context).push(
+                                          MaterialPageRoute(
+                                              builder: ((context) =>
+                                                  PersonalInfo())));
+                                    }
+                                  },
                                   icon: const Icon(
                                     Icons.people_alt_outlined,
                                   )),
@@ -297,12 +313,12 @@ class _MainMapPageState extends State<MainMapPage> {
   }
 
   _onMapLongTap(LatLng position) {
-    ScaffoldMessenger.of(context).showSnackBar(SnackBar(
-      content: Text(
-          '[onLongTap] lat: ${position.latitude}, lon: ${position.longitude}'),
-      duration: const Duration(milliseconds: 500),
-      backgroundColor: Colors.black,
-    ));
+    // ScaffoldMessenger.of(context).showSnackBar(SnackBar(
+    //   content: Text(
+    //       '[onLongTap] lat: ${position.latitude}, lon: ${position.longitude}'),
+    //   duration: const Duration(milliseconds: 500),
+    //   backgroundColor: Colors.black,
+    // ));
   }
 
   _onMapDoubleTap(LatLng position) {
@@ -346,12 +362,12 @@ class _MainMapPageState extends State<MainMapPage> {
 
   void _onCameraChange(
       LatLng? latLng, CameraChangeReason reason, bool? isAnimated) {
-    print('카메라 움직임 >>> 위치 : ${latLng?.latitude}, ${latLng?.longitude}'
-        '\n원인: $reason'
-        '\n에니메이션 여부: $isAnimated');
+    // print('카메라 움직임 >>> 위치 : ${latLng?.latitude}, ${latLng?.longitude}'
+    //     '\n원인: $reason'
+    //     '\n에니메이션 여부: $isAnimated');
   }
 
   void _onCameraIdle() {
-    print('카메라 움직임 멈춤');
+    // print('카메라 움직임 멈춤');
   }
 }

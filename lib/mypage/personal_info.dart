@@ -1,14 +1,16 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:shuroop_client_app/auth/provider/profile_provider.dart';
+import 'package:shuroop_client_app/auth/provider/token.dart';
 import 'package:shuroop_client_app/colors.dart';
+import 'package:shuroop_client_app/mypage/notice.dart';
 
 class PersonalInfo extends StatelessWidget {
-  const PersonalInfo({Key? key}) : super(key: key);
-
+  PersonalInfo({Key? key}) : super(key: key);
+  late ProfileProvider profile;
   @override
   Widget build(BuildContext context) {
-    final profile = Provider.of<ProfileProvider>(context, listen: false);
+    profile = Provider.of<ProfileProvider>(context, listen: false);
     return Scaffold(
       appBar: AppBar(
         backgroundColor: ZeplinColors.white,
@@ -131,7 +133,8 @@ class PersonalInfo extends StatelessWidget {
               alignment: Alignment.centerLeft,
               width: double.infinity,
               child: TextButton(
-                onPressed: () {},
+                onPressed: () => Navigator.of(context).push(
+                    MaterialPageRoute(builder: (((context) => Notice())))),
                 child: const Text("비밀번호 변경",
                     style: TextStyle(
                         fontSize: 14,
@@ -147,7 +150,9 @@ class PersonalInfo extends StatelessWidget {
               alignment: Alignment.centerLeft,
               width: double.infinity,
               child: TextButton(
-                onPressed: () {},
+                onPressed: () async {
+                  await logout().then((value) => Navigator.of(context).pop());
+                },
                 child: const Text("로그아웃",
                     style: TextStyle(
                         fontSize: 14,
@@ -184,5 +189,10 @@ class PersonalInfo extends StatelessWidget {
         ),
       ),
     );
+  }
+
+  Future<void> logout() async {
+    await removeToken();
+    profile.removeProfile();
   }
 }
