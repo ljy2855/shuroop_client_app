@@ -1,24 +1,26 @@
 import 'dart:convert';
 import 'dart:io';
 import 'package:http/http.dart' as http;
-import 'package:shuroop_client_app/auth/provider/token.dart';
 import 'package:shuroop_client_app/url.dart';
 
 class Profile {
   final int? userId;
   final bool? isRenting;
   final Duration? leftTime;
+  final String? email;
 
   Profile({
     this.userId,
     this.isRenting,
     this.leftTime,
+    this.email,
   });
 
   factory Profile.fromJson(Map<String, dynamic> json) => Profile(
-        userId: json['user_id'],
+        userId: json['user_id']['id'],
         isRenting: json['is_renting'],
         leftTime: parseDuration(json['left_time']),
+        email: json['user_id']['username'],
       );
 }
 
@@ -42,14 +44,8 @@ Duration parseDuration(String s) {
   }
 }
 
-// ignore: body_might_complete_normally_nullable
-Future<Profile?> getProfileDataAPI() async {
-  String? token;
-  await getToken().then((value) {
-    token = value;
-  });
-  print(token);
-
+Future<Profile?> getProfileDataAPI(String token) async {
+  late Profile profile;
   try {
     final response = await http.post(
       Uri.parse(
@@ -62,8 +58,12 @@ Future<Profile?> getProfileDataAPI() async {
     );
     if (response.statusCode == 200) {
       final data = json.decode(utf8.decode(response.bodyBytes));
-      print(data);
-      return Profile.fromJson(data);
+      profile = Profile.fromJson(data);
+      print(profile);
+      return profile;
     }
-  } catch (e) {}
+  } catch (e) {
+    print(e);
+  }
+  return null;
 }

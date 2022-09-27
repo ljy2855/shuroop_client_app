@@ -70,7 +70,8 @@ class RentalSuccessPage extends StatelessWidget {
                       primary: const Color(0xFFFCB93F),
                       shape: RoundedRectangleBorder(
                           borderRadius: BorderRadius.circular(50))),
-                  onPressed: () {},
+                  onPressed: () =>
+                      Navigator.popUntil(context, (route) => route.isFirst),
                   child: const Text('확인')),
             )
           ],

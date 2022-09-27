@@ -30,6 +30,7 @@ class MyApp extends StatelessWidget {
       title: 'Flutter Demo',
       theme: ThemeData(
         primaryColor: const Color(0xFFFCB93F),
+        fontFamily: 'IBMPlexSansKR',
         // This is the theme of your application.
         //
         // Try running your application with "flutter run". You'll see the
@@ -40,7 +41,9 @@ class MyApp extends StatelessWidget {
         // Notice that the counter didn't reset back to zero; the application
         // is not restarted.
       ),
-      home: Notification_()//AutomaticPaymentMethod()
+
+      home: MainMapPage(),
+
     );
   }
 }

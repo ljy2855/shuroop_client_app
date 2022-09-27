@@ -1,5 +1,6 @@
 import 'package:flutter_naver_map/flutter_naver_map.dart';
 import 'package:http/http.dart' as http;
+import 'package:shuroop_client_app/colors.dart';
 import 'dart:convert';
 
 import 'package:shuroop_client_app/url.dart';
@@ -43,7 +44,7 @@ class Place {
       );
 }
 
-Future<List<Place>> getPlaceDataAPI() async {
+Future<List<Marker>> getPlaceDataAPI() async {
   List<Place> placeList = [];
   try {
     final response = await http.get(
@@ -63,5 +64,33 @@ Future<List<Place>> getPlaceDataAPI() async {
     }
   } catch (e) {}
 
-  return placeList;
+  return getMarkerWithImage(placeList);
 }
+
+List<Marker> getMarkerWithImage(final List<Place> places) {
+  List<Marker> rentalMarkers = [];
+  OverlayImage.fromAssetImage(
+    assetName: "assets/images/rentalMarker.png",
+    devicePixelRatio: 4.0,
+  ).then((image) {
+    rentalMarkers.addAll(
+        places.map<Marker>((place) => getRentalMarker(image, place)).toList());
+  });
+  return rentalMarkers;
+}
+
+Marker getRentalMarker(OverlayImage image, Place place) => Marker(
+      markerId: place.id.toString(),
+      position: place.position,
+      icon: image,
+      alpha: 1.0,
+      flat: true,
+      captionText: place.umbrellaCount.toString(),
+      captionTextSize: 13,
+      captionColor: ZeplinColors.white,
+      captionOffset: -27,
+      anchor: AnchorPoint(0.5, 1),
+      width: 30,
+      height: 43,
+      infoWindow: '${place.name} 지점\n남은 개수: ${place.umbrellaCount}',
+    );

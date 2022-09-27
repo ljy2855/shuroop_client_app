@@ -1,8 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:shuroop_client_app/colors.dart';
 
-import 'personal_info.dart';
-
 class AutomaticPaymentMethod extends StatefulWidget {
   const AutomaticPaymentMethod({Key? key}) : super(key: key);
 
@@ -41,9 +39,9 @@ class _AutomaticPaymentMethodState extends State<AutomaticPaymentMethod> {
                 shape: RoundedRectangleBorder(
                     borderRadius: BorderRadius.circular(50))),
             onPressed: () {
-              Navigator.of(context).push(MaterialPageRoute(
-                  builder: (context) => const PersonalInfo()
-              ));
+              // Navigator.of(context).push(MaterialPageRoute(
+              //     builder: (context) => const PersonalInfo()
+              // ));
             },
             child: const Text('확인',
                 style: TextStyle(
