@@ -5,15 +5,11 @@ import 'package:shuroop_client_app/colors.dart';
 import 'package:dotted_line/dotted_line.dart';
 
 class ReturnCompleted extends StatelessWidget {
-  const ReturnCompleted({Key? key}) : super(key: key);
 
+  ReturnCompleted({Key? key}) : super(key: key);
+  String paymentAmount = "0"; //추가 지불 금액
   @override
   Widget build(BuildContext context) {
-    DateTime now = DateTime.now();
-    DateTime timeReturn = now.add(const Duration(days: 1));
-
-    DateFormat dateFormat =
-        DateFormat("24시간 후, MM월 dd일 a HH시mm분까지", Platform.localeName);
     return Scaffold(
         appBar: AppBar(
             backgroundColor: ZeplinColors.return_alert_background,
@@ -47,14 +43,14 @@ class ReturnCompleted extends StatelessWidget {
                   )),
               Container(
                 margin: const EdgeInsets.fromLTRB(30, 0, 0, 10),
-                child: const Icon(Icons.access_time_outlined),
+                child: Icon(Icons.access_time_outlined, color: paymentAmount.compareTo("0").isEven ? ZeplinColors.black : ZeplinColors.base_yellow,),
               ),
               Container(
                 //현재 시간 + 결재시간 계산
                 margin: const EdgeInsets.fromLTRB(30, 0, 0, 0),
-
-                child: const Text("보증금이 환급되었어요",
+                child: Text(paymentAmount.compareTo("0").isEven ? "보증금이 환급되었어요" : "추가 금액이 발생했어요",
                     style: TextStyle(
+                      color: paymentAmount.compareTo("0").isEven ? ZeplinColors.black : ZeplinColors.base_yellow,
                       fontFamily: 'IBMPlexSansKR',
                       fontWeight: FontWeight.w600,
                       fontSize: 16,
@@ -63,10 +59,9 @@ class ReturnCompleted extends StatelessWidget {
               Container(
                 //현재 시간 + 결재시간 계산
                 margin: const EdgeInsets.fromLTRB(30, 7, 30, 0),
-                child: const Text(
-                  '약속한 시간을 지켜주셨군요! 덕분에 더 많은 사람들이 우산을 빌릴 수 있게 되었어요.',
-                  style: TextStyle(
-                      fontSize: 12,
+                child: Text(paymentAmount.compareTo("0").isEven ? "약속한 시간을 지켜주셨군요! 덕분에 더 많은 사람들이 우산을 빌릴 수 있게 되었어요." : "약속한 시간을 조금 넘기셨군요. 시간에 따라 추가 요금이 계산되었어요.",
+                  style: const TextStyle(
+                      fontSize: 13,
                       color: Color(0xFF878787),
                       fontWeight: FontWeight.w400),
                 ),
@@ -228,7 +223,7 @@ class ReturnCompleted extends StatelessWidget {
                             ),
                             Container(
                               margin: const EdgeInsets.fromLTRB(0, 12, 26, 12),
-                              child: const Text("0", style: TextStyle(fontSize: 20),),
+                              child: Text(paymentAmount, style: const TextStyle(fontSize: 20),),
                             ),
                           ],
                         ),
