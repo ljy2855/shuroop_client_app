@@ -44,7 +44,9 @@ class PersonalInfo extends StatelessWidget {
                 alignment: Alignment.centerLeft,
                 width: double.infinity,
                 child: TextButton(
-                  onPressed: () {},
+                  onPressed: () {
+
+                  },
                   child: const Text("결제/환불 이력", style: TextStyle(fontSize: 14, fontFamily:'IBMPlexSansKR',fontWeight: FontWeight.w400,color: ZeplinColors.black)),
                 ),
               ),

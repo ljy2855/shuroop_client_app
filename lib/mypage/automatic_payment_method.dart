@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:shuroop_client_app/colors.dart';
 
-import '../auth/view/personal_info.dart';
+import 'personal_info.dart';
 
 class AutomaticPaymentMethod extends StatefulWidget {
   const AutomaticPaymentMethod({Key? key}) : super(key: key);

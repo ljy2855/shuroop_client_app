@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:shuroop_client_app/colors.dart';
 
-import '../../auth/view/personal_info.dart';
-import '../auth/view/personal_info.dart';
+import 'personal_info.dart';
+import '../rental/auth/view/personal_info.dart';
 
 class AdditionalChargePayment extends StatefulWidget {
   const AdditionalChargePayment({Key? key}) : super(key: key);
