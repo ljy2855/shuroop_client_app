@@ -25,14 +25,15 @@ class _LoginPageState extends State<LoginPage> {
   final passwordInputController = TextEditingController();
   late ProfileProvider profile;
   late Navigator navigator;
+
   @override
   Widget build(BuildContext context) {
     profile = Provider.of<ProfileProvider>(context, listen: false);
 
     return Scaffold(
         body: Stack(
-      children: [
-        Positioned(
+          children: [
+          Positioned(
           top: 30,
           right: 15,
           child: IconButton(
@@ -48,112 +49,117 @@ class _LoginPageState extends State<LoginPage> {
             mainAxisAlignment: MainAxisAlignment.center,
             crossAxisAlignment: CrossAxisAlignment.center,
             children: [
-              Image.asset(
-                "assets/images/logo.png",
-                width: 48.59,
-                height: 58.16,
-              ),
-              const Text(
-                "어디에서나",
-                style: TextStyle(
-                  fontFamily: 'IBMPlexSans',
-                  color: ZeplinColors.black,
-                  fontSize: 12,
-                  fontWeight: FontWeight.w300,
-                  fontStyle: FontStyle.normal,
-                  letterSpacing: 0.012,
-                ),
-              ),
-              const Text(
-                "당신의 우산이 되어줄",
-                style: TextStyle(
-                  fontFamily: 'IBMPlexSans',
-                  color: ZeplinColors.black,
-                  fontSize: 12,
-                  fontWeight: FontWeight.w300,
-                  fontStyle: FontStyle.normal,
-                  letterSpacing: 0.012,
-                ),
-              ),
-              const Text(
-                "슈룹",
-                style: TextStyle(
-                  fontFamily: 'IBMPlexSans',
-                  color: ZeplinColors.black,
-                  fontSize: 26,
-                  fontWeight: FontWeight.w700,
-                  fontStyle: FontStyle.normal,
-                  letterSpacing: 0.026,
-                ),
-              ),
-              const Padding(padding: EdgeInsets.only(top: 40)),
-              Container(
-                  width: 274,
-                  height: 41,
-                  decoration: BoxDecoration(
-                      borderRadius: const BorderRadius.all(Radius.circular(5)),
-                      border: Border.all(
-                          color: ZeplinColors.text_filed_dividing_stroke_gray,
-                          width: 2)),
-                  child: TextField(
-                    controller: emailInputController,
-                    enabled: !isEmailCheck,
-                    decoration: const InputDecoration(
-                      border: InputBorder.none,
-                      contentPadding:
-                          EdgeInsets.symmetric(vertical: 15, horizontal: 10),
-                    ),
-                  )),
-              const Padding(padding: EdgeInsets.only(top: 10)),
-              if (isEmailCheck)
-                Container(
-                    width: 274,
-                    height: 41,
-                    decoration: BoxDecoration(
-                        borderRadius:
-                            const BorderRadius.all(Radius.circular(5)),
-                        border: Border.all(
-                            color: ZeplinColors.text_filed_dividing_stroke_gray,
-                            width: 2)),
-                    child: TextField(
-                      controller: passwordInputController,
-                      obscureText: true,
-                      decoration: const InputDecoration(
-                        border: InputBorder.none,
-                        contentPadding:
-                            EdgeInsets.symmetric(vertical: 15, horizontal: 10),
-                      ),
-                    )),
-              Padding(padding: EdgeInsets.only(top: 28)),
-              TextButton(
-                  style: TextButton.styleFrom(
-                    backgroundColor: ZeplinColors.base_yellow,
-                    shape: const RoundedRectangleBorder(
-                      borderRadius: BorderRadius.all(Radius.circular(22.5)),
-                    ),
-                    minimumSize: const Size(274, 41),
-                  ),
-                  onPressed: () async {
-                    if (isEmailCheck) {
-                      await login(emailInputController.text,
-                          passwordInputController.text);
-                    } else {
-                      await checkEmail(emailInputController.text);
-                    }
-                  },
-                  child: Text(isEmailCheck ? "시작하기" : "이메일로 시작하기",
-                      style: const TextStyle(
-                          color: Colors.white,
-                          fontWeight: FontWeight.w700,
-                          fontFamily: "IBMPlexSans",
-                          fontStyle: FontStyle.normal,
-                          fontSize: 14),
-                      textAlign: TextAlign.center))
-            ],
+            Image.asset(
+            "assets/images/logo.png",
+            width: 48.59,
+            height: 58.16,
           ),
-        ),
-      ],
-    ));
+          const Text(
+            "어디에서나",
+            style: TextStyle(
+              fontFamily: 'IBMPlexSans',
+              color: ZeplinColors.black,
+              fontSize: 12,
+              fontWeight: FontWeight.w300,
+              fontStyle: FontStyle.normal,
+              letterSpacing: 0.012,
+            ),
+          ),
+          const Text(
+            "당신의 우산이 되어줄",
+            style: TextStyle(
+              fontFamily: 'IBMPlexSans',
+              color: ZeplinColors.black,
+              fontSize: 12,
+              fontWeight: FontWeight.w300,
+              fontStyle: FontStyle.normal,
+              letterSpacing: 0.012,
+            ),
+          ),
+          const Text(
+            "슈룹",
+            style: TextStyle(
+              fontFamily: 'IBMPlexSans',
+              color: ZeplinColors.black,
+              fontSize: 26,
+              fontWeight: FontWeight.w700,
+              fontStyle: FontStyle.normal,
+              letterSpacing: 0.026,
+            ),
+          ),
+          const Padding(padding: EdgeInsets.only(top: 40)),
+          Container(
+            width: 274,
+            height: 41,
+            decoration: BoxDecoration(
+                borderRadius: const BorderRadius.all(Radius.circular(5)),
+                border: Border.all(
+                    color: ZeplinColors.text_filed_dividing_stroke_gray,
+                    width: 2)),
+            child: TextField(
+            controller: emailInputController,
+            enabled: !isEmailCheck,
+            decoration: const InputDecoration(
+            hintText: "이메일",
+            border: InputBorder.none,
+            contentPadding:
+            EdgeInsets.symmetric(vertical: 10, horizontal: 10),
+          ),
+        )),
+    const Padding(padding: EdgeInsets.only(top: 10)),
+    if (isEmailCheck)
+    Container(
+    width: 274,
+    height: 41,
+    decoration: BoxDecoration(
+    borderRadius:
+    const BorderRadius.all(Radius.circular(5)),
+    border: Border.all(
+    color: ZeplinColors.text_filed_dividing_stroke_gray,
+    width: 2)),
+    child: TextField(
+    controller: passwordInputController,
+    obscureText: true,
+    decoration: const InputDecoration(
+
+    border: InputBorder.none,
+    contentPadding:
+    EdgeInsets.symmetric(vertical: 15, horizontal: 10),
+    ),
+    )),
+    Padding(padding: EdgeInsets.only(top: 28)),
+    TextButton(
+    style: TextButton.styleFrom(
+    backgroundColor: ZeplinColors.base_yellow,
+    shape: const RoundedRectangleBorder(
+    borderRadius: BorderRadius.all(Radius.circular(22.5)),
+    ),
+    minimumSize: const Size(274, 41),
+    ),
+    onPressed: () async {
+    if (isEmailCheck) {
+    await login(emailInputController.text,
+    passwordInputController.text);
+    } else {
+    await checkEmail(emailInputController.text);
+    }
+    },
+    child: Text(isEmailCheck ? "시작하기" : "이메일로 시작하기",
+    style: const TextStyle(
+    color: Colors.white,
+    fontWeight: FontWeight.w700,
+    fontFamily: "IBMPlexSans",
+    fontStyle: FontStyle.normal,
+    fontSize: 14),
+    textAlign: TextAlign.center))
+    ],
+    ),
+    )
+    ,
+    ]
+    ,
+    )
+    );
   }
 
   checkEmail(String email) async {
@@ -174,7 +180,8 @@ class _LoginPageState extends State<LoginPage> {
     } else if (response.statusCode == 404) {
       print("회원가입");
       Navigator.of(context).push(MaterialPageRoute(
-          builder: ((context) => SignUpPage(
+          builder: ((context) =>
+              SignUpPage(
                 email: email,
               ))));
     }
@@ -201,9 +208,10 @@ class _LoginPageState extends State<LoginPage> {
             builder: ((context) => const DepositInformation())));
       } else {
         await Navigator.of(context).push(MaterialPageRoute(
-            builder: ((context) => const QRScanPage(
-                  type: QRScanType.borw,
-                ))));
+            builder: ((context) =>
+            const QRScanPage(
+              type: QRScanType.borw,
+            ))));
       }
     }
 
