@@ -16,13 +16,20 @@ class SignUpPage extends StatefulWidget {
 class _SignUpPageState extends State<SignUpPage> {
   final formKey = GlobalKey<FormState>();
 
-  String email = '';
+  late String email;
   String password = '';
   String passwordcheck = '';
 
   final emailInputController = TextEditingController();
   final passwordInputController = TextEditingController();
   final passwordCheckInputController = TextEditingController();
+
+  @override
+  void initState() {
+    // TODO: implement initState
+    super.initState();
+    email = widget.email;
+  }
 
   @override
   Widget build(BuildContext context) {
