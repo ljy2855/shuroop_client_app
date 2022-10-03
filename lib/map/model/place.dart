@@ -94,3 +94,29 @@ Marker getRentalMarker(OverlayImage image, Place place) => Marker(
       height: 43,
       infoWindow: '${place.name} 지점\n남은 개수: ${place.umbrellaCount}',
     );
+
+Future<String> getPositionToAddress(LatLng position) async {
+  String address = "";
+
+  const url =
+      "https://naveropenapi.apigw.ntruss.com/map-reversegeocode/v2/gc?output=json";
+  try {
+    final response = await http.get(
+        Uri.parse("$url&coords=${position.longitude},${position.latitude}"),
+        headers: <String, String>{
+          'Content-Type': 'application/json; charset=UTF-8',
+          'X-NCP-APIGW-API-KEY-ID': "18cehr1pfe",
+          'X-NCP-APIGW-API-KEY': "324sXV024P66v8XPFuf3mFXAByg6o5pwkbFqPktu",
+        });
+
+    if (response.statusCode == 200) {
+      final dataset = json.decode(utf8.decode(response.bodyBytes));
+
+      final area = dataset['results'][0]['region'];
+      address = area['area1']['name'] + " " + area['area2']['name'];
+    }
+  } catch (e) {
+    //print(e);
+  }
+  return address;
+}

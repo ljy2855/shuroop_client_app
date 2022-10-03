@@ -13,8 +13,11 @@ import 'package:shuroop_client_app/colors.dart';
 import 'package:shuroop_client_app/map/model/place.dart';
 import 'package:shuroop_client_app/mypage/notice.dart';
 import 'package:shuroop_client_app/mypage/personal_info.dart';
+import 'package:shuroop_client_app/notification/view/notification.dart';
 import 'package:shuroop_client_app/rental/view/deposit_info.dart';
+import 'package:shuroop_client_app/rental/view/return_completed.dart';
 import 'package:shuroop_client_app/rental/view/scanner.dart';
+import 'package:shuroop_client_app/weather/model/weather.dart';
 import '../../rental/view/deposit_info.dart';
 
 class MainMapPage extends StatefulWidget {
@@ -27,6 +30,7 @@ class _MainMapPageState extends State<MainMapPage> {
   Completer<NaverMapController> _controller = Completer();
 
   List<Marker> rentalMarkers = [];
+  LatLng currentPosition = const LatLng(37.5513, 126.9414);
 
   late ProfileProvider profile;
 
@@ -61,8 +65,10 @@ class _MainMapPageState extends State<MainMapPage> {
           constraints: const BoxConstraints(maxHeight: 27),
           icon: const Icon(Icons.notifications_none_sharp),
           onPressed: () {
-            Navigator.of(context)
-                .push(MaterialPageRoute(builder: ((context) => Notice())));
+            if (profile.getProfile() != null) {
+              Navigator.of(context).push(MaterialPageRoute(
+                  builder: ((context) => NotificationPage())));
+            }
           },
         ),
       ),
@@ -144,9 +150,33 @@ class _MainMapPageState extends State<MainMapPage> {
         child: Column(
           mainAxisAlignment: MainAxisAlignment.center,
           children: [
-            const SizedBox(
+            SizedBox(
               height: 70,
               width: double.infinity,
+              child: FutureBuilder(
+                  future: Future.wait([
+                    getPositionToAddress(currentPosition),
+                    getWeatherDataAPI()
+                  ]),
+                  builder: (context, AsyncSnapshot<List> snapshot) {
+                    if (snapshot.connectionState == ConnectionState.done &&
+                        snapshot.hasData) {
+                      final address = snapshot.data?.first;
+                      final List<Weather> weather = snapshot.data?[1];
+                      return Container(
+                        child: Row(
+                          mainAxisAlignment: MainAxisAlignment.center,
+                          children: [
+                            Text(address.toString()),
+                            Text(
+                                " ${weather[0].temperature}도 ${weather[0].status}")
+                          ],
+                        ),
+                      );
+                    } else {
+                      return const Center(child: CircularProgressIndicator());
+                    }
+                  }),
             ),
             Material(
               elevation: 10,
@@ -243,12 +273,13 @@ class _MainMapPageState extends State<MainMapPage> {
                                       borderRadius: BorderRadius.circular(20)),
                                   height: 40,
                                   onPressed: () => {
-                                    Navigator.of(context).push(
-                                        MaterialPageRoute(
+                                    Navigator.of(context)
+                                        .push(MaterialPageRoute(
                                             builder: ((context) =>
-                                                const QRScanPage(
-                                                  type: QRScanType.retrn,
-                                                ))))
+                                                ReturnCompleted())))
+                                        .then((_) {
+                                      setState(() {});
+                                    })
                                   },
                                   color: ZeplinColors.return_theme_color,
                                   child: const Text(
@@ -270,10 +301,13 @@ class _MainMapPageState extends State<MainMapPage> {
                                       horizontal: 30, vertical: 0),
                                   onPressed: () {
                                     if (profile.getProfile() != null) {
-                                      Navigator.of(context).push(
-                                          MaterialPageRoute(
+                                      Navigator.of(context)
+                                          .push(MaterialPageRoute(
                                               builder: ((context) =>
-                                                  PersonalInfo())));
+                                                  PersonalInfo())))
+                                          .then((value) {
+                                        setState(() {});
+                                      });
                                     }
                                   },
                                   icon: const Icon(
@@ -362,6 +396,7 @@ class _MainMapPageState extends State<MainMapPage> {
 
   void _onCameraChange(
       LatLng? latLng, CameraChangeReason reason, bool? isAnimated) {
+    currentPosition = latLng!;
     // print('카메라 움직임 >>> 위치 : ${latLng?.latitude}, ${latLng?.longitude}'
     //     '\n원인: $reason'
     //     '\n에니메이션 여부: $isAnimated');

@@ -9,6 +9,7 @@ import 'package:shuroop_client_app/auth/model/profile.dart';
 import 'package:shuroop_client_app/auth/provider/profile_provider.dart';
 import 'package:shuroop_client_app/auth/provider/token.dart';
 import 'package:shuroop_client_app/colors.dart';
+import 'package:shuroop_client_app/rental/view/return_completed.dart';
 import 'package:shuroop_client_app/rental/view/success_page.dart';
 import 'package:shuroop_client_app/url.dart';
 import 'package:http/http.dart' as http;
@@ -140,8 +141,13 @@ class _QRScanPageState extends State<QRScanPage> {
 
         if (await rentalRequest(scanData.code!)) {
           // TODO 페이지 오류 처리
-          await Navigator.of(context).push(MaterialPageRoute(
-              builder: (context) => const RentalSuccessPage()));
+          if (widget.type == QRScanType.borw) {
+            await Navigator.of(context).pushReplacement(MaterialPageRoute(
+                builder: (context) => const RentalSuccessPage()));
+          } else {
+            await Navigator.of(context).pushReplacement(
+                MaterialPageRoute(builder: (context) => ReturnCompleted()));
+          }
         }
       } else {
         await controller.pauseCamera();

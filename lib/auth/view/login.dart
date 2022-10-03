@@ -196,14 +196,18 @@ class _LoginPageState extends State<LoginPage> {
       final data = json.decode(utf8.decode(response.bodyBytes));
       await setToken(data['token']);
       await profile.setProfile(data['token']);
-      if (profile.getLeftTime() == Duration.zero) {
-        await Navigator.of(context).push(MaterialPageRoute(
-            builder: ((context) => const DepositInformation())));
+      if (!profile.getIsRenting()!) {
+        if (profile.getLeftTime() == Duration.zero) {
+          await Navigator.of(context).push(MaterialPageRoute(
+              builder: ((context) => const DepositInformation())));
+        } else {
+          await Navigator.of(context).push(MaterialPageRoute(
+              builder: ((context) => const QRScanPage(
+                    type: QRScanType.borw,
+                  ))));
+        }
       } else {
-        await Navigator.of(context).push(MaterialPageRoute(
-            builder: ((context) => const QRScanPage(
-                  type: QRScanType.borw,
-                ))));
+        Navigator.of(context).pop();
       }
     }
 
