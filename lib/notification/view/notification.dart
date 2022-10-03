@@ -1,5 +1,12 @@
+import 'dart:io';
+
 import 'package:flutter/material.dart';
-import '../../colors.dart';
+import 'package:shuroop_client_app/auth/provider/token.dart';
+import 'package:shuroop_client_app/colors.dart';
+import 'package:http/http.dart' as http;
+import 'dart:convert';
+
+import 'package:shuroop_client_app/url.dart';
 
 //Notification 은 flutter에 이미 있음
 class NotificationPage extends StatelessWidget {
@@ -7,12 +14,7 @@ class NotificationPage extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final List<String> notification = <String>[
-      '우산 대여 시간을 넘겼어요. 추가금액이 발생하니 유의하세요.',
-      '1시간 후에 우산 대여 시간이 끝나요! 주변 대여소에서 우산을 반납해보세요.',
-      '8월 23일 화요일 오후 12시 30분에 대여했어요! 24시간 내로 반납하는 것을 잊지 마세요.',
-      '오후에 소나기가 올 것 같아요. 슈룹에서 우산을 빌려보세요.'
-    ];
+    List<String>? notification = [];
     final List<String> datesAndTimes = <String>['지금', '1시간 전', '1일 전', '1일 전'];
 
     return MaterialApp(
@@ -33,49 +35,89 @@ class NotificationPage extends StatelessWidget {
                     Navigator.of(context).pop();
                   },
                 )),
-            body: ListView.builder(
-                itemCount: notification.length,
-                itemBuilder: (BuildContext context, int index) {
-                  return Container(
-                      margin: const EdgeInsets.fromLTRB(30, 23, 30, 0),
-                      child: Row(
-                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                        children: [
-                          Flexible(
-                            child: Row(
-                              crossAxisAlignment: CrossAxisAlignment.start,
-                              children: [
-                                Container(
-                                  width: 16,
-                                  height: 16,
-                                  margin:
-                                      const EdgeInsets.fromLTRB(0, 3, 10, 0),
-                                  child: Image.asset(
-                                      "assets/images/logo_line.png"),
-                                ),
-                                Column(
-                                  crossAxisAlignment: CrossAxisAlignment.start,
-                                  children: [
-                                    Container(
-                                        width: 300,
-                                        child: Text('${notification[index]}',
-                                            style: const TextStyle(
-                                                color: ZeplinColors.black,
-                                                fontSize: 14,
-                                                fontWeight: FontWeight.w400))),
-                                    Text('${datesAndTimes[index]}',
-                                        style: const TextStyle(
-                                            color:
-                                                ZeplinColors.inactivated_gray,
-                                            fontSize: 11,
-                                            fontWeight: FontWeight.w400)),
-                                  ],
-                                ),
-                              ],
-                            ),
-                          )
-                        ],
-                      ));
+            body: FutureBuilder<List<String>>(
+                future: getNotifitions(),
+                builder: (context, snapshot) {
+                  if (snapshot.connectionState == ConnectionState.done &&
+                      snapshot.hasData) {
+                    notification = snapshot.data;
+                    return ListView.builder(
+                        itemCount: notification?.length,
+                        itemBuilder: (BuildContext context, int index) {
+                          return Container(
+                              margin: const EdgeInsets.fromLTRB(30, 23, 30, 0),
+                              child: Row(
+                                mainAxisAlignment:
+                                    MainAxisAlignment.spaceBetween,
+                                children: [
+                                  Flexible(
+                                    child: Row(
+                                      crossAxisAlignment:
+                                          CrossAxisAlignment.start,
+                                      children: [
+                                        Container(
+                                          width: 16,
+                                          height: 16,
+                                          margin: const EdgeInsets.fromLTRB(
+                                              0, 3, 10, 0),
+                                          child: Image.asset(
+                                              "assets/images/logo_line.png"),
+                                        ),
+                                        Column(
+                                          crossAxisAlignment:
+                                              CrossAxisAlignment.start,
+                                          children: [
+                                            Container(
+                                                width: 300,
+                                                child: Text(
+                                                    '${notification![index]}',
+                                                    style: const TextStyle(
+                                                        color:
+                                                            ZeplinColors.black,
+                                                        fontSize: 14,
+                                                        fontWeight:
+                                                            FontWeight.w400))),
+                                            Text('${datesAndTimes[1]}',
+                                                style: const TextStyle(
+                                                    color: ZeplinColors
+                                                        .inactivated_gray,
+                                                    fontSize: 11,
+                                                    fontWeight:
+                                                        FontWeight.w400)),
+                                          ],
+                                        ),
+                                      ],
+                                    ),
+                                  )
+                                ],
+                              ));
+                        });
+                  } else {
+                    return const Center(child: CircularProgressIndicator());
+                  }
                 })));
   }
+}
+
+Future<List<String>> getNotifitions() async {
+  String? token;
+  await getToken().then((value) => token = value);
+  List<String> notifications = [];
+  try {
+    final response = await http.get(
+      Uri.parse('${UrlPrefix.urls}notices/get/'),
+      headers: <String, String>{
+        'Content-Type': 'application/json; charset=UTF-8',
+        HttpHeaders.authorizationHeader: 'Token $token'
+      },
+    );
+    if (response.statusCode == 200) {
+      final dataset = json.decode(utf8.decode(response.bodyBytes));
+      for (Map<String, dynamic> data in dataset) {
+        notifications.add(data['content']);
+      }
+    }
+  } catch (e) {}
+
+  return notifications;
 }
