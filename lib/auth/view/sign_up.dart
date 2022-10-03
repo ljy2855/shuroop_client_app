@@ -61,8 +61,8 @@ class _SignUpPageState extends State<SignUpPage> {
                   ),
                   const Padding(padding: EdgeInsets.only(top: 30)),
                   renderTextFormFeild(
-                      controller: emailInputController,
                       hintLabel: "이메일",
+                      initialValue: email,
                       onSaved: (val) {
                         email = val!;
                       },
@@ -130,12 +130,12 @@ class _SignUpPageState extends State<SignUpPage> {
   }
 
   renderTextFormFeild({
-    required TextEditingController controller,
+    TextEditingController? controller,
     required String hintLabel,
     required FormFieldSetter onSaved,
     required FormFieldValidator validator,
+    String? initialValue,
   }) {
-    assert(controller != null);
     assert(hintLabel != null);
     assert(onSaved != null);
     assert(validator != null);
@@ -146,7 +146,9 @@ class _SignUpPageState extends State<SignUpPage> {
           onSaved: onSaved,
           validator: validator,
           controller: controller,
-          obscureText: controller == emailInputController ? false : true,
+          initialValue: initialValue,
+          readOnly: controller == null ? true : false,
+          obscureText: controller != null || false,
           decoration: InputDecoration(
             errorBorder: const OutlineInputBorder(
               borderRadius: BorderRadius.all(Radius.circular(5)),
