@@ -25,6 +25,7 @@ class _LoginPageState extends State<LoginPage> {
   final passwordInputController = TextEditingController();
   late ProfileProvider profile;
   late Navigator navigator;
+
   @override
   Widget build(BuildContext context) {
     profile = Provider.of<ProfileProvider>(context, listen: false);
@@ -99,9 +100,10 @@ class _LoginPageState extends State<LoginPage> {
                     controller: emailInputController,
                     enabled: !isEmailCheck,
                     decoration: const InputDecoration(
+                      hintText: "이메일",
                       border: InputBorder.none,
                       contentPadding:
-                          EdgeInsets.symmetric(vertical: 15, horizontal: 10),
+                          EdgeInsets.symmetric(vertical: 10, horizontal: 10),
                     ),
                   )),
               const Padding(padding: EdgeInsets.only(top: 10)),
