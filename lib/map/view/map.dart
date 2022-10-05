@@ -1,5 +1,4 @@
 import 'dart:async';
-import 'dart:io';
 
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
@@ -11,14 +10,11 @@ import 'package:shuroop_client_app/auth/provider/token.dart';
 import 'package:shuroop_client_app/auth/view/login.dart';
 import 'package:shuroop_client_app/colors.dart';
 import 'package:shuroop_client_app/map/model/place.dart';
-import 'package:shuroop_client_app/mypage/notice.dart';
 import 'package:shuroop_client_app/mypage/personal_info.dart';
 import 'package:shuroop_client_app/notification/view/notification.dart';
 import 'package:shuroop_client_app/rental/view/deposit_info.dart';
-import 'package:shuroop_client_app/rental/view/return_completed.dart';
 import 'package:shuroop_client_app/rental/view/scanner.dart';
 import 'package:shuroop_client_app/weather/model/weather.dart';
-import '../../rental/view/deposit_info.dart';
 
 class MainMapPage extends StatefulWidget {
   @override
@@ -275,8 +271,9 @@ class _MainMapPageState extends State<MainMapPage> {
                                   onPressed: () => {
                                     Navigator.of(context)
                                         .push(MaterialPageRoute(
-                                            builder: ((context) =>
-                                                ReturnCompleted())))
+                                            builder: ((context) => QRScanPage(
+                                                  type: QRScanType.retrn,
+                                                ))))
                                         .then((_) {
                                       setState(() {});
                                     })

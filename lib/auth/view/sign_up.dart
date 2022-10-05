@@ -20,7 +20,6 @@ class _SignUpPageState extends State<SignUpPage> {
   String password = '';
   String passwordcheck = '';
 
-  final emailInputController = TextEditingController();
   final passwordInputController = TextEditingController();
   final passwordCheckInputController = TextEditingController();
 
