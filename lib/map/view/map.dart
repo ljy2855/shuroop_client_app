@@ -4,6 +4,7 @@ import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_naver_map/flutter_naver_map.dart';
 import 'package:intl/date_symbol_data_local.dart';
+import 'package:intl/intl.dart';
 import 'package:provider/provider.dart';
 import 'package:shuroop_client_app/auth/provider/profile_provider.dart';
 import 'package:shuroop_client_app/auth/provider/token.dart';
@@ -149,30 +150,7 @@ class _MainMapPageState extends State<MainMapPage> {
             SizedBox(
               height: 70,
               width: double.infinity,
-              child: FutureBuilder(
-                  future: Future.wait([
-                    getPositionToAddress(currentPosition),
-                    getWeatherDataAPI()
-                  ]),
-                  builder: (context, AsyncSnapshot<List> snapshot) {
-                    if (snapshot.connectionState == ConnectionState.done &&
-                        snapshot.hasData) {
-                      final address = snapshot.data?.first;
-                      final List<Weather> weather = snapshot.data?[1];
-                      return Container(
-                        child: Row(
-                          mainAxisAlignment: MainAxisAlignment.center,
-                          children: [
-                            Text(address.toString()),
-                            Text(
-                                " ${weather[0].temperature}도 ${weather[0].status}")
-                          ],
-                        ),
-                      );
-                    } else {
-                      return const Center(child: CircularProgressIndicator());
-                    }
-                  }),
+              child: weatherWiget(),
             ),
             Material(
               elevation: 10,
@@ -327,6 +305,103 @@ class _MainMapPageState extends State<MainMapPage> {
             ),
           ],
         ),
+      ),
+    );
+  }
+
+  weatherWiget() {
+    return FutureBuilder(
+        future: Future.wait([
+          getPositionToAddress(currentPosition),
+          getWeatherDataAPI(currentPosition)
+        ]),
+        builder: (context, AsyncSnapshot<List> snapshot) {
+          if (snapshot.connectionState == ConnectionState.done &&
+              snapshot.hasData) {
+            final address = snapshot.data?.first;
+            final List<Weather> weather = snapshot.data?[1];
+            return Row(
+              children: [
+                const Padding(padding: EdgeInsets.only(left: 30)),
+                Column(
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    Row(
+                      children: [
+                        const Icon(
+                          Icons.my_location,
+                          size: 14,
+                          color: ZeplinColors.inactivated_gray,
+                        ),
+                        const Padding(padding: EdgeInsets.only(right: 5)),
+                        Text(
+                          address.toString(),
+                          style: const TextStyle(
+                            fontSize: 14,
+                          ),
+                        ),
+                      ],
+                    ),
+                    Text(
+                      checkRainny(weather.sublist(0, 8))
+                          ? "오늘은 화창할거에요!"
+                          : "오늘은 비가 올지도 몰라요",
+                      style: const TextStyle(
+                        fontWeight: FontWeight.w400,
+                        color: ZeplinColors.sub_text,
+                        fontSize: 12,
+                      ),
+                    ),
+                  ],
+                ),
+                const Padding(
+                  padding: EdgeInsets.only(left: 110),
+                ),
+                weatherInfo(weather[0]),
+                weatherInfo(weather[3]),
+              ],
+            );
+          } else {
+            return const Center(child: CircularProgressIndicator());
+          }
+        });
+  }
+
+  checkRainny(List<Weather> weathers) {
+    for (Weather weather in weathers) {
+      if (weather.status == WeatherType.rainny) return true;
+    }
+    return false;
+  }
+
+  weatherInfo(Weather weather) {
+    final dateformat = DateFormat('aa', 'ko');
+    return SizedBox(
+      height: 50,
+      width: 50,
+      child: Column(
+        mainAxisAlignment: MainAxisAlignment.center,
+        children: [
+          weather.status == WeatherType.rainny
+              ? const Icon(
+                  Icons.umbrella,
+                  size: 24,
+                  color: ZeplinColors.rainy_weather_icon,
+                )
+              : const Icon(
+                  Icons.wb_sunny,
+                  size: 24,
+                  color: ZeplinColors.base_yellow,
+                ),
+          Text(
+            "${dateformat.format(weather.time!)} ${weather.temperature!.toInt()}°",
+            maxLines: 1,
+            style: const TextStyle(
+              fontSize: 11,
+            ),
+          ),
+        ],
       ),
     );
   }
