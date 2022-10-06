@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_dotenv/flutter_dotenv.dart';
 import 'package:provider/provider.dart';
 import 'package:shuroop_client_app/auth/provider/profile_provider.dart';
 import 'package:shuroop_client_app/map/view/map.dart';
@@ -10,11 +11,11 @@ import 'mypage/additional_charge_payment.dart';
 import 'mypage/payment_refund_history.dart';
 import 'package:shuroop_client_app/auth/view/sign_up.dart';
 
-void main() {
+Future<void> main() async {
   // 상단 상태창 투명화
   SystemChrome.setSystemUIOverlayStyle(
       const SystemUiOverlayStyle(statusBarColor: Colors.transparent));
-
+  await dotenv.load(fileName: ".env");
   runApp(MultiProvider(
     providers: [ChangeNotifierProvider(create: (_) => ProfileProvider())],
     child: const MyApp(),

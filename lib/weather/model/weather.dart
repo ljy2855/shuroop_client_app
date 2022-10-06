@@ -1,9 +1,10 @@
 import 'package:flutter_naver_map/flutter_naver_map.dart';
 import 'package:http/http.dart' as http;
 import 'dart:convert';
+import 'package:flutter_dotenv/flutter_dotenv.dart';
 
 final url =
-    "https://api.openweathermap.org/data/2.5/forecast?cnt=12&appid=b879570823b7635744c07ca7594bc21e&units=metric";
+    "https://api.openweathermap.org/data/2.5/forecast?cnt=12&units=metric";
 
 enum WeatherType {
   rainny,
@@ -36,7 +37,8 @@ Future<List<Weather>> getWeatherDataAPI(LatLng position) async {
   List<Weather> weathers = [];
   try {
     final response = await http.get(
-      Uri.parse("$url&lat=${position.latitude}&lon=${position.longitude}"),
+      Uri.parse(
+          "$url&lat=${position.latitude}&lon=${position.longitude}&appid=${dotenv.env['OPEN_WHEATHER_API_KEY']}"),
       headers: <String, String>{
         'Content-Type': 'application/json; charset=UTF-8'
       },
@@ -48,9 +50,7 @@ Future<List<Weather>> getWeatherDataAPI(LatLng position) async {
         weathers.add(Weather.fromJson(data));
       }
     }
-  } catch (e) {
-    print(e);
-  }
+  } catch (e) {}
   return weathers;
 }
 

@@ -239,7 +239,6 @@ class _RadioButtonsState extends State<RadioButtons> {
           onChanged: (Char? value) {
             setState(() {
               _char = value!;
-              print(_char.name); // _char 에 담긴 값은 이렇게
             });
           },
         ),
@@ -251,7 +250,6 @@ class _RadioButtonsState extends State<RadioButtons> {
           onChanged: (Char? value) {
             setState(() {
               _char = value!;
-              print(value);
             });
           },
         ),

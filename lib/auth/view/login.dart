@@ -169,12 +169,10 @@ class _LoginPageState extends State<LoginPage> {
       }),
     );
     if (response.statusCode == 200) {
-      print("email check");
       setState(() {
         isEmailCheck = true;
       });
     } else if (response.statusCode == 404) {
-      print("회원가입");
       Navigator.of(context).push(MaterialPageRoute(
           builder: ((context) => SignUpPage(
                 email: email,

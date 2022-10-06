@@ -9,6 +9,7 @@ import 'package:shuroop_client_app/auth/model/profile.dart';
 import 'package:shuroop_client_app/auth/provider/profile_provider.dart';
 import 'package:shuroop_client_app/auth/provider/token.dart';
 import 'package:shuroop_client_app/colors.dart';
+import 'package:shuroop_client_app/rental/model/record.dart';
 import 'package:shuroop_client_app/rental/view/return_completed.dart';
 import 'package:shuroop_client_app/rental/view/success_page.dart';
 import 'package:shuroop_client_app/url.dart';
@@ -30,6 +31,7 @@ class QRScanPage extends StatefulWidget {
 class _QRScanPageState extends State<QRScanPage> {
   Barcode? result;
   QRViewController? controller;
+  Record? record;
   final GlobalKey qrKey = GlobalKey(debugLabel: 'QR');
   @override
   void initState() {
@@ -76,11 +78,6 @@ class _QRScanPageState extends State<QRScanPage> {
         children: <Widget>[
           Expanded(flex: 10, child: _buildQrView(context)),
           //To check qr data
-          if (result != null)
-            Text(
-                'Barcode Type: ${describeEnum(result!.format)}   Data: ${result!.code}')
-          else
-            const Text('Scan a code'),
         ],
       ),
     );
@@ -145,8 +142,10 @@ class _QRScanPageState extends State<QRScanPage> {
             await Navigator.of(context).pushReplacement(MaterialPageRoute(
                 builder: (context) => const RentalSuccessPage()));
           } else {
-            await Navigator.of(context).pushReplacement(
-                MaterialPageRoute(builder: (context) => ReturnCompleted()));
+            await Navigator.of(context).pushReplacement(MaterialPageRoute(
+                builder: (context) => ReturnCompleted(
+                      record: record!,
+                    )));
           }
         }
       } else {
@@ -165,7 +164,6 @@ class _QRScanPageState extends State<QRScanPage> {
     );
 
     if (barcode.code!.contains(UrlPrefix.urls) && barcode.code != null) {
-      print(barcode.code!.contains(UrlPrefix.urls));
       return true;
     } else {
       ScaffoldMessenger.of(context).showSnackBar(errorSnackBar);
@@ -199,9 +197,11 @@ class _QRScanPageState extends State<QRScanPage> {
       if (response.statusCode == 200) {
         final data =
             json.decode(utf8.decode(response.bodyBytes)); // TODO 대여 성공 여부 확인
-        print(data);
         final profile = Provider.of<ProfileProvider>(context, listen: false);
         profile.setProfile(token!);
+        if (widget.type == QRScanType.retrn) {
+          record = Record.fromJson(data);
+        }
         return true;
       }
     } catch (e) {}

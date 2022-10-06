@@ -2,7 +2,6 @@ import 'package:flutter/material.dart';
 
 import 'deposit_payment.dart';
 
-
 class DepositInformation extends StatelessWidget {
   const DepositInformation({Key? key}) : super(key: key);
 
@@ -31,7 +30,7 @@ class DepositInformation extends StatelessWidget {
               margin: const EdgeInsets.fromLTRB(0, 36, 180, 0),
               width: 171,
               height: 53,
-              child: const Text("아직 보증금을        결제하지 않으셨네요", //이거 어케하지..
+              child: const Text("아직 보증금을\n결제하지 않으셨네요", //이거 어케하지..
                   style: TextStyle(
                       fontFamily: 'IBMPlexSans',
                       fontSize: 20,
@@ -179,8 +178,7 @@ class DepositInformation extends StatelessWidget {
                     borderRadius: BorderRadius.circular(50))),
             onPressed: () {
               Navigator.of(context).push(MaterialPageRoute(
-                  builder: (context) => const DepositPayment()
-              ));
+                  builder: (context) => const DepositPayment()));
               // Navigator.push(
               //   context,
               //   MaterialPageRoute(builder: (context) => const DepositPayment()),

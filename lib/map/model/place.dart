@@ -1,3 +1,4 @@
+import 'package:flutter_dotenv/flutter_dotenv.dart';
 import 'package:flutter_naver_map/flutter_naver_map.dart';
 import 'package:http/http.dart' as http;
 import 'package:shuroop_client_app/colors.dart';
@@ -105,8 +106,8 @@ Future<String> getPositionToAddress(LatLng position) async {
         Uri.parse("$url&coords=${position.longitude},${position.latitude}"),
         headers: <String, String>{
           'Content-Type': 'application/json; charset=UTF-8',
-          'X-NCP-APIGW-API-KEY-ID': "18cehr1pfe",
-          'X-NCP-APIGW-API-KEY': "324sXV024P66v8XPFuf3mFXAByg6o5pwkbFqPktu",
+          'X-NCP-APIGW-API-KEY-ID': dotenv.env['X-NCP-APIGW-API-KEY-ID']!,
+          'X-NCP-APIGW-API-KEY': dotenv.env['X-NCP-APIGW-API-KEY']!,
         });
 
     if (response.statusCode == 200) {
@@ -115,8 +116,6 @@ Future<String> getPositionToAddress(LatLng position) async {
       final area = dataset['results'][0]['region'];
       address = area['area1']['name'] + " " + area['area2']['name'];
     }
-  } catch (e) {
-    //print(e);
-  }
+  } catch (e) {}
   return address;
 }

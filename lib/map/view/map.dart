@@ -25,6 +25,7 @@ class MainMapPage extends StatefulWidget {
 class _MainMapPageState extends State<MainMapPage> {
   final scaffoldKey = GlobalKey<ScaffoldState>();
   Completer<NaverMapController> _controller = Completer();
+  final ValueNotifier<bool> isWeatherWidgetOpen = ValueNotifier<bool>(true);
 
   List<Marker> rentalMarkers = [];
   LatLng currentPosition = const LatLng(37.5513, 126.9414);
@@ -37,7 +38,7 @@ class _MainMapPageState extends State<MainMapPage> {
   }
 
   final MapType _mapType = MapType.Basic;
-  LocationTrackingMode _trackingMode = LocationTrackingMode.Follow;
+  final LocationTrackingMode _trackingMode = LocationTrackingMode.Follow;
   @override
   Widget build(BuildContext context) {
     initializeDateFormatting(Localizations.localeOf(context).languageCode);
@@ -64,7 +65,7 @@ class _MainMapPageState extends State<MainMapPage> {
           onPressed: () {
             if (profile.getProfile() != null) {
               Navigator.of(context).push(MaterialPageRoute(
-                  builder: ((context) => NotificationPage())));
+                  builder: ((context) => const NotificationPage())));
             }
           },
         ),
@@ -79,10 +80,6 @@ class _MainMapPageState extends State<MainMapPage> {
               return Stack(
                 children: <Widget>[
                   NaverMap(
-                    initialCameraPosition: const CameraPosition(
-                      target: LatLng(37.5513, 126.9414),
-                      zoom: 17,
-                    ),
                     onMapCreated: onMapCreated,
                     mapType: _mapType,
                     initLocationTrackingMode: _trackingMode,
@@ -133,8 +130,175 @@ class _MainMapPageState extends State<MainMapPage> {
   }
 
   Widget bottomBar() {
+    return Column(
+      mainAxisAlignment: MainAxisAlignment.end,
+      children: [
+        ValueListenableBuilder(
+            valueListenable: isWeatherWidgetOpen,
+            builder: (context, value, child) =>
+                value ? weatherWiget() : Container()),
+        Material(
+          elevation: 10,
+          child: SizedBox(
+            height: 80,
+            width: double.infinity,
+            child: Container(
+              decoration: const BoxDecoration(color: Colors.white),
+              child: Column(
+                children: [
+                  const Padding(
+                      padding: EdgeInsets.only(
+                    top: 10,
+                  )),
+                  Row(
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    children: [
+                      Column(
+                        children: [
+                          ValueListenableBuilder(
+                              valueListenable: isWeatherWidgetOpen,
+                              builder: ((context, value, child) => IconButton(
+                                  iconSize: 30,
+                                  constraints:
+                                      const BoxConstraints(maxHeight: 27),
+                                  color: value
+                                      ? ZeplinColors.base_yellow
+                                      : ZeplinColors.inactivated_gray,
+                                  padding: const EdgeInsets.symmetric(
+                                      horizontal: 30, vertical: 0),
+                                  onPressed: () {
+                                    isWeatherWidgetOpen.value =
+                                        !isWeatherWidgetOpen.value;
+                                  },
+                                  icon: const Icon(
+                                    Icons.wb_sunny_outlined,
+                                  )))),
+                          const Text(
+                            "날씨",
+                            style: TextStyle(
+                                color: ZeplinColors.inactivated_gray,
+                                fontSize: 12),
+                          )
+                        ],
+                      ),
+                      profile.getProfile() == null ||
+                              profile.getIsRenting() == false
+                          ? MaterialButton(
+                              minWidth: 200,
+                              shape: RoundedRectangleBorder(
+                                  borderRadius: BorderRadius.circular(20)),
+                              height: 40,
+                              onPressed: () => {
+                                if (profile.getProfile() == null)
+                                  {
+                                    Navigator.push(
+                                      context,
+                                      MaterialPageRoute(
+                                        builder: (context) => const LoginPage(),
+                                      ),
+                                    ).then((_) => setState(() {}))
+                                  }
+                                else
+                                  {
+                                    if (profile.getLeftTime() == Duration.zero)
+                                      {
+                                        Navigator.of(context)
+                                            .push(MaterialPageRoute(
+                                                builder: ((context) =>
+                                                    const DepositInformation())))
+                                            .then(
+                                              (_) => setState(() {}),
+                                            )
+                                      }
+                                    else
+                                      {
+                                        Navigator.of(context)
+                                            .push(MaterialPageRoute(
+                                                builder: ((context) =>
+                                                    const QRScanPage(
+                                                      type: QRScanType.borw,
+                                                    ))))
+                                            .then((_) => setState(() {}))
+                                      }
+                                  }
+                              },
+                              color: Theme.of(context).primaryColor,
+                              child: const Text(
+                                '우산 대여하기',
+                                style: TextStyle(
+                                  color: Colors.white,
+                                  fontWeight: FontWeight.bold,
+                                ),
+                              ),
+                            )
+                          : MaterialButton(
+                              minWidth: 200,
+                              shape: RoundedRectangleBorder(
+                                  borderRadius: BorderRadius.circular(20)),
+                              height: 40,
+                              onPressed: () => {
+                                Navigator.of(context)
+                                    .push(MaterialPageRoute(
+                                        builder: ((context) => const QRScanPage(
+                                              type: QRScanType.retrn,
+                                            ))))
+                                    .then((_) {
+                                  setState(() {});
+                                })
+                              },
+                              color: ZeplinColors.return_theme_color,
+                              child: const Text(
+                                '우산 반납하기',
+                                style: TextStyle(
+                                  color: Colors.white,
+                                  fontWeight: FontWeight.bold,
+                                ),
+                              ),
+                            ),
+                      Column(
+                        children: [
+                          IconButton(
+                              iconSize: 30,
+                              constraints: const BoxConstraints(maxHeight: 27),
+                              color: ZeplinColors.inactivated_gray,
+                              padding: const EdgeInsets.symmetric(
+                                  horizontal: 30, vertical: 0),
+                              onPressed: () {
+                                if (profile.getProfile() != null) {
+                                  Navigator.of(context)
+                                      .push(MaterialPageRoute(
+                                          builder: ((context) =>
+                                              PersonalInfo())))
+                                      .then((value) {
+                                    setState(() {});
+                                  });
+                                }
+                              },
+                              icon: const Icon(
+                                Icons.people_alt_outlined,
+                              )),
+                          const Text(
+                            "내정보",
+                            style: TextStyle(
+                                color: ZeplinColors.inactivated_gray,
+                                fontSize: 12),
+                          )
+                        ],
+                      )
+                    ],
+                  ),
+                ],
+              ),
+            ),
+          ),
+        ),
+      ],
+    );
+  }
+
+  weatherWiget() {
     return SizedBox(
-      height: 150,
+      height: 70,
       width: double.infinity,
       child: Container(
         decoration: const BoxDecoration(
@@ -144,228 +308,64 @@ class _MainMapPageState extends State<MainMapPage> {
           ),
           color: Colors.white,
         ),
-        child: Column(
-          mainAxisAlignment: MainAxisAlignment.center,
-          children: [
-            SizedBox(
-              height: 70,
-              width: double.infinity,
-              child: weatherWiget(),
-            ),
-            Material(
-              elevation: 10,
-              child: SizedBox(
-                height: 80,
-                width: double.infinity,
-                child: Container(
-                  decoration: const BoxDecoration(color: Colors.white),
-                  child: Column(
-                    children: [
-                      const Padding(
-                          padding: EdgeInsets.only(
-                        top: 10,
-                      )),
-                      Row(
-                        mainAxisAlignment: MainAxisAlignment.center,
-                        children: [
-                          Column(
-                            children: [
-                              IconButton(
-                                  iconSize: 30,
-                                  constraints:
-                                      const BoxConstraints(maxHeight: 27),
-                                  color: ZeplinColors.inactivated_gray,
-                                  padding: const EdgeInsets.symmetric(
-                                      horizontal: 30, vertical: 0),
-                                  onPressed: () {},
-                                  icon: const Icon(
-                                    Icons.wb_sunny_outlined,
-                                  )),
-                              const Text(
-                                "날씨",
-                                style: TextStyle(
-                                    color: ZeplinColors.inactivated_gray,
-                                    fontSize: 12),
-                              )
-                            ],
-                          ),
-                          profile.getProfile() == null ||
-                                  profile.getIsRenting() == false
-                              ? MaterialButton(
-                                  minWidth: 200,
-                                  shape: RoundedRectangleBorder(
-                                      borderRadius: BorderRadius.circular(20)),
-                                  height: 40,
-                                  onPressed: () => {
-                                    if (profile.getProfile() == null)
-                                      {
-                                        Navigator.push(
-                                          context,
-                                          MaterialPageRoute(
-                                            builder: (context) =>
-                                                const LoginPage(),
-                                          ),
-                                        ).then((_) => setState(() {}))
-                                      }
-                                    else
-                                      {
-                                        if (profile.getLeftTime() ==
-                                            Duration.zero)
-                                          {
-                                            Navigator.of(context)
-                                                .push(MaterialPageRoute(
-                                                    builder: ((context) =>
-                                                        const DepositInformation())))
-                                                .then(
-                                                  (_) => setState(() {}),
-                                                )
-                                          }
-                                        else
-                                          {
-                                            Navigator.of(context)
-                                                .push(MaterialPageRoute(
-                                                    builder: ((context) =>
-                                                        const QRScanPage(
-                                                          type: QRScanType.borw,
-                                                        ))))
-                                                .then((_) => setState(() {}))
-                                          }
-                                      }
-                                  },
-                                  color: Theme.of(context).primaryColor,
-                                  child: const Text(
-                                    '우산 대여하기',
-                                    style: TextStyle(
-                                      color: Colors.white,
-                                      fontWeight: FontWeight.bold,
-                                    ),
-                                  ),
-                                )
-                              : MaterialButton(
-                                  minWidth: 200,
-                                  shape: RoundedRectangleBorder(
-                                      borderRadius: BorderRadius.circular(20)),
-                                  height: 40,
-                                  onPressed: () => {
-                                    Navigator.of(context)
-                                        .push(MaterialPageRoute(
-                                            builder: ((context) => QRScanPage(
-                                                  type: QRScanType.retrn,
-                                                ))))
-                                        .then((_) {
-                                      setState(() {});
-                                    })
-                                  },
-                                  color: ZeplinColors.return_theme_color,
-                                  child: const Text(
-                                    '우산 반납하기',
-                                    style: TextStyle(
-                                      color: Colors.white,
-                                      fontWeight: FontWeight.bold,
-                                    ),
-                                  ),
-                                ),
-                          Column(
-                            children: [
-                              IconButton(
-                                  iconSize: 30,
-                                  constraints:
-                                      const BoxConstraints(maxHeight: 27),
-                                  color: ZeplinColors.inactivated_gray,
-                                  padding: const EdgeInsets.symmetric(
-                                      horizontal: 30, vertical: 0),
-                                  onPressed: () {
-                                    if (profile.getProfile() != null) {
-                                      Navigator.of(context)
-                                          .push(MaterialPageRoute(
-                                              builder: ((context) =>
-                                                  PersonalInfo())))
-                                          .then((value) {
-                                        setState(() {});
-                                      });
-                                    }
-                                  },
-                                  icon: const Icon(
-                                    Icons.people_alt_outlined,
-                                  )),
-                              const Text(
-                                "내정보",
-                                style: TextStyle(
-                                    color: ZeplinColors.inactivated_gray,
-                                    fontSize: 12),
-                              )
-                            ],
-                          )
-                        ],
-                      ),
-                    ],
-                  ),
-                ),
-              ),
-            ),
-          ],
-        ),
-      ),
-    );
-  }
-
-  weatherWiget() {
-    return FutureBuilder(
-        future: Future.wait([
-          getPositionToAddress(currentPosition),
-          getWeatherDataAPI(currentPosition)
-        ]),
-        builder: (context, AsyncSnapshot<List> snapshot) {
-          if (snapshot.connectionState == ConnectionState.done &&
-              snapshot.hasData) {
-            final address = snapshot.data?.first;
-            final List<Weather> weather = snapshot.data?[1];
-            return Row(
-              children: [
-                const Padding(padding: EdgeInsets.only(left: 30)),
-                Column(
-                  mainAxisAlignment: MainAxisAlignment.center,
-                  crossAxisAlignment: CrossAxisAlignment.start,
+        child: FutureBuilder(
+            future: Future.wait([
+              getPositionToAddress(currentPosition),
+              getWeatherDataAPI(currentPosition)
+            ]),
+            builder: (context, AsyncSnapshot<List> snapshot) {
+              if (snapshot.connectionState == ConnectionState.done &&
+                  snapshot.hasData) {
+                final address = snapshot.data?.first;
+                final List<Weather> weather = snapshot.data?[1];
+                return Row(
                   children: [
-                    Row(
+                    const Padding(padding: EdgeInsets.only(left: 30)),
+                    Column(
+                      mainAxisAlignment: MainAxisAlignment.center,
+                      crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
-                        const Icon(
-                          Icons.my_location,
-                          size: 14,
-                          color: ZeplinColors.inactivated_gray,
+                        Row(
+                          children: [
+                            const Icon(
+                              Icons.my_location,
+                              size: 14,
+                              color: ZeplinColors.inactivated_gray,
+                            ),
+                            const Padding(padding: EdgeInsets.only(right: 5)),
+                            Text(
+                              address.toString(),
+                              style: const TextStyle(
+                                fontSize: 14,
+                              ),
+                            ),
+                          ],
                         ),
-                        const Padding(padding: EdgeInsets.only(right: 5)),
                         Text(
-                          address.toString(),
+                          checkRainny(weather.sublist(0, 8))
+                              ? "오늘은 화창할거에요!"
+                              : "오늘은 비가 올지도 몰라요",
                           style: const TextStyle(
-                            fontSize: 14,
+                            fontWeight: FontWeight.w400,
+                            color: ZeplinColors.sub_text,
+                            fontSize: 12,
                           ),
                         ),
                       ],
                     ),
-                    Text(
-                      checkRainny(weather.sublist(0, 8))
-                          ? "오늘은 화창할거에요!"
-                          : "오늘은 비가 올지도 몰라요",
-                      style: const TextStyle(
-                        fontWeight: FontWeight.w400,
-                        color: ZeplinColors.sub_text,
-                        fontSize: 12,
-                      ),
+                    const Padding(
+                      padding: EdgeInsets.only(left: 110),
                     ),
+                    weatherInfo(weather[0]),
+                    weatherInfo(weather[3]),
                   ],
-                ),
-                const Padding(
-                  padding: EdgeInsets.only(left: 110),
-                ),
-                weatherInfo(weather[0]),
-                weatherInfo(weather[3]),
-              ],
-            );
-          } else {
-            return const Center(child: CircularProgressIndicator());
-          }
-        });
+                );
+              } else {
+                return const Center(child: CircularProgressIndicator());
+              }
+            }),
+      ),
+    );
   }
 
   checkRainny(List<Weather> weathers) {

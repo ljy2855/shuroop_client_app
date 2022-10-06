@@ -59,11 +59,9 @@ Future<Profile?> getProfileDataAPI(String token) async {
     if (response.statusCode == 200) {
       final data = json.decode(utf8.decode(response.bodyBytes));
       profile = Profile.fromJson(data);
-      print(profile);
+
       return profile;
     }
-  } catch (e) {
-    print(e);
-  }
+  } catch (e) {}
   return null;
 }

@@ -1,6 +1,11 @@
+import 'dart:convert';
+
 import 'package:flutter/material.dart';
 import 'package:flutter/src/foundation/key.dart';
 import 'package:flutter/src/widgets/framework.dart';
+import 'package:http/http.dart' as http;
+import 'package:shuroop_client_app/auth/provider/token.dart';
+import 'package:shuroop_client_app/url.dart';
 
 import '../../colors.dart';
 
@@ -66,7 +71,7 @@ class _SignUpPageState extends State<SignUpPage> {
                         email = val!;
                       },
                       validator: (val) {
-                        if (val.toString().length == 0) {
+                        if (val.toString().isEmpty) {
                           return "이메일을 입력해주세요";
                         } else {
                           return null;
@@ -108,9 +113,13 @@ class _SignUpPageState extends State<SignUpPage> {
                         ),
                         minimumSize: const Size(274, 41),
                       ),
-                      onPressed: () {
+                      onPressed: () async {
                         if (formKey.currentState!.validate()) {
                           formKey.currentState!.save();
+                          await signUpRequest(email, password).then(
+                            (value) => Navigator.popUntil(
+                                context, (route) => route.isFirst),
+                          );
                         }
                       },
                       child: const Text("시작하기",
@@ -142,7 +151,7 @@ class _SignUpPageState extends State<SignUpPage> {
     return Container(
         width: 274,
         child: TextFormField(
-          onSaved: onSaved,
+          onChanged: onSaved,
           validator: validator,
           controller: controller,
           initialValue: initialValue,
@@ -179,5 +188,23 @@ class _SignUpPageState extends State<SignUpPage> {
                 const EdgeInsets.symmetric(vertical: 10, horizontal: 10),
           ),
         ));
+  }
+
+  Future<void> signUpRequest(String email, String password) async {
+    final response = await http.post(
+        Uri.parse(
+          '${UrlPrefix.urls}users/sign-up/',
+        ),
+        headers: <String, String>{
+          'Content-Type': 'application/json; charset=UTF-8',
+        },
+        body: jsonEncode({
+          "email": email,
+          "password": password,
+        }));
+    if (response.statusCode == 200) {
+      final data = json.decode(utf8.decode(response.bodyBytes));
+      await setToken(data['token']);
+    }
   }
 }
