@@ -158,7 +158,21 @@ class _LoginPageState extends State<LoginPage> {
     ));
   }
 
+  bool checkEmailValid(String email) {
+    return RegExp(
+            r"^[a-zA-Z0-9.a-zA-Z0-9.!#$%&'*+-/=?^_`{|}~]+@[a-zA-Z0-9]+\.[a-zA-Z]+")
+        .hasMatch(email);
+  }
+
   checkEmail(String email) async {
+    if (!checkEmailValid(email)) {
+      ScaffoldMessenger.of(context).showSnackBar(const SnackBar(
+        content: Text('잘못된 이메일 형식입니다.'),
+        duration: Duration(seconds: 1),
+        backgroundColor: Colors.red,
+      ));
+      return;
+    }
     final response = await http.post(
       Uri.parse('${UrlPrefix.urls}users/check/id/'),
       headers: <String, String>{

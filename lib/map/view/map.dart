@@ -343,8 +343,8 @@ class _MainMapPageState extends State<MainMapPage> {
                         ),
                         Text(
                           checkRainny(weather.sublist(0, 8))
-                              ? "오늘은 화창할거에요!"
-                              : "오늘은 비가 올지도 몰라요",
+                              ? "오늘은 비가 올지도 몰라요"
+                              : "오늘은 화창할거에요!",
                           style: const TextStyle(
                             fontWeight: FontWeight.w400,
                             color: ZeplinColors.sub_text,
@@ -370,7 +370,9 @@ class _MainMapPageState extends State<MainMapPage> {
 
   checkRainny(List<Weather> weathers) {
     for (Weather weather in weathers) {
-      if (weather.status == WeatherType.rainny) return true;
+      if (weather.status == WeatherType.rainny) {
+        return true;
+      }
     }
     return false;
   }
@@ -389,11 +391,17 @@ class _MainMapPageState extends State<MainMapPage> {
                   size: 24,
                   color: ZeplinColors.rainy_weather_icon,
                 )
-              : const Icon(
-                  Icons.wb_sunny,
-                  size: 24,
-                  color: ZeplinColors.base_yellow,
-                ),
+              : weather.status == WeatherType.sunny
+                  ? const Icon(
+                      Icons.wb_sunny,
+                      size: 24,
+                      color: ZeplinColors.base_yellow,
+                    )
+                  : const Icon(
+                      Icons.cloud,
+                      size: 24,
+                      color: ZeplinColors.inactivated_gray,
+                    ),
           Text(
             "${dateformat.format(weather.time!)} ${weather.temperature!.toInt()}°",
             maxLines: 1,

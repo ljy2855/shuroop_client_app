@@ -60,6 +60,8 @@ WeatherType parseWeatherStatus(String weather) {
       return WeatherType.rainny;
     case 'Clouds':
       return WeatherType.cloudy;
+    case 'Sunny':
+      return WeatherType.sunny;
     default:
       return WeatherType.sunny;
   }
