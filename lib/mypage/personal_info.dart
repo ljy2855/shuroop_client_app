@@ -4,6 +4,11 @@ import 'package:shuroop_client_app/auth/provider/profile_provider.dart';
 import 'package:shuroop_client_app/auth/provider/token.dart';
 import 'package:shuroop_client_app/colors.dart';
 import 'package:shuroop_client_app/mypage/notice.dart';
+import 'package:shuroop_client_app/mypage/payment_refund_history.dart';
+import 'package:shuroop_client_app/mypage/usage_info.dart';
+
+import 'additional_charge_payment.dart';
+import 'automatic_payment_method.dart';
 
 class PersonalInfo extends StatelessWidget {
   PersonalInfo({Key? key}) : super(key: key);
@@ -37,7 +42,8 @@ class PersonalInfo extends StatelessWidget {
               alignment: Alignment.centerLeft,
               width: double.infinity,
               child: TextButton(
-                onPressed: () {},
+                onPressed: () => Navigator.of(context).push(
+                    MaterialPageRoute(builder: (((context) => Notice())))),
                 child: Text(profile.getProfile()?.email ?? "abc@gmail.com",
                     style: const TextStyle(
                         fontSize: 20,
@@ -53,7 +59,8 @@ class PersonalInfo extends StatelessWidget {
               alignment: Alignment.centerLeft,
               width: double.infinity,
               child: TextButton(
-                onPressed: () {},
+                onPressed: () => Navigator.of(context).push(
+                    MaterialPageRoute(builder: (((context) => PaymentRefundHistory())))),
                 child: const Text("결제/환불 이력",
                     style: TextStyle(
                         fontSize: 14,
@@ -69,7 +76,8 @@ class PersonalInfo extends StatelessWidget {
               alignment: Alignment.centerLeft,
               width: double.infinity,
               child: TextButton(
-                onPressed: () {},
+                onPressed: () => Navigator.of(context).push(
+                    MaterialPageRoute(builder: (((context) => AutomaticPaymentMethod())))),
                 child: const Text("자동 결제 수단  등록/변경",
                     style: TextStyle(
                         fontSize: 14,
@@ -85,7 +93,8 @@ class PersonalInfo extends StatelessWidget {
               alignment: Alignment.centerLeft,
               width: double.infinity,
               child: TextButton(
-                onPressed: () {},
+                onPressed: () => Navigator.of(context).push(
+                    MaterialPageRoute(builder: (((context) => AdditionalChargePayment())))),
                 child: const Text("추가요금 결제",
                     style: TextStyle(
                         fontSize: 14,
@@ -101,7 +110,8 @@ class PersonalInfo extends StatelessWidget {
               alignment: Alignment.centerLeft,
               width: double.infinity,
               child: TextButton(
-                onPressed: () {},
+                onPressed: () => Navigator.of(context).push(
+                    MaterialPageRoute(builder: (((context) => UsageInformation())))),
                 child: const Text("이용안내",
                     style: TextStyle(
                         fontSize: 14,
@@ -117,7 +127,8 @@ class PersonalInfo extends StatelessWidget {
               alignment: Alignment.centerLeft,
               width: double.infinity,
               child: TextButton(
-                onPressed: () {},
+                onPressed: () => Navigator.of(context).push(
+                    MaterialPageRoute(builder: (((context) => Notice())))),
                 child: const Text("공지사항",
                     style: TextStyle(
                         fontSize: 14,
@@ -189,6 +200,7 @@ class PersonalInfo extends StatelessWidget {
         ),
       ),
     );
+
   }
 
   Future<void> logout() async {

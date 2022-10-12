@@ -205,7 +205,7 @@ class _MainMapPageState extends State<MainMapPage> {
                                         Navigator.of(context)
                                             .push(MaterialPageRoute(
                                                 builder: ((context) =>
-                                                    const DepositInformation())))
+                                                    DepositInformation())))
                                             .then(
                                               (_) => setState(() {}),
                                             )

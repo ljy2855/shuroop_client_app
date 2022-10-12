@@ -1,62 +1,42 @@
 import 'package:flutter/material.dart';
+import 'package:shuroop_client_app/colors.dart';
 
-import 'deposit_payment.dart';
+import '../map/view/map.dart';
 
-class DepositInformation extends StatelessWidget {
-  DepositInformation({Key? key}) : super(key: key);
+
+class UsageInformation extends StatelessWidget {
+  UsageInformation({Key? key}) : super(key: key);
   final scrollController = ScrollController();
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-          backgroundColor: Color(0xFFFCB93F),
+          backgroundColor: ZeplinColors.white,
           centerTitle: true,
-          title: const Text("보증금 결제",
+          title: const Text("이용 안내",
               style: TextStyle(
+                color: ZeplinColors.black,
                   fontFamily: 'IBMPlexSans',
                   fontSize: 20,
                   fontWeight: FontWeight.w700)),
           leading: IconButton(
+            color: ZeplinColors.black,
             icon: const Icon(Icons.arrow_back_ios),
             onPressed: () {
               Navigator.of(context).pop();
             },
           )),
       body: SingleChildScrollView(
-        controller: scrollController,
         scrollDirection: Axis.vertical,
+        controller: scrollController,
         child: Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
           children: [
-            Container(
-              margin: const EdgeInsets.fromLTRB(0, 36, 180, 0),
-              width: 171,
-              height: 53,
-              child: const Text("아직 보증금을\n결제하지 않으셨네요", //이거 어케하지..
-                  style: TextStyle(
-                      fontFamily: 'IBMPlexSans',
-                      fontSize: 20,
-                      fontWeight: FontWeight.w600)),
-            ),
-            Container(
-              margin: const EdgeInsets.fromLTRB(99.2, 88.21, 100.14, 125.45),
-              width: 200,
-              height: 180,
-              child: Image.asset("assets/images/creditCard.png"),
-            ),
-            Container(
-              alignment: Alignment.center,
-              margin: const EdgeInsets.fromLTRB(0, 0, 0, 38),
-              child: IconButton(
-                icon: const Icon(Icons.keyboard_arrow_down_rounded),
-                color: const Color(0xFFFCB93F),
-                iconSize: 38,
-                onPressed: () {},
-              ),
-            ),
             Container(
               width: 198,
               height: 21,
-              margin: const EdgeInsets.fromLTRB(30, 0, 175, 7),
+              margin: const EdgeInsets.fromLTRB(30, 50, 0, 7),
               child: const Text("슈룹에서 우산 빌려가기",
                   style: TextStyle(
                       color: Color(0xFFFCB93F),
@@ -67,7 +47,7 @@ class DepositInformation extends StatelessWidget {
             Container(
               width: 198,
               height: 21,
-              margin: const EdgeInsets.fromLTRB(30, 0, 175, 7),
+              margin: const EdgeInsets.fromLTRB(30, 0, 0, 7),
               child: const Text("먼저 보증금을 결제해야 해요.",
                   style: TextStyle(
                       fontFamily: 'IBMPlexSans',
@@ -76,14 +56,14 @@ class DepositInformation extends StatelessWidget {
             ),
             Container(
               width: 286,
-              height: 16,
-              margin: const EdgeInsets.fromLTRB(0, 0, 55, 82),
+              height: 45,
+              margin: const EdgeInsets.fromLTRB(30, 0, 0, 82),
               child: const Text("하루 뒤에 반납할 수도 있고, 이틀 뒤에 반납할 수도 있어요.",
                   style: TextStyle(
                       color: Colors.grey,
                       fontFamily: 'IBMPlexSansKR',
                       fontWeight: FontWeight.w700,
-                      fontSize: 16)),
+                      fontSize: 12)),
             ),
             Container(
               margin: const EdgeInsets.fromLTRB(99.2, 0, 100.14, 82),
@@ -94,7 +74,7 @@ class DepositInformation extends StatelessWidget {
             Container(
               width: 240,
               height: 21,
-              margin: const EdgeInsets.fromLTRB(0, 0, 95, 82),
+              margin: const EdgeInsets.fromLTRB(30, 0, 0, 82),
               child: const Text("그 다음, 대여소의 QR을 찍어주세요.",
                   style: TextStyle(
                       fontFamily: 'IBMPlexSans',
@@ -110,7 +90,7 @@ class DepositInformation extends StatelessWidget {
             Container(
               width: 198,
               height: 21,
-              margin: const EdgeInsets.fromLTRB(30, 0, 175, 7),
+              margin: const EdgeInsets.fromLTRB(30, 0, 0, 7),
               child: const Text("대여완료되었어요!",
                   style: TextStyle(
                       fontFamily: 'IBMPlexSans',
@@ -120,9 +100,9 @@ class DepositInformation extends StatelessWidget {
             Container(
               width: 280,
               height: 32,
-              margin: const EdgeInsets.fromLTRB(0, 0, 62, 82),
+              margin: const EdgeInsets.fromLTRB(30, 0, 0, 82),
               child: const Text(
-                  "반납할 때도 대여소의 QR을 찍어주세요. 만약 약속한 기간을 넘겨서 반납한다면, 추가 금액이 발생할 수 있어요.",
+                  "간단한 단계를 통해 우산을 빌릴 수 있어요!",
                   style: TextStyle(
                       color: Colors.grey,
                       fontFamily: 'IBMPlexSans',
@@ -135,21 +115,77 @@ class DepositInformation extends StatelessWidget {
               height: 180,
               child: Image.asset("assets/images/umbrella.png"),
             ),
+
             Container(
-              width: 293,
+              alignment: Alignment.center,
+              margin: const EdgeInsets.fromLTRB(0, 0, 0, 0),
+              child: IconButton(
+                icon: const Icon(Icons.keyboard_arrow_down_rounded),
+                color: ZeplinColors.base_yellow,
+                iconSize: 38,
+                onPressed: () => moveToBottomScroll(scrollController),
+              ),
+            ),
+            Container(
+              width: 198,
               height: 21,
-              margin: const EdgeInsets.fromLTRB(0, 0, 35, 7),
-              child: const Text("그럼, 보증금을 결제하고 우산을 빌려볼까요?",
+              margin: const EdgeInsets.fromLTRB(30, 50, 0, 7),
+              child: const Text("우산 반납하기",
+                  style: TextStyle(
+                      color: Color(0xFFFCB93F),
+                      fontFamily: 'IBMPlexSans',
+                      fontWeight: FontWeight.w600,
+                      fontSize: 15.4)),
+            ),
+            Container(
+              width: 198,
+              height: 45,
+              margin: const EdgeInsets.fromLTRB(30, 0, 0, 7),
+              child: const Text("반납하기로 약속한 시간까지 대여소로 가주세요.",
+                  style: TextStyle(
+                      fontFamily: 'IBMPlexSans',
+                      fontWeight: FontWeight.w600,
+                      fontSize: 16)),
+            ),
+
+            Container(
+              margin: const EdgeInsets.fromLTRB(99.2, 0, 100.14, 82),
+              width: 200,
+              height: 180,
+              child: Image.asset("assets/images/clock.png"),
+            ),
+            Container(
+              width: 240,
+              height: 21,
+              margin: const EdgeInsets.fromLTRB(30, 0, 0, 82),
+              child: const Text("그 다음, 대여소의 QR을 찍어주세요.",
                   style: TextStyle(
                       fontFamily: 'IBMPlexSans',
                       fontWeight: FontWeight.w600,
                       fontSize: 16)),
             ),
             Container(
-              width: 300,
-              height: 17,
-              margin: const EdgeInsets.fromLTRB(0, 0, 28, 25),
-              child: const Text("아래 버튼을 눌러 보증금 결제하기",
+              margin: const EdgeInsets.fromLTRB(99.2, 0, 100.14, 82),
+              width: 200,
+              height: 180,
+              child: Image.asset("assets/images/QRcodeScanner.png"),
+            ),
+            Container(
+              width: 198,
+              height: 21,
+              margin: const EdgeInsets.fromLTRB(30, 0, 0, 7),
+              child: const Text("반납완료되었어요!",
+                  style: TextStyle(
+                      fontFamily: 'IBMPlexSans',
+                      fontWeight: FontWeight.w600,
+                      fontSize: 16)),
+            ),
+            Container(
+              width: 280,
+              height: 32,
+              margin: const EdgeInsets.fromLTRB(30, 0, 0, 82),
+              child: const Text(
+                  "만약 약속한 기간을 넘겨서 반납한다면, 추가 금액이 발생할 수 있어요.",
                   style: TextStyle(
                       color: Colors.grey,
                       fontFamily: 'IBMPlexSans',
@@ -157,15 +193,12 @@ class DepositInformation extends StatelessWidget {
                       fontSize: 11)),
             ),
             Container(
-              alignment: Alignment.center,
-              margin: const EdgeInsets.fromLTRB(0, 0, 0, 0),
-              child: IconButton(
-                icon: const Icon(Icons.keyboard_arrow_down_rounded),
-                color: Colors.grey,
-                iconSize: 38,
-                onPressed: () => moveToBottomScroll(scrollController),
-              ),
+              margin: const EdgeInsets.fromLTRB(99.2, 0, 100.14, 82),
+              width: 200,
+              height: 180,
+              child: Image.asset("assets/images/umbrella.png"),
             ),
+
           ],
         ),
       ),
@@ -179,13 +212,13 @@ class DepositInformation extends StatelessWidget {
                     borderRadius: BorderRadius.circular(50))),
             onPressed: () {
               Navigator.of(context).push(MaterialPageRoute(
-                  builder: (context) => const DepositPayment()));
+                  builder: (context) => MainMapPage()));
               // Navigator.push(
               //   context,
               //   MaterialPageRoute(builder: (context) => const DepositPayment()),
               // );
             },
-            child: const Text('보증금 결제하기',
+            child: const Text('우산 대여하기',
                 style: TextStyle(
                     fontFamily: 'IBMPlexSans',
                     fontWeight: FontWeight.w700,
@@ -193,6 +226,7 @@ class DepositInformation extends StatelessWidget {
       ),
     );
   }
+
   moveToBottomScroll(ScrollController controller) {
     controller.animateTo(scrollController.position.maxScrollExtent,
         duration: const Duration(milliseconds: 700), curve: Curves.ease);
