@@ -213,7 +213,7 @@ class _LoginPageState extends State<LoginPage> {
       if (!profile.getIsRenting()!) {
         if (profile.getLeftTime() == Duration.zero) {
           await Navigator.of(context).push(MaterialPageRoute(
-              builder: ((context) => const DepositInformation())));
+              builder: ((context) =>  DepositInformation())));
         } else {
           await Navigator.of(context).push(MaterialPageRoute(
               builder: ((context) => const QRScanPage(

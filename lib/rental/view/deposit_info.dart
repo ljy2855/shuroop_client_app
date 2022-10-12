@@ -3,8 +3,8 @@ import 'package:flutter/material.dart';
 import 'deposit_payment.dart';
 
 class DepositInformation extends StatelessWidget {
-  const DepositInformation({Key? key}) : super(key: key);
-
+  DepositInformation({Key? key}) : super(key: key);
+  final scrollController = ScrollController();
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -23,6 +23,7 @@ class DepositInformation extends StatelessWidget {
             },
           )),
       body: SingleChildScrollView(
+        controller: scrollController,
         scrollDirection: Axis.vertical,
         child: Column(
           children: [
@@ -162,7 +163,7 @@ class DepositInformation extends StatelessWidget {
                 icon: const Icon(Icons.keyboard_arrow_down_rounded),
                 color: Colors.grey,
                 iconSize: 38,
-                onPressed: () {},
+                onPressed: () => moveToBottomScroll(scrollController),
               ),
             ),
           ],
@@ -191,5 +192,9 @@ class DepositInformation extends StatelessWidget {
                     fontSize: 16))),
       ),
     );
+  }
+  moveToBottomScroll(ScrollController controller) {
+    controller.animateTo(scrollController.position.maxScrollExtent,
+        duration: const Duration(milliseconds: 700), curve: Curves.ease);
   }
 }
