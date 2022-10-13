@@ -1,3 +1,5 @@
+import 'dart:io';
+
 import 'package:flutter_dotenv/flutter_dotenv.dart';
 import 'package:flutter_naver_map/flutter_naver_map.dart';
 import 'package:http/http.dart' as http;
@@ -43,6 +45,31 @@ class Place {
         description: json['description'],
         umbrellaCount: json['umbrella_count'],
       );
+}
+
+enum PlaceRecordType {
+  search,
+  favorite,
+}
+
+class PlaceRecord {
+  final int? id;
+  final Place? place;
+
+  PlaceRecord({
+    this.id,
+    this.place,
+  });
+
+  factory PlaceRecord.fromJson(
+    Map<String, dynamic> json,
+    PlaceRecordType type,
+  ) =>
+      PlaceRecord(
+          id: json['id'],
+          place: type == PlaceRecordType.search
+              ? Place.fromJson(json['search_place'])
+              : Place.fromJson(json['favorite_place']));
 }
 
 Future<List<Marker>> getPlaceDataAPI() async {
@@ -118,4 +145,89 @@ Future<String> getPositionToAddress(LatLng position) async {
     }
   } catch (e) {}
   return address;
+}
+
+Future<List<PlaceRecord>> getSearchPlaces(String? token) async {
+  List<PlaceRecord> places = [];
+  if (token == null) return places;
+  try {
+    final response = await http.get(
+      Uri.parse("${UrlPrefix.urls}rentals/places/search/"),
+      headers: <String, String>{
+        'Content-Type': 'application/json; charset=UTF-8',
+        HttpHeaders.authorizationHeader: 'Token $token',
+      },
+    );
+
+    if (response.statusCode == 200) {
+      final dataset = json.decode(utf8.decode(response.bodyBytes));
+
+      for (Map<String, dynamic> data in dataset) {
+        places.add(PlaceRecord.fromJson(data, PlaceRecordType.search));
+      }
+    }
+  } catch (e) {}
+
+  return places;
+}
+
+Future<List<PlaceRecord>> getFavoritePlaces(String? token) async {
+  List<PlaceRecord> places = [];
+  if (token == null) return places;
+  try {
+    final response = await http.get(
+      Uri.parse("${UrlPrefix.urls}rentals/places/favorite/"),
+      headers: <String, String>{
+        'Content-Type': 'application/json; charset=UTF-8',
+        HttpHeaders.authorizationHeader: 'Token $token',
+      },
+    );
+
+    if (response.statusCode == 200) {
+      final dataset = json.decode(utf8.decode(response.bodyBytes));
+
+      for (Map<String, dynamic> data in dataset) {
+        places.add(PlaceRecord.fromJson(data, PlaceRecordType.favorite));
+      }
+    }
+  } catch (e) {}
+
+  return places;
+}
+
+Future<void> removePlaceRecord(
+    int id, String token, PlaceRecordType type) async {
+  final String url = type == PlaceRecordType.favorite
+      ? "${UrlPrefix.urls}rentals/places/favorite/remove/$id/"
+      : "${UrlPrefix.urls}rentals/places/search/remove/$id/";
+  try {
+    final response = await http.delete(
+      Uri.parse(url),
+      headers: <String, String>{
+        'Content-Type': 'application/json; charset=UTF-8',
+        HttpHeaders.authorizationHeader: 'Token $token',
+      },
+    );
+  } catch (e) {}
+}
+
+Future<List<Place>> searchPlacesWithKeyword(String keyword) async {
+  final List<Place> places = [];
+  try {
+    final response = await http.get(
+      Uri.parse("${UrlPrefix.urls}rentals/places/search/$keyword/"),
+      headers: <String, String>{
+        'Content-Type': 'application/json; charset=UTF-8',
+      },
+    );
+    if (response.statusCode == 200) {
+      final dataset = json.decode(utf8.decode(response.bodyBytes));
+
+      for (Map<String, dynamic> data in dataset) {
+        places.add(Place.fromJson(data));
+      }
+    }
+  } catch (e) {}
+
+  return places;
 }
