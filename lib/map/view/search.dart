@@ -1,15 +1,19 @@
 import 'package:flutter/material.dart';
+import 'package:shuroop_client_app/auth/provider/token.dart';
 import 'package:shuroop_client_app/colors.dart';
+import 'package:shuroop_client_app/map/model/place.dart';
+import 'package:shuroop_client_app/map/view/search_success.dart';
 
-class Search extends StatefulWidget {
-  const Search({Key? key}) : super(key: key);
+class SearchPage extends StatefulWidget {
+  const SearchPage({Key? key}) : super(key: key);
 
   @override
-  State<Search> createState() => _SearchState();
+  State<SearchPage> createState() => _SearchPageState();
 }
 
-class _SearchState extends State<Search> with TickerProviderStateMixin {
+class _SearchPageState extends State<SearchPage> with TickerProviderStateMixin {
   late TabController _tabController;
+  TextEditingController textController = TextEditingController();
 
   @override
   void initState() {
@@ -28,10 +32,12 @@ class _SearchState extends State<Search> with TickerProviderStateMixin {
           leading: IconButton(
             icon: const Icon(Icons.arrow_back),
             color: Colors.black,
-            onPressed: () {},
+            onPressed: () =>
+                Navigator.of(context).popUntil((route) => route.isFirst),
           ),
-          title: const TextField(
-            decoration: InputDecoration(
+          title: TextField(
+            controller: textController,
+            decoration: const InputDecoration(
                 hintText: '장소, 주소 검색',
                 hintStyle: TextStyle(
                   color: ZeplinColors.base_icon_gray,
@@ -41,62 +47,133 @@ class _SearchState extends State<Search> with TickerProviderStateMixin {
           ),
           actions: [
             IconButton(
-              onPressed: () {},
+              onPressed: () async =>
+                  await searchPlacesWithKeyword(textController.text).then(
+                      (places) => Navigator.of(context).push(MaterialPageRoute(
+                            builder: ((context) => SearchedMapPage(
+                                  keyword: textController.text,
+                                  places: places,
+                                )),
+                          ))),
               icon: const Icon(Icons.search),
               color: Colors.black,
             )
           ],
         ),
         body: Container(
-          padding: EdgeInsets.all(8),
+          padding: const EdgeInsets.all(8),
           child: Column(
             children: [
               Align(
                 alignment: Alignment.centerLeft,
-                child: Container(
+                child: SizedBox(
                   height: 40,
                   width: 180,
                   child: TabBar(
                     tabs: [
-                      Container(
-                        child: Text('최근검색'),
-                      ),
-                      Container(
-                        child: Text('즐겨찾기'),
-                      )
+                      const Text('최근검색'),
+                      const Text('즐겨찾기'),
                     ],
                     controller: _tabController,
                     indicatorColor: ZeplinColors.base_yellow,
                     indicatorSize: TabBarIndicatorSize.label,
-                    labelPadding: EdgeInsets.only(bottom: 0.0),
+                    labelPadding: const EdgeInsets.only(bottom: 0.0),
                   ),
                 ),
               ),
               Expanded(
                 child: TabBarView(controller: _tabController, children: [
-                  Container(
-                    padding: EdgeInsets.all(15),
-                    child: Column(
-                      crossAxisAlignment: CrossAxisAlignment.start,
-                      children: [
-                        Container(
-                            height: 40,
-                            child: Row(
-                              mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                              children: [
-                                Text('신촌'),
-                                Icon(
-                                  Icons.close,
-                                  color: ZeplinColors.base_icon_gray,
-                                )
-                              ],
-                            )),
-                      ],
-                    ),
-                  ),
-                  Container(
-                    color: Colors.white,
-                  )
+                  FutureBuilder(
+                      future:
+                          getToken().then((token) => getSearchPlaces(token)),
+                      builder: (context, snapshot) {
+                        if (snapshot.connectionState == ConnectionState.done &&
+                            snapshot.hasData) {
+                          final List<PlaceRecord>? places = snapshot.data;
+                          return Container(
+                            padding: const EdgeInsets.all(15),
+                            child: Column(
+                              crossAxisAlignment: CrossAxisAlignment.start,
+                              children: places!
+                                  .map((place) => SizedBox(
+                                      height: 40,
+                                      child: Row(
+                                        mainAxisAlignment:
+                                            MainAxisAlignment.spaceBetween,
+                                        children: [
+                                          Text(place.place!.name!),
+                                          GestureDetector(
+                                            onTap: () => getToken()
+                                                .then((token) =>
+                                                    removePlaceRecord(
+                                                        place.id!,
+                                                        token!,
+                                                        PlaceRecordType.search))
+                                                .then((_) {
+                                              setState(() {});
+                                            }),
+                                            child: const Icon(
+                                              Icons.close,
+                                              color:
+                                                  ZeplinColors.base_icon_gray,
+                                            ),
+                                          ),
+                                        ],
+                                      )))
+                                  .toList(),
+                            ),
+                          );
+                        } else {
+                          return const Center(
+                              child: CircularProgressIndicator());
+                        }
+                      }),
+                  FutureBuilder(
+                      future:
+                          getToken().then((token) => getFavoritePlaces(token)),
+                      builder: (context, snapshot) {
+                        if (snapshot.connectionState == ConnectionState.done &&
+                            snapshot.hasData) {
+                          final List<PlaceRecord>? places = snapshot.data;
+                          return Container(
+                            padding: const EdgeInsets.all(15),
+                            child: Column(
+                              crossAxisAlignment: CrossAxisAlignment.start,
+                              children: places!
+                                  .map((place) => SizedBox(
+                                      height: 40,
+                                      child: Row(
+                                        mainAxisAlignment:
+                                            MainAxisAlignment.spaceBetween,
+                                        children: [
+                                          Text(place.place!.name!),
+                                          GestureDetector(
+                                            onTap: () => getToken()
+                                                .then((token) =>
+                                                    removePlaceRecord(
+                                                        place.id!,
+                                                        token!,
+                                                        PlaceRecordType
+                                                            .favorite))
+                                                .then((_) {
+                                              setState(() {});
+                                            }),
+                                            child: const Icon(
+                                              Icons.close,
+                                              color:
+                                                  ZeplinColors.base_icon_gray,
+                                            ),
+                                          ),
+                                        ],
+                                      )))
+                                  .toList(),
+                            ),
+                          );
+                        } else {
+                          return const Center(
+                              child: CircularProgressIndicator());
+                        }
+                      }),
                 ]),
               )
             ],

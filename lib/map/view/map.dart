@@ -11,6 +11,7 @@ import 'package:shuroop_client_app/auth/provider/token.dart';
 import 'package:shuroop_client_app/auth/view/login.dart';
 import 'package:shuroop_client_app/colors.dart';
 import 'package:shuroop_client_app/map/model/place.dart';
+import 'package:shuroop_client_app/map/view/search.dart';
 import 'package:shuroop_client_app/mypage/personal_info.dart';
 import 'package:shuroop_client_app/notification/view/notification.dart';
 import 'package:shuroop_client_app/rental/view/deposit_info.dart';
@@ -69,6 +70,18 @@ class _MainMapPageState extends State<MainMapPage> {
             }
           },
         ),
+        elevation: 2,
+        actions: [
+          IconButton(
+            onPressed: () => Navigator.of(context).push(
+                MaterialPageRoute(builder: ((context) => const SearchPage()))),
+            color: ZeplinColors.base_icon_gray,
+            padding: const EdgeInsets.only(right: 12, top: 12),
+            iconSize: 30,
+            constraints: const BoxConstraints(maxHeight: 27),
+            icon: const Icon(Icons.search_outlined),
+          )
+        ],
       ),
       body: FutureBuilder<List<Marker>>(
           future: getPlaceDataAPI(),
