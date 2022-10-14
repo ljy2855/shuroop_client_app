@@ -67,17 +67,17 @@ class NotificationPage extends StatelessWidget {
                                           crossAxisAlignment:
                                               CrossAxisAlignment.start,
                                           children: [
-                                            Container(
+                                            SizedBox(
                                                 width: 300,
                                                 child: Text(
-                                                    '${notification![index]}',
+                                                    notification![index],
                                                     style: const TextStyle(
                                                         color:
                                                             ZeplinColors.black,
                                                         fontSize: 14,
                                                         fontWeight:
                                                             FontWeight.w400))),
-                                            Text('${datesAndTimes[1]}',
+                                            Text(datesAndTimes[1],
                                                 style: const TextStyle(
                                                     color: ZeplinColors
                                                         .inactivated_gray,

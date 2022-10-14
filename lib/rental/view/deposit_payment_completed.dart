@@ -57,7 +57,7 @@ class DepositPaymentCompleted extends StatelessWidget {
             ElevatedButton(
                 style: ElevatedButton.styleFrom(
                     minimumSize: const Size(147, 45),
-                    primary: Colors.grey,
+                    backgroundColor: Colors.grey,
                     shape: RoundedRectangleBorder(
                         borderRadius: BorderRadius.circular(50))),
                 onPressed: () =>
@@ -70,7 +70,7 @@ class DepositPaymentCompleted extends StatelessWidget {
             ElevatedButton(
                 style: ElevatedButton.styleFrom(
                     minimumSize: const Size(147, 45),
-                    primary: const Color(0xFFFCB93F),
+                    backgroundColor: const Color(0xFFFCB93F),
                     shape: RoundedRectangleBorder(
                         borderRadius: BorderRadius.circular(50))),
                 onPressed: () => Navigator.push(
