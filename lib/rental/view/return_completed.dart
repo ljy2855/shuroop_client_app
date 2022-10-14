@@ -292,7 +292,7 @@ class ReturnCompleted extends StatelessWidget {
         child: ElevatedButton(
             style: ElevatedButton.styleFrom(
                 minimumSize: const Size(350, 50),
-                primary: ZeplinColors.return_theme_color,
+                backgroundColor: ZeplinColors.return_theme_color,
                 shape: RoundedRectangleBorder(
                     borderRadius: BorderRadius.circular(50))),
             onPressed: () =>

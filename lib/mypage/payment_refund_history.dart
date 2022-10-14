@@ -14,7 +14,7 @@ class PaymentRefundHistory extends StatelessWidget {
       '보증금 8000원/48시간',
       '추가금액 3000원/6시간'
     ];
-    final List<String> dates_and_times = <String>[
+    final List<String> datesAndTimes = <String>[
       '2022.08.25 12:15',
       '2022.08.21 12:29',
       '2022.08.21 11:32',
@@ -54,7 +54,7 @@ class PaymentRefundHistory extends StatelessWidget {
                             children: [
                               Row(
                                 children: [
-                                  Text('${services[index]}'),
+                                  Text(services[index]),
                                   IconButton(
                                       padding: EdgeInsets.zero,
                                       constraints: const BoxConstraints(),
@@ -70,20 +70,22 @@ class PaymentRefundHistory extends StatelessWidget {
                                                           child: Receipt()));
                                             });
                                       },
-                                      icon: Icon(Icons.add_circle, size: 15))
+                                      icon: const Icon(Icons.add_circle,
+                                          size: 15))
                                 ],
                               ),
                               Row(
                                 children: [
                                   Text(
-                                    '${dates_and_times[index]}',
+                                    datesAndTimes[index],
                                     style: const TextStyle(
                                         color: ZeplinColors.inactivated_gray),
                                   ),
                                   Container(
-                                    padding: EdgeInsets.fromLTRB(20, 0, 0, 3),
+                                    padding:
+                                        const EdgeInsets.fromLTRB(20, 0, 0, 3),
                                     child: Text(
-                                      '${states[index]}',
+                                      states[index],
                                       style: TextStyle(
                                           fontSize: 12,
                                           color: states[index] == '환불'
@@ -145,9 +147,10 @@ class PaymentRefundHistory extends StatelessWidget {
                                             onPressed: () {
                                               Navigator.pop(context);
                                             },
-                                            child: const Text("취소",style: TextStyle(
-                                                color:
-                                                ZeplinColors.inactivated_gray))),
+                                            child: const Text("취소",
+                                                style: TextStyle(
+                                                    color: ZeplinColors
+                                                        .inactivated_gray))),
                                         TextButton(
                                           onPressed: () {
                                             Navigator.pop(context);

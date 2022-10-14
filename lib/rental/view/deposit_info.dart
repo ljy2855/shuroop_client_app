@@ -9,7 +9,7 @@ class DepositInformation extends StatelessWidget {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-          backgroundColor: Color(0xFFFCB93F),
+          backgroundColor: const Color(0xFFFCB93F),
           centerTitle: true,
           title: const Text("보증금 결제",
               style: TextStyle(
@@ -19,7 +19,7 @@ class DepositInformation extends StatelessWidget {
           leading: IconButton(
             icon: const Icon(Icons.arrow_back_ios),
             onPressed: () {
-              Navigator.of(context).pop();
+              Navigator.of(context).popUntil((route) => route.isFirst);
             },
           )),
       body: SingleChildScrollView(
@@ -193,6 +193,7 @@ class DepositInformation extends StatelessWidget {
       ),
     );
   }
+
   moveToBottomScroll(ScrollController controller) {
     controller.animateTo(scrollController.position.maxScrollExtent,
         duration: const Duration(milliseconds: 700), curve: Curves.ease);

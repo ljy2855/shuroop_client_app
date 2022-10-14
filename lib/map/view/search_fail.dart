@@ -1,9 +1,6 @@
 import 'package:flutter/material.dart';
-import 'package:flutter/src/widgets/container.dart';
-import 'package:flutter/src/widgets/framework.dart';
-import 'package:flutter_naver_map/flutter_naver_map.dart';
+
 import 'package:shuroop_client_app/colors.dart';
-import 'package:shuroop_client_app/map/model/place.dart';
 
 class SearchedFailPage extends StatelessWidget {
   final String keyword;
@@ -31,6 +28,35 @@ class SearchedFailPage extends StatelessWidget {
                 color: Colors.black,
               ),
               border: InputBorder.none),
+        ),
+      ),
+      body: Center(
+        child: Column(
+          mainAxisAlignment: MainAxisAlignment.center,
+          crossAxisAlignment: CrossAxisAlignment.center,
+          children: const [
+            Icon(
+              Icons.warning_rounded,
+              size: 30,
+              color: ZeplinColors.base_icon_gray,
+            ),
+            Padding(padding: EdgeInsets.only(top: 10)),
+            Text(
+              "검색 결과가 존재하지 않습니다.",
+              style: TextStyle(
+                fontWeight: FontWeight.w300,
+                fontSize: 14,
+              ),
+            ),
+            Text(
+              "다른 검색어로 대여소를 검색해보세요.",
+              style: TextStyle(
+                fontWeight: FontWeight.w300,
+                fontSize: 12,
+                color: ZeplinColors.base_icon_gray,
+              ),
+            ),
+          ],
         ),
       ),
     );

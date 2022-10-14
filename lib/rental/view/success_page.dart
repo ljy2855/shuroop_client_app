@@ -67,7 +67,7 @@ class RentalSuccessPage extends StatelessWidget {
               child: ElevatedButton(
                   style: ElevatedButton.styleFrom(
                       minimumSize: const Size(350, 50),
-                      primary: const Color(0xFFFCB93F),
+                      backgroundColor: const Color(0xFFFCB93F),
                       shape: RoundedRectangleBorder(
                           borderRadius: BorderRadius.circular(50))),
                   onPressed: () =>

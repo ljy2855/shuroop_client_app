@@ -35,7 +35,7 @@ class _AutomaticPaymentMethodState extends State<AutomaticPaymentMethod> {
         child: ElevatedButton(
             style: ElevatedButton.styleFrom(
                 minimumSize: const Size(350, 50),
-                primary: ZeplinColors.base_yellow,
+                backgroundColor: ZeplinColors.base_yellow,
                 shape: RoundedRectangleBorder(
                     borderRadius: BorderRadius.circular(50))),
             onPressed: () {
@@ -58,13 +58,13 @@ class RadioButtons extends StatefulWidget {
   const RadioButtons({Key? key}) : super(key: key);
 
   @override
-  _RadioButtonsState createState() => _RadioButtonsState();
+  RadioButtonsState createState() => RadioButtonsState();
 }
 
 enum Char { A, B, C, D }
 //A. 신용/체크카드 B.계좌이채 C.카카오페이 D.네이버페이
 
-class _RadioButtonsState extends State<RadioButtons> {
+class RadioButtonsState extends State<RadioButtons> {
   Char _char = Char.A; // 라디오 버튼의 선택 초기화
 
   @override
@@ -101,7 +101,6 @@ class _RadioButtonsState extends State<RadioButtons> {
           onChanged: (Char? value) {
             setState(() {
               _char = value!;
-              print(_char.name); // _char 에 담긴 값은 이렇게
             });
           },
         ),
@@ -113,7 +112,6 @@ class _RadioButtonsState extends State<RadioButtons> {
           onChanged: (Char? value) {
             setState(() {
               _char = value!;
-              print(value);
             });
           },
         ),

@@ -3,7 +3,6 @@ import 'package:shuroop_client_app/colors.dart';
 
 import '../map/view/map.dart';
 
-
 class UsageInformation extends StatelessWidget {
   UsageInformation({Key? key}) : super(key: key);
   final scrollController = ScrollController();
@@ -16,7 +15,7 @@ class UsageInformation extends StatelessWidget {
           centerTitle: true,
           title: const Text("이용 안내",
               style: TextStyle(
-                color: ZeplinColors.black,
+                  color: ZeplinColors.black,
                   fontFamily: 'IBMPlexSans',
                   fontSize: 20,
                   fontWeight: FontWeight.w700)),
@@ -101,8 +100,7 @@ class UsageInformation extends StatelessWidget {
               width: 280,
               height: 32,
               margin: const EdgeInsets.fromLTRB(30, 0, 0, 82),
-              child: const Text(
-                  "간단한 단계를 통해 우산을 빌릴 수 있어요!",
+              child: const Text("간단한 단계를 통해 우산을 빌릴 수 있어요!",
                   style: TextStyle(
                       color: Colors.grey,
                       fontFamily: 'IBMPlexSans',
@@ -115,7 +113,6 @@ class UsageInformation extends StatelessWidget {
               height: 180,
               child: Image.asset("assets/images/umbrella.png"),
             ),
-
             Container(
               alignment: Alignment.center,
               margin: const EdgeInsets.fromLTRB(0, 0, 0, 0),
@@ -147,7 +144,6 @@ class UsageInformation extends StatelessWidget {
                       fontWeight: FontWeight.w600,
                       fontSize: 16)),
             ),
-
             Container(
               margin: const EdgeInsets.fromLTRB(99.2, 0, 100.14, 82),
               width: 200,
@@ -184,8 +180,7 @@ class UsageInformation extends StatelessWidget {
               width: 280,
               height: 32,
               margin: const EdgeInsets.fromLTRB(30, 0, 0, 82),
-              child: const Text(
-                  "만약 약속한 기간을 넘겨서 반납한다면, 추가 금액이 발생할 수 있어요.",
+              child: const Text("만약 약속한 기간을 넘겨서 반납한다면, 추가 금액이 발생할 수 있어요.",
                   style: TextStyle(
                       color: Colors.grey,
                       fontFamily: 'IBMPlexSans',
@@ -198,7 +193,6 @@ class UsageInformation extends StatelessWidget {
               height: 180,
               child: Image.asset("assets/images/umbrella.png"),
             ),
-
           ],
         ),
       ),
@@ -207,12 +201,12 @@ class UsageInformation extends StatelessWidget {
         child: ElevatedButton(
             style: ElevatedButton.styleFrom(
                 minimumSize: const Size(350, 50),
-                primary: const Color(0xFFFCB93F),
+                backgroundColor: const Color(0xFFFCB93F),
                 shape: RoundedRectangleBorder(
                     borderRadius: BorderRadius.circular(50))),
             onPressed: () {
-              Navigator.of(context).push(MaterialPageRoute(
-                  builder: (context) => MainMapPage()));
+              Navigator.of(context).push(
+                  MaterialPageRoute(builder: (context) => const MainMapPage()));
               // Navigator.push(
               //   context,
               //   MaterialPageRoute(builder: (context) => const DepositPayment()),

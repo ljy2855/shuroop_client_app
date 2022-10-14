@@ -9,7 +9,6 @@ import 'package:shuroop_client_app/auth/provider/token.dart';
 
 class DepositPayment extends StatefulWidget {
   const DepositPayment({Key? key}) : super(key: key);
-  static const String _title = 'Radio buttons';
 
   @override
   State<DepositPayment> createState() => _DepositPaymentState();
@@ -19,7 +18,7 @@ class _DepositPaymentState extends State<DepositPayment> {
   int value = 1; // 1 -> 1시간 대여, 2 -> 2시간 대여
   bool _isChecked = false;
 
-  Widget _AgreeOnAdditionalCharges() {
+  Widget agreeOnAdditionalCharges() {
     return Row(
       children: [
         Padding(
@@ -64,7 +63,7 @@ class _DepositPaymentState extends State<DepositPayment> {
     );
   }
 
-  Widget CustomRadioButton(String text, int index) {
+  Widget customRadioButton(String text, int index) {
     return OutlinedButton(
         onPressed: () {
           setState(() {
@@ -163,8 +162,8 @@ class _DepositPaymentState extends State<DepositPayment> {
                 Row(
                   mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                   children: [
-                    CustomRadioButton("5,000원/24시간", 1),
-                    CustomRadioButton("8,000원/48시간", 2),
+                    customRadioButton("5,000원/24시간", 1),
+                    customRadioButton("8,000원/48시간", 2),
                   ],
                 ),
               ],
@@ -184,7 +183,7 @@ class _DepositPaymentState extends State<DepositPayment> {
             margin: const EdgeInsets.fromLTRB(20, 0, 0, 0),
             child: const RadioButtons(),
           ),
-          _AgreeOnAdditionalCharges(),
+          agreeOnAdditionalCharges(),
         ],
       ),
       bottomNavigationBar: Container(
@@ -192,7 +191,7 @@ class _DepositPaymentState extends State<DepositPayment> {
         child: ElevatedButton(
             style: ElevatedButton.styleFrom(
                 minimumSize: const Size(350, 50),
-                primary: (_isChecked == true)
+                backgroundColor: (_isChecked == true)
                     ? const Color(0xFFFCB93F)
                     : Colors.grey,
                 shape: RoundedRectangleBorder(
@@ -240,13 +239,13 @@ class RadioButtons extends StatefulWidget {
   const RadioButtons({Key? key}) : super(key: key);
 
   @override
-  _RadioButtonsState createState() => _RadioButtonsState();
+  RadioButtonsState createState() => RadioButtonsState();
 }
 
 enum Char { A, B, C, D }
 //A. 신용/체크카드 B.계좌이채 C.카카오페이 D.네이버페이
 
-class _RadioButtonsState extends State<RadioButtons> {
+class RadioButtonsState extends State<RadioButtons> {
   Char _char = Char.A; // 라디오 버튼의 선택 초기화
 
   @override

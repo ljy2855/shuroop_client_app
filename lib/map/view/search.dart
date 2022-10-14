@@ -78,9 +78,9 @@ class _SearchPageState extends State<SearchPage> with TickerProviderStateMixin {
                   height: 40,
                   width: 180,
                   child: TabBar(
-                    tabs: [
-                      const Text('최근검색'),
-                      const Text('즐겨찾기'),
+                    tabs: const [
+                      Text('최근검색'),
+                      Text('즐겨찾기'),
                     ],
                     controller: _tabController,
                     indicatorColor: ZeplinColors.base_yellow,

@@ -2,12 +2,12 @@ import 'package:flutter/material.dart';
 import '../../colors.dart';
 
 //Notification 은 flutter에 이미 있음
+// ignore: camel_case_types
 class Notification_ extends StatelessWidget {
   const Notification_({Key? key}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
-
     final List<String> notification = <String>[
       '우산 대여 시간을 넘겼어요. 추가금액이 발생하니 유의하세요.',
       '1시간 후에 우산 대여 시간이 끝나요! 주변 대여소에서 우산을 반납해보세요.',
@@ -38,36 +38,33 @@ class Notification_ extends StatelessWidget {
                 itemCount: notification.length,
                 itemBuilder: (BuildContext context, int index) {
                   return Container(
-
                       margin: const EdgeInsets.fromLTRB(30, 23, 30, 0),
                       child: Row(
-
                         mainAxisAlignment: MainAxisAlignment.spaceBetween,
                         children: [
                           Flexible(
                             child: Row(
                               crossAxisAlignment: CrossAxisAlignment.start,
                               children: [
-                                  Container(
-                                    width: 16,
-                                    height: 16,
-                                    margin:
-                                        const EdgeInsets.fromLTRB(0, 3, 10, 0),
-                                    child:
-                                        Image.asset("assets/images/logo_line.png"),
-                                  ),
-
+                                Container(
+                                  width: 16,
+                                  height: 16,
+                                  margin:
+                                      const EdgeInsets.fromLTRB(0, 3, 10, 0),
+                                  child: Image.asset(
+                                      "assets/images/logo_line.png"),
+                                ),
                                 Column(
                                   crossAxisAlignment: CrossAxisAlignment.start,
                                   children: [
-                                    Container(
+                                    SizedBox(
                                         width: 300,
-                                        child: Text('${notification[index]}',
+                                        child: Text(notification[index],
                                             style: const TextStyle(
                                                 color: ZeplinColors.black,
                                                 fontSize: 14,
                                                 fontWeight: FontWeight.w400))),
-                                    Text('${datesAndTimes[index]}',
+                                    Text(datesAndTimes[index],
                                         style: const TextStyle(
                                             color:
                                                 ZeplinColors.inactivated_gray,

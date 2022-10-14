@@ -1,8 +1,6 @@
 import 'dart:convert';
-
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
-import 'package:shuroop_client_app/auth/model/profile.dart';
 import 'package:shuroop_client_app/auth/provider/profile_provider.dart';
 import 'package:shuroop_client_app/auth/provider/token.dart';
 import 'package:shuroop_client_app/auth/view/sign_up.dart';
@@ -126,7 +124,7 @@ class _LoginPageState extends State<LoginPage> {
                             EdgeInsets.symmetric(vertical: 15, horizontal: 10),
                       ),
                     )),
-              Padding(padding: EdgeInsets.only(top: 28)),
+              const Padding(padding: EdgeInsets.only(top: 28)),
               TextButton(
                   style: TextButton.styleFrom(
                     backgroundColor: ZeplinColors.base_yellow,
@@ -212,8 +210,8 @@ class _LoginPageState extends State<LoginPage> {
       await profile.setProfile(data['token']);
       if (!profile.getIsRenting()!) {
         if (profile.getLeftTime() == Duration.zero) {
-          await Navigator.of(context).push(MaterialPageRoute(
-              builder: ((context) =>  DepositInformation())));
+          await Navigator.of(context).push(
+              MaterialPageRoute(builder: ((context) => DepositInformation())));
         } else {
           await Navigator.of(context).push(MaterialPageRoute(
               builder: ((context) => const QRScanPage(
@@ -224,13 +222,10 @@ class _LoginPageState extends State<LoginPage> {
         Navigator.of(context).pop();
       }
     }
-
-    // TODO 404 error
   }
 
   @override
   void dispose() {
-    // TODO: implement dispose
     emailInputController.dispose();
     passwordInputController.dispose();
     super.dispose();

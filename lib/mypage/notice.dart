@@ -1,4 +1,3 @@
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:shuroop_client_app/colors.dart';
 
@@ -37,7 +36,7 @@ class _NoticeState extends State<Notice> {
         body: ListView(
           padding: const EdgeInsets.fromLTRB(30, 23, 0, 23),
           children: <Widget>[
-            Container(
+            SizedBox(
                 height: 50,
                 child: Column(
                   crossAxisAlignment: CrossAxisAlignment.start,

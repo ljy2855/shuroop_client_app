@@ -1,11 +1,9 @@
 import 'dart:convert';
 import 'dart:developer';
 import 'dart:io';
-import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:qr_code_scanner/qr_code_scanner.dart';
-import 'package:shuroop_client_app/auth/model/profile.dart';
 import 'package:shuroop_client_app/auth/provider/profile_provider.dart';
 import 'package:shuroop_client_app/auth/provider/token.dart';
 import 'package:shuroop_client_app/colors.dart';
@@ -35,7 +33,6 @@ class _QRScanPageState extends State<QRScanPage> {
   final GlobalKey qrKey = GlobalKey(debugLabel: 'QR');
   @override
   void initState() {
-    // TODO: implement initState
     super.initState();
   }
 
@@ -121,8 +118,6 @@ class _QRScanPageState extends State<QRScanPage> {
     );
   }
 
-  //TODO
-  // #1 success 페이지로 넘어간 뒤에도 스캔이 계속되는 버그
   void _onQRViewCreated(QRViewController controller) {
     setState(() {
       this.controller = controller;
@@ -137,7 +132,6 @@ class _QRScanPageState extends State<QRScanPage> {
         if (!mounted) return;
 
         if (await rentalRequest(scanData.code!)) {
-          // TODO 페이지 오류 처리
           if (widget.type == QRScanType.borw) {
             await Navigator.of(context).pushReplacement(MaterialPageRoute(
                 builder: (context) => const RentalSuccessPage()));
@@ -195,8 +189,7 @@ class _QRScanPageState extends State<QRScanPage> {
         },
       );
       if (response.statusCode == 200) {
-        final data =
-            json.decode(utf8.decode(response.bodyBytes)); // TODO 대여 성공 여부 확인
+        final data = json.decode(utf8.decode(response.bodyBytes));
         final profile = Provider.of<ProfileProvider>(context, listen: false);
         profile.setProfile(token!);
         if (widget.type == QRScanType.retrn) {

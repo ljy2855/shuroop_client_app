@@ -1,8 +1,6 @@
 import 'dart:convert';
 
 import 'package:flutter/material.dart';
-import 'package:flutter/src/foundation/key.dart';
-import 'package:flutter/src/widgets/framework.dart';
 import 'package:http/http.dart' as http;
 import 'package:shuroop_client_app/auth/provider/token.dart';
 import 'package:shuroop_client_app/url.dart';
@@ -12,7 +10,7 @@ import '../../colors.dart';
 class SignUpPage extends StatefulWidget {
   final String email;
 
-  SignUpPage({Key? key, required this.email}) : super(key: key);
+  const SignUpPage({Key? key, required this.email}) : super(key: key);
 
   @override
   State<SignUpPage> createState() => _SignUpPageState();
@@ -30,7 +28,6 @@ class _SignUpPageState extends State<SignUpPage> {
 
   @override
   void initState() {
-    // TODO: implement initState
     super.initState();
     email = widget.email;
   }
@@ -144,11 +141,7 @@ class _SignUpPageState extends State<SignUpPage> {
     required FormFieldValidator validator,
     String? initialValue,
   }) {
-    assert(hintLabel != null);
-    assert(onSaved != null);
-    assert(validator != null);
-
-    return Container(
+    return SizedBox(
         width: 274,
         child: TextFormField(
           onChanged: onSaved,

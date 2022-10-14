@@ -3,7 +3,7 @@ import 'package:http/http.dart' as http;
 import 'dart:convert';
 import 'package:flutter_dotenv/flutter_dotenv.dart';
 
-final url =
+const url =
     "https://api.openweathermap.org/data/2.5/forecast?cnt=12&units=metric";
 
 enum WeatherType {

@@ -19,11 +19,13 @@ import 'package:shuroop_client_app/rental/view/scanner.dart';
 import 'package:shuroop_client_app/weather/model/weather.dart';
 
 class MainMapPage extends StatefulWidget {
+  const MainMapPage({super.key});
+
   @override
-  _MainMapPageState createState() => _MainMapPageState();
+  MainMapPageState createState() => MainMapPageState();
 }
 
-class _MainMapPageState extends State<MainMapPage> {
+class MainMapPageState extends State<MainMapPage> {
   final scaffoldKey = GlobalKey<ScaffoldState>();
   Completer<NaverMapController> _controller = Completer();
   final ValueNotifier<bool> isWeatherWidgetOpen = ValueNotifier<bool>(true);
@@ -364,7 +366,7 @@ class _MainMapPageState extends State<MainMapPage> {
                         Text(
                           checkRainny(weather.sublist(0, 8))
                               ? "오늘은 비가 올지도 몰라요"
-                              : "오늘은 화창할거에요!",
+                              : "오늘은 비가 안오겠네요!",
                           style: const TextStyle(
                             fontWeight: FontWeight.w400,
                             color: ZeplinColors.sub_text,

@@ -1,6 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:flutter/src/widgets/container.dart';
-import 'package:flutter/src/widgets/framework.dart';
 import 'package:flutter_naver_map/flutter_naver_map.dart';
 import 'package:shuroop_client_app/colors.dart';
 import 'package:shuroop_client_app/map/model/place.dart';
@@ -24,7 +22,6 @@ class _SearchedMapPageState extends State<SearchedMapPage> {
   late Place currentSelectedPlace;
   @override
   void initState() {
-    // TODO: implement initState
     super.initState();
     middlePosition = getMiddlePostion();
   }
@@ -105,7 +102,7 @@ class _SearchedMapPageState extends State<SearchedMapPage> {
 
   Widget selectedPlaceInfoComponent(Place place) {
     return ConstrainedBox(
-      constraints: BoxConstraints(maxHeight: 150),
+      constraints: const BoxConstraints(maxHeight: 150),
       child: Column(
         children: [
           placeInfoComponet(place),

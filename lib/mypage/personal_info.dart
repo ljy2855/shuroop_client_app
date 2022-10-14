@@ -42,8 +42,8 @@ class PersonalInfo extends StatelessWidget {
               alignment: Alignment.centerLeft,
               width: double.infinity,
               child: TextButton(
-                onPressed: () => Navigator.of(context).push(
-                    MaterialPageRoute(builder: (((context) => Notice())))),
+                onPressed: () => Navigator.of(context).push(MaterialPageRoute(
+                    builder: (((context) => const Notice())))),
                 child: Text(profile.getProfile()?.email ?? "abc@gmail.com",
                     style: const TextStyle(
                         fontSize: 20,
@@ -59,8 +59,8 @@ class PersonalInfo extends StatelessWidget {
               alignment: Alignment.centerLeft,
               width: double.infinity,
               child: TextButton(
-                onPressed: () => Navigator.of(context).push(
-                    MaterialPageRoute(builder: (((context) => PaymentRefundHistory())))),
+                onPressed: () => Navigator.of(context).push(MaterialPageRoute(
+                    builder: (((context) => const PaymentRefundHistory())))),
                 child: const Text("결제/환불 이력",
                     style: TextStyle(
                         fontSize: 14,
@@ -76,8 +76,8 @@ class PersonalInfo extends StatelessWidget {
               alignment: Alignment.centerLeft,
               width: double.infinity,
               child: TextButton(
-                onPressed: () => Navigator.of(context).push(
-                    MaterialPageRoute(builder: (((context) => AutomaticPaymentMethod())))),
+                onPressed: () => Navigator.of(context).push(MaterialPageRoute(
+                    builder: (((context) => const AutomaticPaymentMethod())))),
                 child: const Text("자동 결제 수단  등록/변경",
                     style: TextStyle(
                         fontSize: 14,
@@ -93,8 +93,8 @@ class PersonalInfo extends StatelessWidget {
               alignment: Alignment.centerLeft,
               width: double.infinity,
               child: TextButton(
-                onPressed: () => Navigator.of(context).push(
-                    MaterialPageRoute(builder: (((context) => AdditionalChargePayment())))),
+                onPressed: () => Navigator.of(context).push(MaterialPageRoute(
+                    builder: (((context) => const AdditionalChargePayment())))),
                 child: const Text("추가요금 결제",
                     style: TextStyle(
                         fontSize: 14,
@@ -110,8 +110,8 @@ class PersonalInfo extends StatelessWidget {
               alignment: Alignment.centerLeft,
               width: double.infinity,
               child: TextButton(
-                onPressed: () => Navigator.of(context).push(
-                    MaterialPageRoute(builder: (((context) => UsageInformation())))),
+                onPressed: () => Navigator.of(context).push(MaterialPageRoute(
+                    builder: (((context) => UsageInformation())))),
                 child: const Text("이용안내",
                     style: TextStyle(
                         fontSize: 14,
@@ -127,8 +127,8 @@ class PersonalInfo extends StatelessWidget {
               alignment: Alignment.centerLeft,
               width: double.infinity,
               child: TextButton(
-                onPressed: () => Navigator.of(context).push(
-                    MaterialPageRoute(builder: (((context) => Notice())))),
+                onPressed: () => Navigator.of(context).push(MaterialPageRoute(
+                    builder: (((context) => const Notice())))),
                 child: const Text("공지사항",
                     style: TextStyle(
                         fontSize: 14,
@@ -144,8 +144,8 @@ class PersonalInfo extends StatelessWidget {
               alignment: Alignment.centerLeft,
               width: double.infinity,
               child: TextButton(
-                onPressed: () => Navigator.of(context).push(
-                    MaterialPageRoute(builder: (((context) => Notice())))),
+                onPressed: () => Navigator.of(context).push(MaterialPageRoute(
+                    builder: (((context) => const Notice())))),
                 child: const Text("비밀번호 변경",
                     style: TextStyle(
                         fontSize: 14,
@@ -200,7 +200,6 @@ class PersonalInfo extends StatelessWidget {
         ),
       ),
     );
-
   }
 
   Future<void> logout() async {

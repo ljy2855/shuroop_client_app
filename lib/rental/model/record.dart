@@ -1,6 +1,3 @@
-import 'package:http/http.dart' as http;
-import 'dart:convert';
-
 import 'package:shuroop_client_app/auth/model/profile.dart';
 
 class Record {
