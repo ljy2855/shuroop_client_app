@@ -20,6 +20,8 @@ class SearchedMapPage extends StatefulWidget {
 
 class _SearchedMapPageState extends State<SearchedMapPage> {
   late LatLng middlePosition;
+  bool isSelected = false;
+  late Place currentSelectedPlace;
   @override
   void initState() {
     // TODO: implement initState
@@ -50,89 +52,122 @@ class _SearchedMapPageState extends State<SearchedMapPage> {
       ),
       body: Column(
         children: [
-          Stack(children: [
-            SizedBox(
-              height: 500,
-              child: FutureBuilder(
-                  future: Future(() => getMarkerWithImage(widget.places)),
-                  builder: (context, snapshot) {
-                    if (snapshot.connectionState == ConnectionState.done &&
-                        snapshot.hasData) {
-                      final List<Marker>? markers = snapshot.data;
-                      return NaverMap(
-                        initialCameraPosition:
-                            CameraPosition(target: middlePosition),
-                        markers: markers!,
-                      );
-                    } else {
-                      return const Center(child: CircularProgressIndicator());
-                    }
-                  }),
-            )
-          ]),
           Expanded(
-            child: SingleChildScrollView(
-              padding: EdgeInsets.only(bottom: 25),
-              scrollDirection: Axis.vertical,
-              child: Column(
-                children: widget.places
-                    .map((place) => SizedBox(
-                          width: 400,
-                          child: Container(
-                            padding: EdgeInsets.only(left: 20, top: 25),
-                            child: Row(
-                              children: [
-                                Column(
-                                    crossAxisAlignment:
-                                        CrossAxisAlignment.start,
-                                    children: [
-                                      Row(
-                                        mainAxisAlignment:
-                                            MainAxisAlignment.spaceEvenly,
-                                        children: [
-                                          Text(
-                                            place.name!,
-                                            style: const TextStyle(
-                                                fontWeight: FontWeight.w500,
-                                                fontSize: 16),
-                                          ),
-                                          const Padding(
-                                              padding:
-                                                  EdgeInsets.only(left: 10)),
-                                          Text(
-                                            "${place.umbrellaCount}",
-                                            style: const TextStyle(
-                                              fontWeight: FontWeight.w500,
-                                              fontSize: 16,
-                                              color: ZeplinColors.base_yellow,
-                                            ),
-                                          ),
-                                        ],
-                                      ),
-                                      Text(
-                                        place.address!,
-                                        style: const TextStyle(
-                                          fontSize: 14,
-                                          fontWeight: FontWeight.w300,
-                                          color: ZeplinColors.base_icon_gray,
-                                        ),
-                                      ),
-                                    ]),
-                                IconButton(
-                                  onPressed: () {},
-                                  icon: const Icon(
-                                      Icons.keyboard_arrow_right_rounded),
-                                  color: ZeplinColors.base_yellow,
-                                )
-                              ],
-                            ),
-                          ),
-                        ))
-                    .toList(),
-              ),
-            ),
-          )
+            flex: 2,
+            child: Stack(children: [
+              ConstrainedBox(
+                constraints: const BoxConstraints(
+                  minHeight: 450,
+                  maxHeight: 600,
+                ),
+                child: FutureBuilder(
+                    future: Future(() => getMarkerWithImage(widget.places)),
+                    builder: (context, snapshot) {
+                      if (snapshot.connectionState == ConnectionState.done &&
+                          snapshot.hasData) {
+                        final List<Marker>? markers = snapshot.data;
+                        return NaverMap(
+                          initialCameraPosition:
+                              CameraPosition(target: middlePosition),
+                          markers: markers!,
+                        );
+                      } else {
+                        return const Center(child: CircularProgressIndicator());
+                      }
+                    }),
+              )
+            ]),
+          ),
+          isSelected == false
+              ? Expanded(
+                  child: SingleChildScrollView(
+                  padding: const EdgeInsets.only(bottom: 25),
+                  scrollDirection: Axis.vertical,
+                  child: Column(
+                    children: widget.places
+                        .map((place) => GestureDetector(
+                              onTap: () {
+                                setState(() {
+                                  isSelected = true;
+                                  currentSelectedPlace = place;
+                                });
+                              },
+                              child: placeInfoComponet(place),
+                            ))
+                        .toList(),
+                  ),
+                ))
+              : selectedPlaceInfoComponent(currentSelectedPlace),
         ],
+      ),
+    );
+  }
+
+  Widget selectedPlaceInfoComponent(Place place) {
+    return ConstrainedBox(
+      constraints: BoxConstraints(maxHeight: 150),
+      child: Column(
+        children: [
+          placeInfoComponet(place),
+          Row(
+            children: [
+              IconButton(
+                  onPressed: (() {}),
+                  icon: const Icon(Icons.star_border_rounded)),
+              IconButton(
+                  onPressed: (() {}), icon: const Icon(Icons.share_outlined)),
+            ],
+          ),
+        ],
+      ),
+    );
+  }
+
+  Widget placeInfoComponet(Place place) {
+    return SizedBox(
+      width: 400,
+      child: Container(
+        padding: const EdgeInsets.only(left: 30, top: 25),
+        child: Row(
+          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+          children: [
+            Column(crossAxisAlignment: CrossAxisAlignment.start, children: [
+              Row(
+                mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                children: [
+                  Text(
+                    place.name!,
+                    style: const TextStyle(
+                        fontWeight: FontWeight.w500, fontSize: 16),
+                  ),
+                  const Padding(padding: EdgeInsets.only(left: 10)),
+                  Text(
+                    "${place.umbrellaCount}",
+                    style: const TextStyle(
+                      fontWeight: FontWeight.w500,
+                      fontSize: 16,
+                      color: ZeplinColors.base_yellow,
+                    ),
+                  ),
+                ],
+              ),
+              Text(
+                place.address!,
+                style: const TextStyle(
+                  fontSize: 14,
+                  fontWeight: FontWeight.w300,
+                  color: ZeplinColors.base_icon_gray,
+                ),
+              ),
+            ]),
+            IconButton(
+              padding: const EdgeInsets.only(right: 30),
+              onPressed: () {},
+              icon: const Icon(Icons.keyboard_arrow_right_rounded),
+              color: ZeplinColors.base_yellow,
+            )
+          ],
+        ),
       ),
     );
   }

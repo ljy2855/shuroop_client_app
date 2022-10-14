@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:shuroop_client_app/auth/provider/token.dart';
 import 'package:shuroop_client_app/colors.dart';
 import 'package:shuroop_client_app/map/model/place.dart';
+import 'package:shuroop_client_app/map/view/search_fail.dart';
 import 'package:shuroop_client_app/map/view/search_success.dart';
 
 class SearchPage extends StatefulWidget {
@@ -47,14 +48,21 @@ class _SearchPageState extends State<SearchPage> with TickerProviderStateMixin {
           ),
           actions: [
             IconButton(
-              onPressed: () async =>
+              onPressed: () async {
+                if (textController.text != '') {
                   await searchPlacesWithKeyword(textController.text).then(
-                      (places) => Navigator.of(context).push(MaterialPageRoute(
-                            builder: ((context) => SearchedMapPage(
-                                  keyword: textController.text,
-                                  places: places,
-                                )),
-                          ))),
+                      (places) => places.isEmpty
+                          ? Navigator.of(context).push(MaterialPageRoute(
+                              builder: ((context) => SearchedFailPage(
+                                  keyword: textController.text))))
+                          : Navigator.of(context).push(MaterialPageRoute(
+                              builder: ((context) => SearchedMapPage(
+                                    keyword: textController.text,
+                                    places: places,
+                                  )),
+                            )));
+                }
+              },
               icon: const Icon(Icons.search),
               color: Colors.black,
             )

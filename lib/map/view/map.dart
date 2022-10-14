@@ -93,6 +93,13 @@ class _MainMapPageState extends State<MainMapPage> {
               return Stack(
                 children: <Widget>[
                   NaverMap(
+                    initialCameraPosition: const CameraPosition(
+                      target: LatLng(
+                        37.5513,
+                        126.9414,
+                      ),
+                      zoom: 16,
+                    ),
                     onMapCreated: onMapCreated,
                     mapType: _mapType,
                     initLocationTrackingMode: _trackingMode,
