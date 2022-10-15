@@ -232,7 +232,8 @@ Future<List<Place>> searchPlacesWithKeyword(String keyword) async {
   return places;
 }
 
-Future<void> addFavoritePlace(int id, String token) async {
+Future<void> addFavoritePlace(int id, String? token) async {
+  if (token == null) return;
   try {
     final response = await http.get(
       Uri.parse("${UrlPrefix.urls}rentals/places/favorite/add/$id/"),
@@ -244,7 +245,8 @@ Future<void> addFavoritePlace(int id, String token) async {
   } catch (e) {}
 }
 
-Future<void> addSearchedPlace(int id, String token) async {
+Future<void> addSearchedPlace(int id, String? token) async {
+  if (token == null) return;
   try {
     final response = await http.get(
       Uri.parse("${UrlPrefix.urls}rentals/places/search/add/$id/"),

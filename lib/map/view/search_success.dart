@@ -68,14 +68,17 @@ class _SearchedMapPageState extends State<SearchedMapPage> {
                   maxHeight: 640,
                 ),
                 child: FutureBuilder(
-                    future: Future(() => getMarkerWithImage(widget.places)),
+                    future: Future(() => getMarkerWithImage(
+                        isSelected ? [currentSelectedPlace] : widget.places)),
                     builder: (context, snapshot) {
                       if (snapshot.connectionState == ConnectionState.done &&
                           snapshot.hasData) {
                         final List<Marker>? markers = snapshot.data;
                         return NaverMap(
-                          initialCameraPosition:
-                              CameraPosition(target: middlePosition),
+                          initialCameraPosition: CameraPosition(
+                              target: isSelected
+                                  ? currentSelectedPlace.position!
+                                  : middlePosition),
                           markers: markers!,
                         );
                       } else {
@@ -95,8 +98,7 @@ class _SearchedMapPageState extends State<SearchedMapPage> {
                         .map((place) => GestureDetector(
                               onTap: () async {
                                 await getToken().then(
-                                  (token) =>
-                                      addSearchedPlace(place.id!, token!),
+                                  (token) => addSearchedPlace(place.id!, token),
                                 );
                                 setState(() {
                                   isSelected = true;
@@ -139,7 +141,7 @@ class _SearchedMapPageState extends State<SearchedMapPage> {
                     builder: (context, value, child) => IconButton(
                         onPressed: () => getToken()
                                 .then((token) =>
-                                    addFavoritePlace(place.id!, token!))
+                                    addFavoritePlace(place.id!, token))
                                 .then((_) {
                               isFavorite.value = !isFavorite.value;
                             }),
