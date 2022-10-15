@@ -231,3 +231,27 @@ Future<List<Place>> searchPlacesWithKeyword(String keyword) async {
 
   return places;
 }
+
+Future<void> addFavoritePlace(int id, String token) async {
+  try {
+    final response = await http.get(
+      Uri.parse("${UrlPrefix.urls}rentals/places/favorite/add/$id/"),
+      headers: <String, String>{
+        'Content-Type': 'application/json; charset=UTF-8',
+        HttpHeaders.authorizationHeader: 'Token $token',
+      },
+    );
+  } catch (e) {}
+}
+
+Future<void> addSearchedPlace(int id, String token) async {
+  try {
+    final response = await http.get(
+      Uri.parse("${UrlPrefix.urls}rentals/places/search/add/$id/"),
+      headers: <String, String>{
+        'Content-Type': 'application/json; charset=UTF-8',
+        HttpHeaders.authorizationHeader: 'Token $token',
+      },
+    );
+  } catch (e) {}
+}

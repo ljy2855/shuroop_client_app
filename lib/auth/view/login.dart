@@ -9,6 +9,7 @@ import 'package:http/http.dart' as http;
 import 'package:shuroop_client_app/rental/view/deposit_info.dart';
 import 'package:shuroop_client_app/rental/view/scanner.dart';
 import 'package:shuroop_client_app/url.dart';
+import 'package:fluttertoast/fluttertoast.dart';
 
 class LoginPage extends StatefulWidget {
   const LoginPage({Key? key}) : super(key: key);
@@ -164,11 +165,14 @@ class _LoginPageState extends State<LoginPage> {
 
   checkEmail(String email) async {
     if (!checkEmailValid(email)) {
-      ScaffoldMessenger.of(context).showSnackBar(const SnackBar(
-        content: Text('잘못된 이메일 형식입니다.'),
-        duration: Duration(seconds: 1),
-        backgroundColor: Colors.red,
-      ));
+      Fluttertoast.showToast(
+        msg: "잘못된 이메일 형식입니다.",
+        toastLength: Toast.LENGTH_LONG,
+        gravity: ToastGravity.BOTTOM,
+        backgroundColor: ZeplinColors.return_alert_background,
+        textColor: Colors.white,
+        fontSize: 12,
+      );
       return;
     }
     final response = await http.post(
@@ -221,6 +225,15 @@ class _LoginPageState extends State<LoginPage> {
       } else {
         Navigator.of(context).pop();
       }
+    } else if (response.statusCode == 401) {
+      Fluttertoast.showToast(
+        msg: "로그인 정보가 일치하지 않습니다.",
+        toastLength: Toast.LENGTH_SHORT,
+        gravity: ToastGravity.BOTTOM,
+        backgroundColor: ZeplinColors.return_alert_background,
+        textColor: Colors.white,
+        fontSize: 12,
+      );
     }
   }
 

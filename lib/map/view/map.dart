@@ -17,6 +17,7 @@ import 'package:shuroop_client_app/notification/view/notification.dart';
 import 'package:shuroop_client_app/rental/view/deposit_info.dart';
 import 'package:shuroop_client_app/rental/view/scanner.dart';
 import 'package:shuroop_client_app/weather/model/weather.dart';
+import 'package:fluttertoast/fluttertoast.dart';
 
 class MainMapPage extends StatefulWidget {
   const MainMapPage({super.key});
@@ -91,6 +92,16 @@ class MainMapPageState extends State<MainMapPage> {
             if (snapshot.connectionState == ConnectionState.done &&
                 snapshot.hasData) {
               final List<Marker>? markers = snapshot.data;
+              if (profile.getIsRenting() ?? false) {
+                Fluttertoast.showToast(
+                  msg: "우산을 대여중입니다. 반납을 잊지마세요!",
+                  toastLength: Toast.LENGTH_LONG,
+                  gravity: ToastGravity.TOP,
+                  backgroundColor: ZeplinColors.return_alert_background,
+                  textColor: Colors.white,
+                  fontSize: 12,
+                );
+              }
 
               return Stack(
                 children: <Widget>[
@@ -366,7 +377,7 @@ class MainMapPageState extends State<MainMapPage> {
                         Text(
                           checkRainny(weather.sublist(0, 8))
                               ? "오늘은 비가 올지도 몰라요"
-                              : "오늘은 비가 안오겠네요!",
+                              : "오늘 비 예보는 없어요!",
                           style: const TextStyle(
                             fontWeight: FontWeight.w400,
                             color: ZeplinColors.sub_text,

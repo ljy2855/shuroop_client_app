@@ -55,12 +55,16 @@ class _SearchPageState extends State<SearchPage> with TickerProviderStateMixin {
                           ? Navigator.of(context).push(MaterialPageRoute(
                               builder: ((context) => SearchedFailPage(
                                   keyword: textController.text))))
-                          : Navigator.of(context).push(MaterialPageRoute(
+                          : Navigator.of(context)
+                              .push(MaterialPageRoute(
                               builder: ((context) => SearchedMapPage(
                                     keyword: textController.text,
                                     places: places,
                                   )),
-                            )));
+                            ))
+                              .then((_) {
+                              setState(() {});
+                            }));
                 }
               },
               icon: const Icon(Icons.search),
@@ -109,7 +113,20 @@ class _SearchPageState extends State<SearchPage> with TickerProviderStateMixin {
                                         mainAxisAlignment:
                                             MainAxisAlignment.spaceBetween,
                                         children: [
-                                          Text(place.place!.name!),
+                                          GestureDetector(
+                                            child: Text(place.place!.name!),
+                                            onTap: () => Navigator.of(context)
+                                                .push(MaterialPageRoute(
+                                                    builder: ((context) =>
+                                                        SearchedMapPage(
+                                                          isSelected: true,
+                                                          keyword: place
+                                                              .place!.name!,
+                                                          places: [
+                                                            place.place!
+                                                          ],
+                                                        )))),
+                                          ),
                                           GestureDetector(
                                             onTap: () => getToken()
                                                 .then((token) =>
@@ -154,7 +171,20 @@ class _SearchPageState extends State<SearchPage> with TickerProviderStateMixin {
                                         mainAxisAlignment:
                                             MainAxisAlignment.spaceBetween,
                                         children: [
-                                          Text(place.place!.name!),
+                                          GestureDetector(
+                                            child: Text(place.place!.name!),
+                                            onTap: () => Navigator.of(context)
+                                                .push(MaterialPageRoute(
+                                                    builder: ((context) =>
+                                                        SearchedMapPage(
+                                                          isSelected: true,
+                                                          keyword: place
+                                                              .place!.name!,
+                                                          places: [
+                                                            place.place!
+                                                          ],
+                                                        )))),
+                                          ),
                                           GestureDetector(
                                             onTap: () => getToken()
                                                 .then((token) =>

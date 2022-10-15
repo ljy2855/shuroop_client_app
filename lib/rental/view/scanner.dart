@@ -9,7 +9,7 @@ import 'package:shuroop_client_app/auth/provider/token.dart';
 import 'package:shuroop_client_app/colors.dart';
 import 'package:shuroop_client_app/rental/model/record.dart';
 import 'package:shuroop_client_app/rental/view/return_completed.dart';
-import 'package:shuroop_client_app/rental/view/success_page.dart';
+import 'package:shuroop_client_app/rental/view/borrow_success_page.dart';
 import 'package:shuroop_client_app/url.dart';
 import 'package:http/http.dart' as http;
 
