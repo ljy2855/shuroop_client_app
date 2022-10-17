@@ -184,194 +184,198 @@ class Receipt extends StatelessWidget {
   Widget build(BuildContext context) {
     String paymentAmount = "0"; //추가 지불 금액
     return Container(
+      color: ZeplinColors.background_gray,
       margin: const EdgeInsets.fromLTRB(0, 0, 0, 0),
       child: Card(
-        elevation: 10.0,
-        color: ZeplinColors.background_gray,
-        child: Column(
-          children: [
-            Container(
-                alignment: Alignment.center,
-                margin: const EdgeInsets.fromLTRB(0, 30, 0, 0),
-                child: const Image(
-                  width: 42,
-                  height: 45,
-                  image: AssetImage('assets/images/shuroop_logo_Text.png'),
-                )),
-            Container(
-              alignment: Alignment.centerRight,
-              margin: const EdgeInsets.fromLTRB(0, 32, 30, 7),
-              child: const Text("2022-08-08 12:30:21"),
-            ),
-            const DottedLine(
-              lineLength: 300,
-              dashLength: 10,
-              lineThickness: 0.8,
-              dashColor: ZeplinColors.inactivated_gray,
-            ),
-            Container(
-              margin: const EdgeInsets.fromLTRB(0, 0, 7, 0),
-              child: Row(
-                mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                children: [
-                  Container(
-                    margin: const EdgeInsets.fromLTRB(22, 12, 0, 0),
-                    child: const Text("대여시각"),
-                  ),
-                  Container(
-                    margin: const EdgeInsets.fromLTRB(0, 12, 22, 0),
-                    child: const Text("2022-08-08 12:30:01"),
-                  ),
-                ],
+        color: Colors.transparent,
+        elevation: 0,
+        child: SizedBox(
+          width: 300,
+          child: Column(
+            children: [
+              Container(
+                  alignment: Alignment.center,
+                  margin: const EdgeInsets.fromLTRB(0, 30, 0, 0),
+                  child: const Image(
+                    width: 42,
+                    height: 45,
+                    image: AssetImage('assets/images/shuroop_logo_Text.png'),
+                  )),
+              Container(
+                alignment: Alignment.centerRight,
+                margin: const EdgeInsets.fromLTRB(0, 32, 30, 7),
+                child: const Text("2022-08-08 12:30:21"),
               ),
-            ),
-            Container(
-              margin: const EdgeInsets.fromLTRB(0, 0, 7, 0),
-              child: Row(
-                mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                children: [
-                  Container(
-                    margin: const EdgeInsets.fromLTRB(22, 12, 0, 0),
-                    child: const Text("반납시각"),
-                  ),
-                  Container(
-                    margin: const EdgeInsets.fromLTRB(0, 12, 22, 0),
-                    child: const Text("2022-08-08 12:30:21"),
-                  ),
-                ],
+              const DottedLine(
+                lineLength: 250,
+                dashLength: 10,
+                lineThickness: 1,
+                dashColor: ZeplinColors.inactivated_gray,
               ),
-            ),
-            Container(
-              margin: const EdgeInsets.fromLTRB(0, 0, 7, 0),
-              child: Row(
-                mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                children: [
-                  Container(
-                    margin: const EdgeInsets.fromLTRB(22, 12, 0, 7),
-                    child: const Text("연체시간"),
-                  ),
-                  Container(
-                    margin: const EdgeInsets.fromLTRB(0, 12, 22, 7),
-                    child: const Text("00:00:00"),
-                  ),
-                ],
+              Container(
+                margin: const EdgeInsets.fromLTRB(0, 0, 7, 0),
+                child: Row(
+                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                  children: [
+                    Container(
+                      margin: const EdgeInsets.fromLTRB(22, 12, 0, 0),
+                      child: const Text("대여시각"),
+                    ),
+                    Container(
+                      margin: const EdgeInsets.fromLTRB(0, 12, 22, 0),
+                      child: const Text("2022-08-08 12:30:01"),
+                    ),
+                  ],
+                ),
               ),
-            ),
-            const DottedLine(
-              lineLength: 300,
-              dashLength: 10,
-              lineThickness: 0.8,
-              dashColor: ZeplinColors.inactivated_gray,
-            ),
-            Container(
-              margin: const EdgeInsets.fromLTRB(0, 0, 7, 0),
-              child: Row(
-                mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                children: [
-                  Container(
-                    margin: const EdgeInsets.fromLTRB(22, 12, 0, 7),
-                    child: const Text("보증금액"),
-                  ),
-                  Container(
-                    margin: const EdgeInsets.fromLTRB(0, 12, 22, 7),
-                    child: const Text("5,000 / 24"),
-                  ),
-                ],
+              Container(
+                margin: const EdgeInsets.fromLTRB(0, 0, 7, 0),
+                child: Row(
+                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                  children: [
+                    Container(
+                      margin: const EdgeInsets.fromLTRB(22, 12, 0, 0),
+                      child: const Text("반납시각"),
+                    ),
+                    Container(
+                      margin: const EdgeInsets.fromLTRB(0, 12, 22, 0),
+                      child: const Text("2022-08-08 12:30:21"),
+                    ),
+                  ],
+                ),
               ),
-            ),
-            Container(
-              margin: const EdgeInsets.fromLTRB(0, 0, 7, 0),
-              child: Row(
-                mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                children: [
-                  Container(
-                    margin: const EdgeInsets.fromLTRB(22, 12, 0, 7),
-                    child: const Text("환불금액"),
-                  ),
-                  Container(
-                    margin: const EdgeInsets.fromLTRB(0, 12, 22, 7),
-                    child: const Text("-5,000 / 24"),
-                  ),
-                ],
+              Container(
+                margin: const EdgeInsets.fromLTRB(0, 0, 7, 0),
+                child: Row(
+                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                  children: [
+                    Container(
+                      margin: const EdgeInsets.fromLTRB(22, 12, 0, 7),
+                      child: const Text("연체시간"),
+                    ),
+                    Container(
+                      margin: const EdgeInsets.fromLTRB(0, 12, 22, 7),
+                      child: const Text("00:00:00"),
+                    ),
+                  ],
+                ),
               ),
-            ),
-            Container(
-              margin: const EdgeInsets.fromLTRB(0, 0, 7, 0),
-              child: Row(
-                mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                children: [
-                  Container(
-                    margin: const EdgeInsets.fromLTRB(22, 12, 0, 12),
-                    child: const Text("연체금액"),
-                  ),
-                  Container(
-                    margin: const EdgeInsets.fromLTRB(0, 12, 22, 12),
-                    child: const Text("0"),
-                  ),
-                ],
+              const DottedLine(
+                lineLength: 250,
+                dashLength: 10,
+                lineThickness: 1,
+                dashColor: ZeplinColors.inactivated_gray,
               ),
-            ),
-            const DottedLine(
-              lineLength: 300,
-              dashLength: 10,
-              lineThickness: 0.8,
-              dashColor: ZeplinColors.inactivated_gray,
-            ),
-            Container(
-              margin: const EdgeInsets.fromLTRB(0, 0, 0, 0),
-              child: Row(
-                mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                children: [
-                  Container(
-                    margin: const EdgeInsets.fromLTRB(22, 12, 0, 12),
-                    child: const Text(
-                      "결제금액",
-                      style: TextStyle(
-                        fontSize: 20,
+              Container(
+                margin: const EdgeInsets.fromLTRB(0, 0, 7, 0),
+                child: Row(
+                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                  children: [
+                    Container(
+                      margin: const EdgeInsets.fromLTRB(22, 12, 0, 7),
+                      child: const Text("보증금액"),
+                    ),
+                    Container(
+                      margin: const EdgeInsets.fromLTRB(0, 12, 22, 7),
+                      child: const Text("5,000 / 24"),
+                    ),
+                  ],
+                ),
+              ),
+              Container(
+                margin: const EdgeInsets.fromLTRB(0, 0, 7, 0),
+                child: Row(
+                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                  children: [
+                    Container(
+                      margin: const EdgeInsets.fromLTRB(22, 12, 0, 7),
+                      child: const Text("환불금액"),
+                    ),
+                    Container(
+                      margin: const EdgeInsets.fromLTRB(0, 12, 22, 7),
+                      child: const Text("-5,000 / 24"),
+                    ),
+                  ],
+                ),
+              ),
+              Container(
+                margin: const EdgeInsets.fromLTRB(0, 0, 7, 0),
+                child: Row(
+                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                  children: [
+                    Container(
+                      margin: const EdgeInsets.fromLTRB(22, 12, 0, 12),
+                      child: const Text("연체금액"),
+                    ),
+                    Container(
+                      margin: const EdgeInsets.fromLTRB(0, 12, 22, 12),
+                      child: const Text("0"),
+                    ),
+                  ],
+                ),
+              ),
+              const DottedLine(
+                lineLength: 250,
+                dashLength: 10,
+                lineThickness: 1,
+                dashColor: ZeplinColors.inactivated_gray,
+              ),
+              Container(
+                margin: const EdgeInsets.fromLTRB(0, 0, 0, 0),
+                child: Row(
+                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                  children: [
+                    Container(
+                      margin: const EdgeInsets.fromLTRB(22, 12, 0, 12),
+                      child: const Text(
+                        "결제금액",
+                        style: TextStyle(
+                          fontSize: 20,
+                        ),
                       ),
                     ),
-                  ),
-                  Container(
-                    margin: const EdgeInsets.fromLTRB(0, 12, 26, 12),
-                    child: Text(
-                      paymentAmount,
-                      style: const TextStyle(fontSize: 20),
+                    Container(
+                      margin: const EdgeInsets.fromLTRB(0, 12, 26, 12),
+                      child: Text(
+                        paymentAmount,
+                        style: const TextStyle(fontSize: 20),
+                      ),
                     ),
-                  ),
-                ],
+                  ],
+                ),
               ),
-            ),
-            const DottedLine(
-              lineLength: 300,
-              dashLength: 10,
-              lineThickness: 0.8,
-              dashColor: ZeplinColors.inactivated_gray,
-            ),
-            Container(
-              margin: const EdgeInsets.fromLTRB(0, 0, 7, 0),
-              child: Row(
-                mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                children: [
-                  Container(
-                    margin: const EdgeInsets.fromLTRB(22, 12, 0, 7),
-                    child: const Text("결제수단"),
-                  ),
-                  Container(
-                    margin: const EdgeInsets.fromLTRB(0, 12, 22, 7),
-                    child: const Text("카카오페이"),
-                  ),
-                ],
+              const DottedLine(
+                lineLength: 250,
+                dashLength: 10,
+                lineThickness: 1,
+                dashColor: ZeplinColors.inactivated_gray,
               ),
-            ),
-            Container(
-                alignment: Alignment.center,
-                margin: const EdgeInsets.fromLTRB(0, 60, 0, 0),
-                child: const Image(
-                  width: 42,
-                  height: 45,
-                  image: AssetImage('assets/images/logo_gray.png'),
-                )),
-          ],
+              Container(
+                margin: const EdgeInsets.fromLTRB(0, 0, 7, 0),
+                child: Row(
+                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                  children: [
+                    Container(
+                      margin: const EdgeInsets.fromLTRB(22, 12, 0, 7),
+                      child: const Text("결제수단"),
+                    ),
+                    Container(
+                      margin: const EdgeInsets.fromLTRB(0, 12, 22, 7),
+                      child: const Text("카카오페이"),
+                    ),
+                  ],
+                ),
+              ),
+              Container(
+                  alignment: Alignment.center,
+                  margin: const EdgeInsets.fromLTRB(0, 60, 0, 0),
+                  child: const Image(
+                    width: 42,
+                    height: 45,
+                    image: AssetImage('assets/images/logo_gray.png'),
+                  )),
+            ],
+          ),
         ),
       ),
     );

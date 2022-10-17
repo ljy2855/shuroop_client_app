@@ -3,6 +3,7 @@ import 'dart:io';
 
 import 'package:flutter/material.dart';
 import 'package:http/http.dart' as http;
+import 'package:shuroop_client_app/colors.dart';
 import 'package:shuroop_client_app/url.dart';
 import 'deposit_payment_completed.dart';
 import 'package:shuroop_client_app/auth/provider/token.dart';
@@ -77,42 +78,44 @@ class _DepositPaymentState extends State<DepositPayment> {
                 color:
                     (value == index) ? const Color(0xFFFCB93F) : Colors.white),
             padding: const EdgeInsets.fromLTRB(20, 20, 20, 14)),
-        child: Column(
-          children: [
-            (text == "5,000원/24시간")
-                ? Container(
-                    margin: const EdgeInsets.fromLTRB(0, 14, 0, 10),
-                    child: Icon(Icons.calendar_today_sharp,
-                        size: 14,
-                        color: (value == index)
-                            ? const Color(0xFFFCB93F)
-                            : Colors.grey),
-                  )
-                : Container(
-                    width: 50,
-                    margin: const EdgeInsets.fromLTRB(0, 14, 0, 10),
-                    child: Row(
-                        mainAxisAlignment: MainAxisAlignment.spaceAround,
-                        children: [
-                          Icon(Icons.calendar_today_sharp,
-                              size: 14,
-                              color: (value == index)
-                                  ? const Color(0xFFFCB93F)
-                                  : Colors.grey),
-                          Icon(Icons.calendar_today_sharp,
-                              size: 14,
-                              color: (value == index)
-                                  ? const Color(0xFFFCB93F)
-                                  : Colors.grey)
-                        ]),
-                  ),
-            Text(
-              text,
-              style: const TextStyle(
-                color: Colors.black,
+        child: SizedBox(
+          height: 100,
+          width: 124,
+          child: Column(
+            mainAxisAlignment: MainAxisAlignment.center,
+            children: [
+              (text == "5,000원/24시간")
+                  ? Icon(Icons.calendar_today_outlined,
+                      size: 20,
+                      color: (value == index)
+                          ? const Color(0xFFFCB93F)
+                          : Colors.grey)
+                  : SizedBox(
+                      width: 50,
+                      child: Row(
+                          mainAxisAlignment: MainAxisAlignment.spaceAround,
+                          children: [
+                            Icon(Icons.calendar_today_outlined,
+                                size: 20,
+                                color: (value == index)
+                                    ? const Color(0xFFFCB93F)
+                                    : Colors.grey),
+                            Icon(Icons.calendar_today_outlined,
+                                size: 20,
+                                color: (value == index)
+                                    ? const Color(0xFFFCB93F)
+                                    : Colors.grey)
+                          ]),
+                    ),
+              Padding(padding: EdgeInsets.only(top: 13)),
+              Text(
+                text,
+                style: const TextStyle(
+                  color: Colors.black,
+                ),
               ),
-            ),
-          ],
+            ],
+          ),
         ));
   }
 
@@ -125,10 +128,13 @@ class _DepositPaymentState extends State<DepositPayment> {
           title: const Text("보증금 결제",
               style: TextStyle(
                   fontFamily: 'IBMPlexSans',
-                  fontSize: 20,
+                  fontSize: 16,
                   fontWeight: FontWeight.w700)),
           leading: IconButton(
-            icon: const Icon(Icons.arrow_back_ios),
+            icon: const Icon(
+              Icons.arrow_back_ios,
+              size: 24,
+            ),
             onPressed: () {
               Navigator.of(context).pop();
             },
@@ -154,15 +160,16 @@ class _DepositPaymentState extends State<DepositPayment> {
                   margin: const EdgeInsets.fromLTRB(0, 0, 133, 25),
                   child: const Text("대여소에서 우산을 빌려가는 시간부터 계산돼요.",
                       style: TextStyle(
-                          color: Colors.grey,
+                          color: ZeplinColors.inactivated_gray,
                           fontFamily: 'IBMPlexSans',
                           fontWeight: FontWeight.w400,
                           fontSize: 10)),
                 ),
                 Row(
-                  mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                  mainAxisAlignment: MainAxisAlignment.center,
                   children: [
                     customRadioButton("5,000원/24시간", 1),
+                    const Padding(padding: EdgeInsets.only(left: 20)),
                     customRadioButton("8,000원/48시간", 2),
                   ],
                 ),
@@ -197,9 +204,12 @@ class _DepositPaymentState extends State<DepositPayment> {
                 shape: RoundedRectangleBorder(
                     borderRadius: BorderRadius.circular(50))),
             onPressed: () {
-              payment().then((value) => Navigator.of(context).push(
-                  MaterialPageRoute(
-                      builder: (context) => const DepositPaymentCompleted())));
+              if (_isChecked) {
+                payment().then((value) => Navigator.of(context).push(
+                    MaterialPageRoute(
+                        builder: (context) =>
+                            const DepositPaymentCompleted())));
+              }
             },
             child: (value == 1)
                 ? const Text('5,000원 결제하기',

@@ -1,5 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_naver_map/flutter_naver_map.dart';
+import 'package:provider/provider.dart';
+import 'package:shuroop_client_app/auth/model/profile.dart';
+import 'package:shuroop_client_app/auth/provider/profile_provider.dart';
 import 'package:shuroop_client_app/auth/provider/token.dart';
 import 'package:shuroop_client_app/colors.dart';
 import 'package:shuroop_client_app/map/model/place.dart';
@@ -24,6 +27,7 @@ class _SearchedMapPageState extends State<SearchedMapPage> {
   late LatLng middlePosition;
   bool isSelected = false;
   final ValueNotifier<bool> isFavorite = ValueNotifier<bool>(false);
+  late final ProfileProvider profile;
 
   late Place currentSelectedPlace;
   @override
@@ -34,6 +38,7 @@ class _SearchedMapPageState extends State<SearchedMapPage> {
       isSelected = true;
       currentSelectedPlace = widget.places.first;
     }
+    profile = Provider.of<ProfileProvider>(context, listen: false);
   }
 
   @override
@@ -105,7 +110,7 @@ class _SearchedMapPageState extends State<SearchedMapPage> {
                                   currentSelectedPlace = place;
                                 });
                               },
-                              child: placeInfoComponet(place),
+                              child: placeInfoComponent(place),
                             ))
                         .toList(),
                   ),
@@ -117,63 +122,83 @@ class _SearchedMapPageState extends State<SearchedMapPage> {
   }
 
   Widget selectedPlaceInfoComponent(Place place) {
-    return ConstrainedBox(
-      constraints: const BoxConstraints(maxHeight: 150),
-      child: Container(
-        decoration: const BoxDecoration(
-          borderRadius: BorderRadius.only(
-            topLeft: Radius.circular(20),
-            topRight: Radius.circular(20),
-          ),
-          color: Colors.white,
-        ),
-        child: Column(
-          children: [
-            placeInfoComponet(place),
-            Padding(
-              padding: const EdgeInsets.only(
-                left: 30,
+    return FutureBuilder(
+        future: getToken().then((token) => getFavoritePlaces(token)),
+        builder: ((context, snapshot) {
+          bool isLogin = false;
+          if (snapshot.data != null) {
+            isLogin = true;
+            for (PlaceRecord placeRecord in snapshot.data!) {
+              if (placeRecord.place!.id == place.id) {
+                isFavorite.value = true;
+              }
+            }
+          }
+          return ConstrainedBox(
+            constraints: const BoxConstraints(maxHeight: 150),
+            child: Container(
+              decoration: const BoxDecoration(
+                borderRadius: BorderRadius.only(
+                  topLeft: Radius.circular(20),
+                  topRight: Radius.circular(20),
+                ),
+                color: Colors.white,
               ),
-              child: Row(
+              child: Column(
                 children: [
-                  ValueListenableBuilder(
-                    valueListenable: isFavorite,
-                    builder: (context, value, child) => IconButton(
-                        onPressed: () => getToken()
-                                .then((token) =>
-                                    addFavoritePlace(place.id!, token))
-                                .then((_) {
-                              isFavorite.value = !isFavorite.value;
-                            }),
-                        icon: !value
-                            ? const Icon(
-                                Icons.star_border_rounded,
-                                size: 20,
-                                color: ZeplinColors.base_icon_gray,
-                              )
-                            : const Icon(
-                                Icons.star_rounded,
-                                size: 20,
-                                color: ZeplinColors.base_yellow,
-                              )),
+                  placeInfoComponent(place),
+                  Padding(
+                    padding: const EdgeInsets.only(
+                      left: 30,
+                    ),
+                    child: isLogin
+                        ? Row(
+                            children: [
+                              ValueListenableBuilder(
+                                valueListenable: isFavorite,
+                                builder: (context, value, child) => IconButton(
+                                    onPressed: () => getToken()
+                                            .then((token) => !value
+                                                ? addFavoritePlace(
+                                                    place.id!, token)
+                                                : removePlaceRecord(
+                                                    place.id!,
+                                                    token!,
+                                                    PlaceRecordType.favorite))
+                                            .then((_) {
+                                          isFavorite.value = !isFavorite.value;
+                                        }),
+                                    icon: !value
+                                        ? const Icon(
+                                            Icons.star_border_rounded,
+                                            size: 20,
+                                            color: ZeplinColors.base_icon_gray,
+                                          )
+                                        : const Icon(
+                                            Icons.star_rounded,
+                                            size: 20,
+                                            color: ZeplinColors.base_yellow,
+                                          )),
+                              ),
+                              IconButton(
+                                  onPressed: (() {}),
+                                  icon: const Icon(
+                                    Icons.share_outlined,
+                                    size: 20,
+                                    color: ZeplinColors.base_icon_gray,
+                                  )),
+                            ],
+                          )
+                        : null,
                   ),
-                  IconButton(
-                      onPressed: (() {}),
-                      icon: const Icon(
-                        Icons.share_outlined,
-                        size: 20,
-                        color: ZeplinColors.base_icon_gray,
-                      )),
                 ],
               ),
             ),
-          ],
-        ),
-      ),
-    );
+          );
+        }));
   }
 
-  Widget placeInfoComponet(Place place) {
+  Widget placeInfoComponent(Place place) {
     return SizedBox(
       width: 400,
       child: Container(

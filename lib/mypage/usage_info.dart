@@ -17,7 +17,7 @@ class UsageInformation extends StatelessWidget {
               style: TextStyle(
                   color: ZeplinColors.black,
                   fontFamily: 'IBMPlexSans',
-                  fontSize: 20,
+                  fontSize: 16,
                   fontWeight: FontWeight.w700)),
           leading: IconButton(
             color: ZeplinColors.black,
@@ -38,10 +38,10 @@ class UsageInformation extends StatelessWidget {
               margin: const EdgeInsets.fromLTRB(30, 50, 0, 7),
               child: const Text("슈룹에서 우산 빌려가기",
                   style: TextStyle(
-                      color: Color(0xFFFCB93F),
+                      color: ZeplinColors.base_yellow,
                       fontFamily: 'IBMPlexSans',
                       fontWeight: FontWeight.w600,
-                      fontSize: 15.4)),
+                      fontSize: 16)),
             ),
             Container(
               width: 198,
@@ -61,7 +61,6 @@ class UsageInformation extends StatelessWidget {
                   style: TextStyle(
                       color: Colors.grey,
                       fontFamily: 'IBMPlexSansKR',
-                      fontWeight: FontWeight.w700,
                       fontSize: 12)),
             ),
             Container(
@@ -205,12 +204,7 @@ class UsageInformation extends StatelessWidget {
                 shape: RoundedRectangleBorder(
                     borderRadius: BorderRadius.circular(50))),
             onPressed: () {
-              Navigator.of(context).push(
-                  MaterialPageRoute(builder: (context) => const MainMapPage()));
-              // Navigator.push(
-              //   context,
-              //   MaterialPageRoute(builder: (context) => const DepositPayment()),
-              // );
+              Navigator.of(context).popUntil((route) => route.isFirst);
             },
             child: const Text('우산 대여하기',
                 style: TextStyle(

@@ -30,6 +30,7 @@ class MainMapPageState extends State<MainMapPage> {
   final scaffoldKey = GlobalKey<ScaffoldState>();
   Completer<NaverMapController> _controller = Completer();
   final ValueNotifier<bool> isWeatherWidgetOpen = ValueNotifier<bool>(true);
+  final ValueNotifier<bool> isMoved = ValueNotifier<bool>(false);
 
   List<Marker> rentalMarkers = [];
   LatLng currentPosition = const LatLng(37.5513, 126.9414);
@@ -73,7 +74,7 @@ class MainMapPageState extends State<MainMapPage> {
             }
           },
         ),
-        elevation: 2,
+        elevation: 0.5,
         actions: [
           IconButton(
             onPressed: () => Navigator.of(context).push(
@@ -114,6 +115,8 @@ class MainMapPageState extends State<MainMapPage> {
                       zoom: 16,
                     ),
                     onMapCreated: onMapCreated,
+                    tiltGestureEnable: false,
+                    rotationGestureEnable: false, // 돌리기 금지
                     mapType: _mapType,
                     initLocationTrackingMode: _trackingMode,
                     locationButtonEnable: false,
@@ -130,24 +133,31 @@ class MainMapPageState extends State<MainMapPage> {
                     useSurface: kReleaseMode,
                     markers: markers!,
                   ),
-                  Align(
-                    alignment: Alignment.bottomRight,
-                    child: Padding(
-                      padding: const EdgeInsets.only(
-                        right: 30,
-                        bottom: 180,
-                      ),
-                      child: FloatingActionButton(
-                        backgroundColor: Colors.white,
-                        onPressed: _onTapLocation,
-                        child: const Icon(
-                          Icons.my_location,
-                          size: 30,
-                          color: Color(0xFFACACAC),
-                        ),
-                      ),
-                    ),
-                  ),
+                  ValueListenableBuilder(
+                      valueListenable: isWeatherWidgetOpen,
+                      builder: ((context, value, child) => Align(
+                            alignment: Alignment.bottomRight,
+                            child: Padding(
+                              padding: EdgeInsets.only(
+                                right: 30,
+                                bottom: value ? 180 : 110,
+                              ),
+                              child: ValueListenableBuilder(
+                                  valueListenable: isMoved,
+                                  builder: ((context, colorvalue, child) =>
+                                      FloatingActionButton(
+                                        backgroundColor: Colors.white,
+                                        onPressed: _onTapLocation,
+                                        child: Icon(
+                                          Icons.my_location,
+                                          size: 30,
+                                          color: colorvalue
+                                              ? ZeplinColors.inactivated_gray
+                                              : ZeplinColors.base_yellow,
+                                        ),
+                                      ))),
+                            ),
+                          ))),
                   Align(
                     alignment: Alignment.bottomCenter,
                     child: bottomBar(),
@@ -186,33 +196,33 @@ class MainMapPageState extends State<MainMapPage> {
                   Row(
                     mainAxisAlignment: MainAxisAlignment.center,
                     children: [
-                      Column(
-                        children: [
-                          ValueListenableBuilder(
-                              valueListenable: isWeatherWidgetOpen,
-                              builder: ((context, value, child) => IconButton(
-                                  iconSize: 30,
-                                  constraints:
-                                      const BoxConstraints(maxHeight: 27),
-                                  color: value
-                                      ? ZeplinColors.base_yellow
-                                      : ZeplinColors.inactivated_gray,
-                                  padding: const EdgeInsets.symmetric(
-                                      horizontal: 30, vertical: 0),
-                                  onPressed: () {
-                                    isWeatherWidgetOpen.value =
-                                        !isWeatherWidgetOpen.value;
-                                  },
-                                  icon: const Icon(
-                                    Icons.wb_sunny_outlined,
-                                  )))),
-                          const Text(
-                            "날씨",
-                            style: TextStyle(
-                                color: ZeplinColors.inactivated_gray,
-                                fontSize: 12),
-                          )
-                        ],
+                      GestureDetector(
+                        onTap: () {
+                          isWeatherWidgetOpen.value =
+                              !isWeatherWidgetOpen.value;
+                        },
+                        child: Padding(
+                          padding: const EdgeInsets.symmetric(horizontal: 30),
+                          child: Column(
+                            children: [
+                              ValueListenableBuilder(
+                                  valueListenable: isWeatherWidgetOpen,
+                                  builder: ((context, value, child) => Icon(
+                                        Icons.wb_sunny_outlined,
+                                        size: 30,
+                                        color: value
+                                            ? ZeplinColors.base_yellow
+                                            : ZeplinColors.inactivated_gray,
+                                      ))),
+                              const Text(
+                                "날씨",
+                                style: TextStyle(
+                                    color: ZeplinColors.inactivated_gray,
+                                    fontSize: 12),
+                              )
+                            ],
+                          ),
+                        ),
                       ),
                       profile.getProfile() == null ||
                               profile.getIsRenting() == false
@@ -288,35 +298,35 @@ class MainMapPageState extends State<MainMapPage> {
                                 ),
                               ),
                             ),
-                      Column(
-                        children: [
-                          IconButton(
-                              iconSize: 30,
-                              constraints: const BoxConstraints(maxHeight: 27),
-                              color: ZeplinColors.inactivated_gray,
-                              padding: const EdgeInsets.symmetric(
-                                  horizontal: 30, vertical: 0),
-                              onPressed: () {
-                                if (profile.getProfile() != null) {
-                                  Navigator.of(context)
-                                      .push(MaterialPageRoute(
-                                          builder: ((context) =>
-                                              PersonalInfo())))
-                                      .then((value) {
-                                    setState(() {});
-                                  });
-                                }
-                              },
-                              icon: const Icon(
+                      GestureDetector(
+                        onTap: () {
+                          if (profile.getProfile() != null) {
+                            Navigator.of(context)
+                                .push(MaterialPageRoute(
+                                    builder: ((context) => PersonalInfo())))
+                                .then((value) {
+                              setState(() {});
+                            });
+                          }
+                        },
+                        child: Padding(
+                          padding: const EdgeInsets.symmetric(horizontal: 30),
+                          child: Column(
+                            children: const [
+                              Icon(
                                 Icons.people_alt_outlined,
-                              )),
-                          const Text(
-                            "내정보",
-                            style: TextStyle(
+                                size: 30,
                                 color: ZeplinColors.inactivated_gray,
-                                fontSize: 12),
-                          )
-                        ],
+                              ),
+                              Text(
+                                "내정보",
+                                style: TextStyle(
+                                    color: ZeplinColors.inactivated_gray,
+                                    fontSize: 12),
+                              )
+                            ],
+                          ),
+                        ),
                       )
                     ],
                   ),
@@ -352,45 +362,52 @@ class MainMapPageState extends State<MainMapPage> {
                 final address = snapshot.data?.first;
                 final List<Weather> weather = snapshot.data?[1];
                 return Row(
+                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
                   children: [
-                    const Padding(padding: EdgeInsets.only(left: 30)),
-                    Column(
-                      mainAxisAlignment: MainAxisAlignment.center,
-                      crossAxisAlignment: CrossAxisAlignment.start,
-                      children: [
-                        Row(
-                          children: [
-                            const Icon(
-                              Icons.my_location,
-                              size: 14,
-                              color: ZeplinColors.inactivated_gray,
-                            ),
-                            const Padding(padding: EdgeInsets.only(right: 5)),
-                            Text(
-                              address.toString(),
-                              style: const TextStyle(
-                                fontSize: 14,
+                    Padding(
+                      padding: const EdgeInsets.only(left: 30),
+                      child: Column(
+                        mainAxisAlignment: MainAxisAlignment.center,
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        children: [
+                          Row(
+                            children: [
+                              const Icon(
+                                Icons.my_location,
+                                size: 14,
+                                color: ZeplinColors.inactivated_gray,
                               ),
-                            ),
-                          ],
-                        ),
-                        Text(
-                          checkRainny(weather.sublist(0, 8))
-                              ? "오늘은 비가 올지도 몰라요"
-                              : "오늘 비 예보는 없어요!",
-                          style: const TextStyle(
-                            fontWeight: FontWeight.w400,
-                            color: ZeplinColors.sub_text,
-                            fontSize: 12,
+                              const Padding(padding: EdgeInsets.only(right: 5)),
+                              Text(
+                                address.toString(),
+                                style: const TextStyle(
+                                  fontSize: 14,
+                                ),
+                              ),
+                            ],
                           ),
-                        ),
-                      ],
+                          Text(
+                            checkRainny(weather.sublist(0, 8))
+                                ? "오늘은 비가 올지도 몰라요"
+                                : "오늘 비 예보는 없어요!",
+                            style: const TextStyle(
+                              fontWeight: FontWeight.w400,
+                              color: ZeplinColors.sub_text,
+                              fontSize: 12,
+                            ),
+                          ),
+                        ],
+                      ),
                     ),
-                    const Padding(
-                      padding: EdgeInsets.only(left: 110),
-                    ),
-                    weatherInfo(weather[0]),
-                    weatherInfo(weather[3]),
+                    Padding(
+                      padding: const EdgeInsets.only(right: 30),
+                      child: Row(
+                        children: [
+                          weatherInfo(weather[0]),
+                          weatherInfo(weather[3]),
+                        ],
+                      ),
+                    )
                   ],
                 );
               } else {
@@ -505,11 +522,16 @@ class MainMapPageState extends State<MainMapPage> {
   void _onTapLocation() async {
     final controller = await _controller.future;
     controller.setLocationTrackingMode(LocationTrackingMode.Follow);
+    isMoved.value = false;
   }
 
   void _onCameraChange(
       LatLng? latLng, CameraChangeReason reason, bool? isAnimated) {
     currentPosition = latLng!;
+    if (reason == CameraChangeReason.gesture) {
+      isMoved.value = true;
+    }
+
     // print('카메라 움직임 >>> 위치 : ${latLng?.latitude}, ${latLng?.longitude}'
     //     '\n원인: $reason'
     //     '\n에니메이션 여부: $isAnimated');

@@ -41,16 +41,12 @@ class PersonalInfo extends StatelessWidget {
               margin: const EdgeInsets.fromLTRB(0, 0, 0, 20),
               alignment: Alignment.centerLeft,
               width: double.infinity,
-              child: TextButton(
-                onPressed: () => Navigator.of(context).push(MaterialPageRoute(
-                    builder: (((context) => const Notice())))),
-                child: Text(profile.getProfile()?.email ?? "abc@gmail.com",
-                    style: const TextStyle(
-                        fontSize: 20,
-                        fontFamily: 'IBMPlexSansKR',
-                        fontWeight: FontWeight.w700,
-                        color: ZeplinColors.black)),
-              ),
+              child: Text(profile.getProfile()?.email ?? "abc@gmail.com",
+                  style: const TextStyle(
+                      fontSize: 20,
+                      fontFamily: 'IBMPlexSansKR',
+                      fontWeight: FontWeight.w700,
+                      color: ZeplinColors.black)),
             ),
             Container(
               color: ZeplinColors.white,
@@ -144,12 +140,10 @@ class PersonalInfo extends StatelessWidget {
               alignment: Alignment.centerLeft,
               width: double.infinity,
               child: TextButton(
-                onPressed: () => Navigator.of(context).push(MaterialPageRoute(
-                    builder: (((context) => const Notice())))),
+                onPressed: () {},
                 child: const Text("비밀번호 변경",
                     style: TextStyle(
                         fontSize: 14,
-                        fontFamily: 'IBMPlexSansKR',
                         fontWeight: FontWeight.w400,
                         color: ZeplinColors.black)),
               ),

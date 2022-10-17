@@ -13,9 +13,9 @@ class DepositInformation extends StatelessWidget {
           centerTitle: true,
           title: const Text("보증금 결제",
               style: TextStyle(
-                  fontFamily: 'IBMPlexSans',
-                  fontSize: 20,
-                  fontWeight: FontWeight.w700)),
+                fontSize: 16,
+                fontWeight: FontWeight.w700,
+              )),
           leading: IconButton(
             icon: const Icon(Icons.arrow_back_ios),
             onPressed: () {
@@ -35,7 +35,7 @@ class DepositInformation extends StatelessWidget {
                   style: TextStyle(
                       fontFamily: 'IBMPlexSans',
                       fontSize: 20,
-                      fontWeight: FontWeight.w600)),
+                      fontWeight: FontWeight.w700)),
             ),
             Container(
               margin: const EdgeInsets.fromLTRB(99.2, 88.21, 100.14, 125.45),
@@ -62,7 +62,7 @@ class DepositInformation extends StatelessWidget {
                       color: Color(0xFFFCB93F),
                       fontFamily: 'IBMPlexSans',
                       fontWeight: FontWeight.w600,
-                      fontSize: 15.4)),
+                      fontSize: 16)),
             ),
             Container(
               width: 198,
@@ -82,8 +82,8 @@ class DepositInformation extends StatelessWidget {
                   style: TextStyle(
                       color: Colors.grey,
                       fontFamily: 'IBMPlexSansKR',
-                      fontWeight: FontWeight.w700,
-                      fontSize: 16)),
+                      fontWeight: FontWeight.w400,
+                      fontSize: 12)),
             ),
             Container(
               margin: const EdgeInsets.fromLTRB(99.2, 0, 100.14, 82),
@@ -127,7 +127,7 @@ class DepositInformation extends StatelessWidget {
                       color: Colors.grey,
                       fontFamily: 'IBMPlexSans',
                       fontWeight: FontWeight.w400,
-                      fontSize: 11)),
+                      fontSize: 12)),
             ),
             Container(
               margin: const EdgeInsets.fromLTRB(99.2, 0, 100.14, 82),
@@ -154,7 +154,7 @@ class DepositInformation extends StatelessWidget {
                       color: Colors.grey,
                       fontFamily: 'IBMPlexSans',
                       fontWeight: FontWeight.w400,
-                      fontSize: 11)),
+                      fontSize: 12)),
             ),
             Container(
               alignment: Alignment.center,

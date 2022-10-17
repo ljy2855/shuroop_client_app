@@ -120,9 +120,10 @@ class _LoginPageState extends State<LoginPage> {
                       controller: passwordInputController,
                       obscureText: true,
                       decoration: const InputDecoration(
+                        hintText: '비밀번호',
                         border: InputBorder.none,
                         contentPadding:
-                            EdgeInsets.symmetric(vertical: 15, horizontal: 10),
+                            EdgeInsets.symmetric(vertical: 10, horizontal: 10),
                       ),
                     )),
               const Padding(padding: EdgeInsets.only(top: 28)),

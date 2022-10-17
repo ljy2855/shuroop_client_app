@@ -1,4 +1,6 @@
 import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
+import 'package:shuroop_client_app/auth/provider/profile_provider.dart';
 import 'package:shuroop_client_app/auth/provider/token.dart';
 import 'package:shuroop_client_app/colors.dart';
 import 'package:shuroop_client_app/map/model/place.dart';
@@ -15,6 +17,7 @@ class SearchPage extends StatefulWidget {
 class _SearchPageState extends State<SearchPage> with TickerProviderStateMixin {
   late TabController _tabController;
   TextEditingController textController = TextEditingController();
+  late ProfileProvider profile;
 
   @override
   void initState() {
@@ -23,6 +26,7 @@ class _SearchPageState extends State<SearchPage> with TickerProviderStateMixin {
       vsync: this,
     );
     super.initState();
+    profile = Provider.of<ProfileProvider>(context, listen: false);
   }
 
   @override
@@ -113,25 +117,41 @@ class _SearchPageState extends State<SearchPage> with TickerProviderStateMixin {
                                         mainAxisAlignment:
                                             MainAxisAlignment.spaceBetween,
                                         children: [
-                                          GestureDetector(
-                                            child: Text(place.place!.name!),
-                                            onTap: () => Navigator.of(context)
-                                                .push(MaterialPageRoute(
-                                                    builder: ((context) =>
-                                                        SearchedMapPage(
-                                                          isSelected: true,
-                                                          keyword: place
-                                                              .place!.name!,
-                                                          places: [
-                                                            place.place!
-                                                          ],
-                                                        )))),
+                                          Row(
+                                            children: [
+                                              GestureDetector(
+                                                child: Text(place.place!.name!),
+                                                onTap: () => Navigator.of(
+                                                        context)
+                                                    .push(MaterialPageRoute(
+                                                        builder: ((context) =>
+                                                            SearchedMapPage(
+                                                              isSelected: true,
+                                                              keyword: place
+                                                                  .place!.name!,
+                                                              places: [
+                                                                place.place!
+                                                              ],
+                                                            ))))
+                                                    .then((_) {
+                                                  setState(() {});
+                                                }),
+                                              ),
+                                              Text(
+                                                "  ${place.place!.umbrellaCount}",
+                                                style: const TextStyle(
+                                                  fontWeight: FontWeight.w500,
+                                                  color:
+                                                      ZeplinColors.base_yellow,
+                                                ),
+                                              )
+                                            ],
                                           ),
                                           GestureDetector(
                                             onTap: () => getToken()
                                                 .then((token) =>
                                                     removePlaceRecord(
-                                                        place.id!,
+                                                        place.place!.id!,
                                                         token!,
                                                         PlaceRecordType.search))
                                                 .then((_) {
@@ -160,6 +180,7 @@ class _SearchPageState extends State<SearchPage> with TickerProviderStateMixin {
                         if (snapshot.connectionState == ConnectionState.done &&
                             snapshot.hasData) {
                           final List<PlaceRecord>? places = snapshot.data;
+
                           return Container(
                             padding: const EdgeInsets.all(15),
                             child: Column(
@@ -171,25 +192,41 @@ class _SearchPageState extends State<SearchPage> with TickerProviderStateMixin {
                                         mainAxisAlignment:
                                             MainAxisAlignment.spaceBetween,
                                         children: [
-                                          GestureDetector(
-                                            child: Text(place.place!.name!),
-                                            onTap: () => Navigator.of(context)
-                                                .push(MaterialPageRoute(
-                                                    builder: ((context) =>
-                                                        SearchedMapPage(
-                                                          isSelected: true,
-                                                          keyword: place
-                                                              .place!.name!,
-                                                          places: [
-                                                            place.place!
-                                                          ],
-                                                        )))),
+                                          Row(
+                                            children: [
+                                              GestureDetector(
+                                                child: Text(place.place!.name!),
+                                                onTap: () => Navigator.of(
+                                                        context)
+                                                    .push(MaterialPageRoute(
+                                                        builder: ((context) =>
+                                                            SearchedMapPage(
+                                                              isSelected: true,
+                                                              keyword: place
+                                                                  .place!.name!,
+                                                              places: [
+                                                                place.place!
+                                                              ],
+                                                            ))))
+                                                    .then((_) {
+                                                  setState(() {});
+                                                }),
+                                              ),
+                                              Text(
+                                                "  ${place.place!.umbrellaCount}",
+                                                style: const TextStyle(
+                                                  fontWeight: FontWeight.w500,
+                                                  color:
+                                                      ZeplinColors.base_yellow,
+                                                ),
+                                              )
+                                            ],
                                           ),
                                           GestureDetector(
                                             onTap: () => getToken()
                                                 .then((token) =>
                                                     removePlaceRecord(
-                                                        place.id!,
+                                                        place.place!.id!,
                                                         token!,
                                                         PlaceRecordType
                                                             .favorite))

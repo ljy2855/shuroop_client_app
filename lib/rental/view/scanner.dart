@@ -30,6 +30,7 @@ class _QRScanPageState extends State<QRScanPage> {
   Barcode? result;
   QRViewController? controller;
   Record? record;
+  final ValueNotifier<bool> isLoading = ValueNotifier<bool>(false);
   final GlobalKey qrKey = GlobalKey(debugLabel: 'QR');
   @override
   void initState() {
@@ -67,13 +68,24 @@ class _QRScanPageState extends State<QRScanPage> {
       floatingActionButton: FloatingActionButton(
           backgroundColor: Colors.white60,
           onPressed: () async {
-            await controller?.flipCamera(); //toggleFlash()
-            setState(() {});
+            await controller?.toggleFlash(); //toggleFlash()
           },
           child: const Icon(Icons.flash_on)),
       body: Column(
         children: <Widget>[
-          Expanded(flex: 10, child: _buildQrView(context)),
+          Expanded(
+              flex: 10,
+              child: Stack(
+                children: [
+                  _buildQrView(context),
+                  ValueListenableBuilder(
+                      valueListenable: isLoading,
+                      builder: ((context, value, child) => Center(
+                          child: value
+                              ? const CircularProgressIndicator()
+                              : Container())))
+                ],
+              )),
           //To check qr data
         ],
       ),
@@ -127,11 +139,13 @@ class _QRScanPageState extends State<QRScanPage> {
       setState(() {
         result = scanData;
       });
+      isLoading.value = true;
+      await controller.pauseCamera();
       if (await checkQRcode(scanData)) {
-        await controller.pauseCamera();
         if (!mounted) return;
 
         if (await rentalRequest(scanData.code!)) {
+          await Future.delayed(const Duration(milliseconds: 500));
           if (widget.type == QRScanType.borw) {
             await Navigator.of(context).pushReplacement(MaterialPageRoute(
                 builder: (context) => const RentalSuccessPage()));
@@ -148,6 +162,7 @@ class _QRScanPageState extends State<QRScanPage> {
         if (!mounted) return;
         await controller.resumeCamera();
       }
+      isLoading.value = false;
     });
   }
 

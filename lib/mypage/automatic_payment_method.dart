@@ -39,9 +39,7 @@ class _AutomaticPaymentMethodState extends State<AutomaticPaymentMethod> {
                 shape: RoundedRectangleBorder(
                     borderRadius: BorderRadius.circular(50))),
             onPressed: () {
-              // Navigator.of(context).push(MaterialPageRoute(
-              //     builder: (context) => const PersonalInfo()
-              // ));
+              Navigator.of(context).pop();
             },
             child: const Text('확인',
                 style: TextStyle(
