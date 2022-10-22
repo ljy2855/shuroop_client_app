@@ -89,201 +89,152 @@ class ReturnCompleted extends StatelessWidget {
                 onPressed: () => moveToBottomScroll(scrollController),
               ),
             ),
-            Container(
-              width: 400,
-              height: 580,
-              margin: const EdgeInsets.fromLTRB(30, 64, 29, 0),
-              child: Card(
-                elevation: 10.0,
-                color: ZeplinColors.background_gray,
-                child: Column(
-                  children: [
-                    Container(
-                        alignment: Alignment.center,
-                        margin: const EdgeInsets.fromLTRB(0, 30, 0, 0),
-                        child: const Image(
-                          width: 42,
-                          height: 45,
-                          image:
-                              AssetImage('assets/images/shuroop_logo_Text.png'),
-                        )),
-                    Container(
-                      alignment: Alignment.centerRight,
-                      margin: const EdgeInsets.fromLTRB(0, 32, 30, 7),
-                      child: Text(dateFormat.format(DateTime.now())),
-                    ),
-                    const DottedLine(
-                      lineLength: 300,
-                      dashLength: 10,
-                      lineThickness: 0.8,
-                      dashColor: ZeplinColors.inactivated_gray,
-                    ),
-                    Container(
-                      margin: const EdgeInsets.fromLTRB(0, 0, 7, 0),
-                      child: Row(
-                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+            Row(
+              mainAxisAlignment: MainAxisAlignment.center,
+              children: [
+                SizedBox(
+                  width: 350,
+                  child: Card(
+                    elevation: 10.0,
+                    color: ZeplinColors.background_gray,
+                    child: Padding(
+                      padding: const EdgeInsets.symmetric(horizontal: 22),
+                      child: Column(
                         children: [
+                          const Padding(padding: EdgeInsets.only(top: 30)),
                           Container(
-                            margin: const EdgeInsets.fromLTRB(22, 12, 0, 0),
-                            child: const Text("대여시각"),
+                              alignment: Alignment.center,
+                              child: const Image(
+                                width: 42,
+                                height: 45,
+                                image: AssetImage(
+                                    'assets/images/shuroop_logo_Text.png'),
+                              )),
+                          const Padding(padding: EdgeInsets.only(top: 30)),
+                          Row(
+                            mainAxisAlignment: MainAxisAlignment.end,
+                            children: [
+                              Text(dateFormat.format(DateTime.now())),
+                            ],
                           ),
-                          Container(
-                            margin: const EdgeInsets.fromLTRB(0, 12, 22, 0),
-                            child: Text(dateFormat.format(record.borrowTime!)),
+                          const Padding(padding: EdgeInsets.only(top: 7)),
+                          const DottedLine(
+                            lineLength: 300,
+                            dashLength: 10,
+                            lineThickness: 0.8,
+                            dashColor: ZeplinColors.inactivated_gray,
                           ),
-                        ],
-                      ),
-                    ),
-                    Container(
-                      margin: const EdgeInsets.fromLTRB(0, 0, 7, 0),
-                      child: Row(
-                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                        children: [
-                          Container(
-                            margin: const EdgeInsets.fromLTRB(22, 12, 0, 0),
-                            child: const Text("반납시각"),
+                          const Padding(padding: EdgeInsets.only(top: 12)),
+                          Row(
+                            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                            children: [
+                              const Text("대여시각"),
+                              Text(dateFormat.format(record.borrowTime!)),
+                            ],
                           ),
-                          Container(
-                            margin: const EdgeInsets.fromLTRB(0, 12, 22, 0),
-                            child: Text(dateFormat.format(record.returnTime!)),
+                          const Padding(padding: EdgeInsets.only(top: 7)),
+                          Row(
+                            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                            children: [
+                              const Text("반납시각"),
+                              Text(dateFormat.format(record.returnTime!)),
+                            ],
                           ),
-                        ],
-                      ),
-                    ),
-                    Container(
-                      margin: const EdgeInsets.fromLTRB(0, 0, 7, 0),
-                      child: Row(
-                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                        children: [
-                          Container(
-                            margin: const EdgeInsets.fromLTRB(22, 12, 0, 7),
-                            child: const Text("연체시간"),
+                          const Padding(padding: EdgeInsets.only(top: 7)),
+                          Row(
+                            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                            children: [
+                              const Text("연체시간"),
+                              Text(printDuration(record.overTime!)),
+                            ],
                           ),
-                          Container(
-                            margin: const EdgeInsets.fromLTRB(0, 12, 22, 7),
-                            child: Text(printDuration(record.overTime!)),
+                          const Padding(padding: EdgeInsets.only(top: 12)),
+                          const DottedLine(
+                            lineLength: 300,
+                            dashLength: 10,
+                            lineThickness: 0.8,
+                            dashColor: ZeplinColors.inactivated_gray,
                           ),
-                        ],
-                      ),
-                    ),
-                    const DottedLine(
-                      lineLength: 300,
-                      dashLength: 10,
-                      lineThickness: 0.8,
-                      dashColor: ZeplinColors.inactivated_gray,
-                    ),
-                    Container(
-                      margin: const EdgeInsets.fromLTRB(0, 0, 7, 0),
-                      child: Row(
-                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                        children: [
-                          Container(
-                            margin: const EdgeInsets.fromLTRB(22, 12, 0, 7),
-                            child: const Text("보증금액"),
+                          const Padding(padding: EdgeInsets.only(top: 12)),
+                          Row(
+                            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                            children: const [
+                              Text("보증금액"),
+                              Text("5,000 / 24"),
+                            ],
                           ),
-                          Container(
-                            margin: const EdgeInsets.fromLTRB(0, 12, 22, 7),
-                            child: const Text("5,000 / 24"),
+                          const Padding(padding: EdgeInsets.only(top: 7)),
+                          Row(
+                            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                            children: const [
+                              Text("환불금액"),
+                              Text("-5,000 / 24"),
+                            ],
                           ),
-                        ],
-                      ),
-                    ),
-                    Container(
-                      margin: const EdgeInsets.fromLTRB(0, 0, 7, 0),
-                      child: Row(
-                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                        children: [
-                          Container(
-                            margin: const EdgeInsets.fromLTRB(22, 12, 0, 7),
-                            child: const Text("환불금액"),
+                          const Padding(padding: EdgeInsets.only(top: 7)),
+                          Row(
+                            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                            children: [
+                              const Text("연체금액"),
+                              Text("${record.charge}"),
+                            ],
                           ),
-                          Container(
-                            margin: const EdgeInsets.fromLTRB(0, 12, 22, 7),
-                            child: const Text("-5,000 / 24"),
+                          const Padding(padding: EdgeInsets.only(top: 12)),
+                          const DottedLine(
+                            lineLength: 300,
+                            dashLength: 10,
+                            lineThickness: 0.8,
+                            dashColor: ZeplinColors.inactivated_gray,
                           ),
-                        ],
-                      ),
-                    ),
-                    Container(
-                      margin: const EdgeInsets.fromLTRB(0, 0, 7, 0),
-                      child: Row(
-                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                        children: [
-                          Container(
-                            margin: const EdgeInsets.fromLTRB(22, 12, 0, 12),
-                            child: const Text("연체금액"),
-                          ),
-                          Container(
-                            margin: const EdgeInsets.fromLTRB(0, 12, 22, 12),
-                            child: Text("${record.charge}"),
-                          ),
-                        ],
-                      ),
-                    ),
-                    const DottedLine(
-                      lineLength: 300,
-                      dashLength: 10,
-                      lineThickness: 0.8,
-                      dashColor: ZeplinColors.inactivated_gray,
-                    ),
-                    Container(
-                      margin: const EdgeInsets.fromLTRB(0, 0, 0, 0),
-                      child: Row(
-                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                        children: [
-                          Container(
-                            margin: const EdgeInsets.fromLTRB(22, 12, 0, 12),
-                            child: const Text(
-                              "결제금액",
-                              style: TextStyle(
-                                fontSize: 20,
+                          const Padding(padding: EdgeInsets.only(top: 12)),
+                          Row(
+                            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                            children: [
+                              const Text(
+                                "결제금액",
+                                style: TextStyle(
+                                  fontSize: 20,
+                                ),
                               ),
-                            ),
+                              Text(
+                                record.charge.toString(),
+                                style: const TextStyle(fontSize: 20),
+                              ),
+                            ],
                           ),
+                          const Padding(padding: EdgeInsets.only(top: 12)),
+                          const DottedLine(
+                            lineLength: 300,
+                            dashLength: 10,
+                            lineThickness: 0.8,
+                            dashColor: ZeplinColors.inactivated_gray,
+                          ),
+                          const Padding(padding: EdgeInsets.only(top: 12)),
+                          Row(
+                            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                            children: const [
+                              Text("결제수단"),
+                              Text("카카오페이"),
+                            ],
+                          ),
+                          const Padding(padding: EdgeInsets.only(top: 53)),
                           Container(
-                            margin: const EdgeInsets.fromLTRB(0, 12, 26, 12),
-                            child: Text(
-                              record.charge.toString(),
-                              style: const TextStyle(fontSize: 20),
-                            ),
-                          ),
+                              alignment: Alignment.center,
+                              child: const Image(
+                                width: 42,
+                                height: 45,
+                                image:
+                                    AssetImage('assets/images/logo_gray.png'),
+                              )),
+                          const Padding(padding: EdgeInsets.only(top: 15)),
                         ],
                       ),
                     ),
-                    const DottedLine(
-                      lineLength: 300,
-                      dashLength: 10,
-                      lineThickness: 0.8,
-                      dashColor: ZeplinColors.inactivated_gray,
-                    ),
-                    Container(
-                      margin: const EdgeInsets.fromLTRB(0, 0, 7, 0),
-                      child: Row(
-                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                        children: [
-                          Container(
-                            margin: const EdgeInsets.fromLTRB(22, 12, 0, 7),
-                            child: const Text("결제수단"),
-                          ),
-                          Container(
-                            margin: const EdgeInsets.fromLTRB(0, 12, 22, 7),
-                            child: const Text("카카오페이"),
-                          ),
-                        ],
-                      ),
-                    ),
-                    Container(
-                        alignment: Alignment.center,
-                        margin: const EdgeInsets.fromLTRB(0, 60, 0, 0),
-                        child: const Image(
-                          width: 42,
-                          height: 45,
-                          image: AssetImage('assets/images/logo_gray.png'),
-                        )),
-                  ],
+                  ),
                 ),
-              ),
+              ],
             ),
+            const Padding(padding: EdgeInsets.only(top: 30)),
           ],
         ),
       ),

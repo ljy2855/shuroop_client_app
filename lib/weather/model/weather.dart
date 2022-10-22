@@ -50,7 +50,6 @@ Future<List<Weather>> getWeatherDataAPI(LatLng position) async {
         weathers.add(Weather.fromJson(data));
       }
     }
-    print(weathers.first.time);
   } catch (e) {}
   return weathers;
 }

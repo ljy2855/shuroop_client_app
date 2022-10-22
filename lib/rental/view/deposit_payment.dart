@@ -21,45 +21,33 @@ class _DepositPaymentState extends State<DepositPayment> {
 
   Widget agreeOnAdditionalCharges() {
     return Row(
+      crossAxisAlignment: CrossAxisAlignment.center,
       children: [
-        Padding(
-          padding: const EdgeInsets.fromLTRB(30, 35, 0, 0),
-          child: Column(
-            mainAxisAlignment: MainAxisAlignment.center,
-            children: <Widget>[
-              Checkbox(
-                  checkColor: Colors.white,
-                  fillColor: MaterialStateProperty.all(const Color(0xFFFCB93F)),
-                  value: _isChecked,
-                  onChanged: (value) {
-                    setState(() {
-                      _isChecked = value!;
-                    });
-                  }),
-            ],
-          ),
+        SizedBox(
+          height: 25,
+          width: 25,
+          child: Checkbox(
+              checkColor: Colors.white,
+              fillColor: MaterialStateProperty.all(const Color(0xFFFCB93F)),
+              value: _isChecked,
+              onChanged: (value) {
+                setState(() {
+                  _isChecked = value!;
+                });
+              }),
         ),
-        Container(
-          width: 23,
-          height: 16,
-          margin: const EdgeInsets.fromLTRB(0, 30, 3, 0),
-          child: const Text("필수",
-              style: TextStyle(
-                  color: Color(0xFFFCB93F),
-                  fontFamily: 'IBMPlexSans',
-                  fontWeight: FontWeight.w600,
-                  fontSize: 12)),
-        ),
-        Container(
-          width: 235,
-          height: 16,
-          margin: const EdgeInsets.fromLTRB(0, 30, 0, 0),
-          child: const Text("대여 시간 초과시 추가 요금 발생에 동의합니다.",
-              style: TextStyle(
-                  fontFamily: 'IBMPlexSans',
-                  fontWeight: FontWeight.w600,
-                  fontSize: 12)),
-        ),
+        const Text("필수  ",
+            textAlign: TextAlign.center,
+            style: TextStyle(
+                color: Color(0xFFFCB93F),
+                fontFamily: 'IBMPlexSans',
+                fontWeight: FontWeight.w600,
+                fontSize: 12)),
+        const Text("대여 시간 초과시 추가 요금 발생에 동의합니다.",
+            style: TextStyle(
+                fontFamily: 'IBMPlexSans',
+                fontWeight: FontWeight.w600,
+                fontSize: 12)),
       ],
     );
   }
@@ -79,8 +67,8 @@ class _DepositPaymentState extends State<DepositPayment> {
                     (value == index) ? const Color(0xFFFCB93F) : Colors.white),
             padding: const EdgeInsets.fromLTRB(20, 20, 20, 14)),
         child: SizedBox(
-          height: 100,
-          width: 124,
+          height: 90,
+          width: 110,
           child: Column(
             mainAxisAlignment: MainAxisAlignment.center,
             children: [
@@ -139,59 +127,58 @@ class _DepositPaymentState extends State<DepositPayment> {
               Navigator.of(context).pop();
             },
           )),
-      body: Column(
-        children: [
-          Center(
-            child: Column(
+      body: Padding(
+        padding: const EdgeInsets.symmetric(horizontal: 30),
+        child: Column(
+          children: [
+            Column(
               children: <Widget>[
-                Container(
-                  width: 39,
-                  height: 21,
-                  margin: const EdgeInsets.fromLTRB(0, 39, 291, 7),
-                  child: const Text("보증금",
-                      style: TextStyle(
-                          fontFamily: 'IBMPlexSans',
-                          fontWeight: FontWeight.w600,
-                          fontSize: 14)),
-                ),
-                Container(
-                  width: 197,
-                  height: 13,
-                  margin: const EdgeInsets.fromLTRB(0, 0, 133, 25),
-                  child: const Text("대여소에서 우산을 빌려가는 시간부터 계산돼요.",
-                      style: TextStyle(
-                          color: ZeplinColors.inactivated_gray,
-                          fontFamily: 'IBMPlexSans',
-                          fontWeight: FontWeight.w400,
-                          fontSize: 10)),
-                ),
+                const Padding(padding: EdgeInsets.only(top: 30)),
                 Row(
-                  mainAxisAlignment: MainAxisAlignment.center,
+                  children: const [
+                    Text("보증금",
+                        style: TextStyle(
+                            fontFamily: 'IBMPlexSans',
+                            fontWeight: FontWeight.w600,
+                            fontSize: 14)),
+                  ],
+                ),
+                const Padding(padding: EdgeInsets.only(top: 8)),
+                Row(
+                  children: const [
+                    Text("대여소에서 우산을 빌려가는 시간부터 계산돼요.",
+                        style: TextStyle(
+                            color: ZeplinColors.inactivated_gray,
+                            fontFamily: 'IBMPlexSans',
+                            fontWeight: FontWeight.w400,
+                            fontSize: 10)),
+                  ],
+                ),
+                const Padding(padding: EdgeInsets.only(top: 30)),
+                Row(
+                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
                   children: [
                     customRadioButton("5,000원/24시간", 1),
-                    const Padding(padding: EdgeInsets.only(left: 20)),
                     customRadioButton("8,000원/48시간", 2),
                   ],
                 ),
               ],
             ),
-          ),
-          Container(
-            width: 52,
-            height: 21,
-            margin: const EdgeInsets.fromLTRB(0, 39, 277, 5),
-            child: const Text("결제수단",
-                style: TextStyle(
-                    fontFamily: 'IBMPlexSans',
-                    fontWeight: FontWeight.w600,
-                    fontSize: 14)),
-          ),
-          Container(
-            margin: const EdgeInsets.fromLTRB(20, 0, 0, 0),
-            child: const RadioButtons(),
-          ),
-          agreeOnAdditionalCharges(),
-        ],
+            const Padding(padding: EdgeInsets.only(top: 30)),
+            Row(
+              children: const [
+                Text("결제수단",
+                    style: TextStyle(
+                        fontFamily: 'IBMPlexSans',
+                        fontWeight: FontWeight.w600,
+                        fontSize: 14)),
+              ],
+            ),
+            const RadioButtons(),
+            const Padding(padding: EdgeInsets.only(top: 30)),
+            agreeOnAdditionalCharges(),
+          ],
+        ),
       ),
       bottomNavigationBar: Container(
         margin: const EdgeInsets.fromLTRB(26, 16, 26, 36),
@@ -261,10 +248,17 @@ class RadioButtonsState extends State<RadioButtons> {
   @override
   Widget build(BuildContext context) {
     return Column(
+      crossAxisAlignment: CrossAxisAlignment.start,
       children: [
         RadioListTile(
           activeColor: const Color(0xFFFCB93F),
-          title: const Text("신용/체크카드"),
+          contentPadding: EdgeInsets.zero,
+          title: const Text(
+            "신용/체크카드",
+            style: TextStyle(
+              fontSize: 14,
+            ),
+          ),
           value: Char.A,
           groupValue: _char,
           onChanged: (Char? value) {
@@ -275,7 +269,13 @@ class RadioButtonsState extends State<RadioButtons> {
         ),
         RadioListTile(
           activeColor: const Color(0xFFFCB93F),
-          title: const Text("계좌이체"),
+          contentPadding: EdgeInsets.zero,
+          title: const Text(
+            "계좌이체",
+            style: TextStyle(
+              fontSize: 14,
+            ),
+          ),
           value: Char.B,
           groupValue: _char,
           onChanged: (Char? value) {
@@ -286,7 +286,13 @@ class RadioButtonsState extends State<RadioButtons> {
         ),
         RadioListTile(
           activeColor: const Color(0xFFFCB93F),
-          title: const Text("카카오페이"),
+          contentPadding: EdgeInsets.zero,
+          title: const Text(
+            "카카오페이",
+            style: TextStyle(
+              fontSize: 14,
+            ),
+          ),
           value: Char.C,
           groupValue: _char,
           onChanged: (Char? value) {
@@ -297,7 +303,13 @@ class RadioButtonsState extends State<RadioButtons> {
         ),
         RadioListTile(
           activeColor: const Color(0xFFFCB93F),
-          title: const Text("네이버페이"),
+          contentPadding: EdgeInsets.zero,
+          title: const Text(
+            "네이버페이",
+            style: TextStyle(
+              fontSize: 14,
+            ),
+          ),
           value: Char.D,
           groupValue: _char,
           onChanged: (Char? value) {

@@ -107,40 +107,47 @@ class PaymentRefundHistory extends StatelessWidget {
                                   builder: (BuildContext context) {
                                     return AlertDialog(
                                       contentPadding: EdgeInsets.zero,
-                                      content: Column(
-                                        mainAxisSize: MainAxisSize.min,
-                                        crossAxisAlignment:
-                                            CrossAxisAlignment.start,
-                                        children: <Widget>[
-                                          Container(
-                                            margin: const EdgeInsets.all(20),
-                                            child: Column(
-                                              crossAxisAlignment:
-                                                  CrossAxisAlignment.start,
-                                              children: const [
-                                                Text("보증금 5000원/24시간을 환불하시겠어요?",
-                                                    style: TextStyle(
-                                                        color:
-                                                            ZeplinColors.black,
-                                                        fontFamily:
-                                                            'IBMPlexSans',
-                                                        fontSize: 14,
-                                                        fontWeight:
-                                                            FontWeight.w400)),
-                                                Text(
-                                                    "슈룹에서 우산을 빌리려면 보증금 결제가 필요해요.",
-                                                    style: TextStyle(
-                                                        color: ZeplinColors
-                                                            .inactivated_gray,
-                                                        fontFamily:
-                                                            'IBMPlexSans',
-                                                        fontSize: 12,
-                                                        fontWeight:
-                                                            FontWeight.w400)),
-                                              ],
+                                      content: SizedBox(
+                                        width: 400,
+                                        child: Column(
+                                          mainAxisSize: MainAxisSize.min,
+                                          crossAxisAlignment:
+                                              CrossAxisAlignment.start,
+                                          children: <Widget>[
+                                            Container(
+                                              margin: const EdgeInsets.all(20),
+                                              child: Column(
+                                                crossAxisAlignment:
+                                                    CrossAxisAlignment.start,
+                                                children: const [
+                                                  Text(
+                                                      "보증금 5000원/24시간을 환불하시겠어요?",
+                                                      style: TextStyle(
+                                                          color: ZeplinColors
+                                                              .black,
+                                                          fontFamily:
+                                                              'IBMPlexSans',
+                                                          fontSize: 14,
+                                                          fontWeight:
+                                                              FontWeight.w400)),
+                                                  Padding(
+                                                      padding: EdgeInsets.only(
+                                                          top: 8)),
+                                                  Text(
+                                                      "슈룹에서 우산을 빌리려면 보증금 결제가 필요해요.",
+                                                      style: TextStyle(
+                                                          color: ZeplinColors
+                                                              .inactivated_gray,
+                                                          fontFamily:
+                                                              'IBMPlexSans',
+                                                          fontSize: 12,
+                                                          fontWeight:
+                                                              FontWeight.w400)),
+                                                ],
+                                              ),
                                             ),
-                                          ),
-                                        ],
+                                          ],
+                                        ),
                                       ),
                                       actions: <Widget>[
                                         TextButton(

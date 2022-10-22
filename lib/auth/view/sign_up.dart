@@ -79,6 +79,7 @@ class _SignUpPageState extends State<SignUpPage> {
                       controller: passwordInputController,
                       hintLabel: "비밀번호",
                       onSaved: (val) {
+                        formKey.currentState!.validate();
                         setState(() {
                           password = val;
                         });
@@ -93,7 +94,9 @@ class _SignUpPageState extends State<SignUpPage> {
                   renderTextFormFeild(
                       controller: passwordCheckInputController,
                       hintLabel: "비밀번호 확인",
-                      onSaved: (val) {},
+                      onSaved: (val) {
+                        formKey.currentState!.validate();
+                      },
                       validator: (val) {
                         if (val != password) {
                           return "일치하지않음";

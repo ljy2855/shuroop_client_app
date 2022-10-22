@@ -41,125 +41,134 @@ class _AdditionalChargePaymentState extends State<AdditionalChargePayment> {
               ))
             : Column(
                 children: [
-                  Column(
-                    children: [
-                      Container(
-                          alignment: Alignment.centerLeft,
-                          margin: const EdgeInsets.fromLTRB(30, 27, 0, 0),
-                          child: const Text("추가요금",
-                              style: TextStyle(
-                                  fontFamily: 'IBMPlexSans',
-                                  fontSize: 16,
-                                  fontWeight: FontWeight.w600))),
-                      Row(
-                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                        children: [
-                          Container(
-                              alignment: Alignment.centerLeft,
-                              margin: const EdgeInsets.fromLTRB(30, 20, 0, 0),
-                              child: const Text("대여시각",
-                                  style: TextStyle(
+                  Container(
+                    color: Colors.white,
+                    margin: const EdgeInsets.symmetric(vertical: 20),
+                    child: Column(
+                      children: [
+                        Container(
+                            alignment: Alignment.centerLeft,
+                            margin: const EdgeInsets.fromLTRB(30, 27, 0, 0),
+                            child: const Text("추가요금",
+                                style: TextStyle(
+                                    fontFamily: 'IBMPlexSans',
+                                    fontSize: 16,
+                                    fontWeight: FontWeight.w600))),
+                        Row(
+                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                          children: [
+                            Container(
+                                alignment: Alignment.centerLeft,
+                                margin: const EdgeInsets.fromLTRB(30, 20, 0, 0),
+                                child: const Text("대여시각",
+                                    style: TextStyle(
                                       color: ZeplinColors.inactivated_gray,
                                       fontFamily: 'IBMPlexSans',
                                       fontSize: 16,
-                                      fontWeight: FontWeight.w600))),
-                          Container(
-                              alignment: Alignment.centerLeft,
-                              margin: const EdgeInsets.fromLTRB(0, 20, 30, 0),
-                              child: const Text("2022.08.07 12:30:01",
-                                  style: TextStyle(
+                                    ))),
+                            Container(
+                                alignment: Alignment.centerLeft,
+                                margin: const EdgeInsets.fromLTRB(0, 20, 30, 0),
+                                child: const Text("2022.08.07 12:30:01",
+                                    style: TextStyle(
                                       color: ZeplinColors.inactivated_gray,
                                       fontFamily: 'IBMPlexSans',
                                       fontSize: 16,
-                                      fontWeight: FontWeight.w600)))
-                        ],
-                      ),
-                      Row(
-                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                        children: [
-                          Container(
-                              alignment: Alignment.centerLeft,
-                              margin: const EdgeInsets.fromLTRB(30, 20, 0, 0),
-                              child: const Text("반납시각",
-                                  style: TextStyle(
+                                    )))
+                          ],
+                        ),
+                        Row(
+                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                          children: [
+                            Container(
+                                alignment: Alignment.centerLeft,
+                                margin: const EdgeInsets.fromLTRB(30, 20, 0, 0),
+                                child: const Text("반납시각",
+                                    style: TextStyle(
                                       color: ZeplinColors.inactivated_gray,
                                       fontFamily: 'IBMPlexSans',
                                       fontSize: 16,
-                                      fontWeight: FontWeight.w600))),
-                          Container(
-                              alignment: Alignment.centerLeft,
-                              margin: const EdgeInsets.fromLTRB(0, 20, 30, 0),
-                              child: const Text("2022.08.08 18:30:14",
-                                  style: TextStyle(
+                                    ))),
+                            Container(
+                                alignment: Alignment.centerLeft,
+                                margin: const EdgeInsets.fromLTRB(0, 20, 30, 0),
+                                child: const Text("2022.08.08 18:30:14",
+                                    style: TextStyle(
                                       color: ZeplinColors.inactivated_gray,
                                       fontFamily: 'IBMPlexSans',
                                       fontSize: 16,
-                                      fontWeight: FontWeight.w600)))
-                        ],
-                      ),
-                      Row(
-                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                        children: [
-                          Container(
-                              alignment: Alignment.centerLeft,
-                              margin: const EdgeInsets.fromLTRB(30, 20, 0, 0),
-                              child: const Text("연체시간",
-                                  style: TextStyle(
+                                    )))
+                          ],
+                        ),
+                        Row(
+                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                          children: [
+                            Container(
+                                alignment: Alignment.centerLeft,
+                                margin: const EdgeInsets.fromLTRB(30, 20, 0, 0),
+                                child: const Text("연체시간",
+                                    style: TextStyle(
                                       color: ZeplinColors.inactivated_gray,
                                       fontFamily: 'IBMPlexSans',
                                       fontSize: 16,
-                                      fontWeight: FontWeight.w600))),
-                          Container(
-                              alignment: Alignment.centerLeft,
-                              margin: const EdgeInsets.fromLTRB(0, 20, 30, 0),
-                              child: const Text("06:00:00",
-                                  style: TextStyle(
+                                    ))),
+                            Container(
+                                alignment: Alignment.centerLeft,
+                                margin: const EdgeInsets.fromLTRB(0, 20, 30, 0),
+                                child: const Text("06:00:00",
+                                    style: TextStyle(
                                       color: ZeplinColors.inactivated_gray,
                                       fontFamily: 'IBMPlexSans',
                                       fontSize: 16,
-                                      fontWeight: FontWeight.w600)))
-                        ],
-                      ),
-                      Row(
-                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                        children: [
-                          Container(
-                              alignment: Alignment.centerLeft,
-                              margin: const EdgeInsets.fromLTRB(30, 20, 0, 0),
-                              child: const Text("연체금액",
-                                  style: TextStyle(
-                                      color: ZeplinColors.black,
-                                      fontFamily: 'IBMPlexSans',
-                                      fontSize: 16,
-                                      fontWeight: FontWeight.w400))),
-                          Container(
-                              alignment: Alignment.centerLeft,
-                              margin: const EdgeInsets.fromLTRB(0, 20, 30, 0),
-                              child: const Text("3000원 / 6시간",
-                                  style: TextStyle(
-                                      color: ZeplinColors.black,
-                                      fontFamily: 'IBMPlexSans',
-                                      fontSize: 16,
-                                      fontWeight: FontWeight.w400)))
-                        ],
-                      ),
-                    ],
+                                    )))
+                          ],
+                        ),
+                        Row(
+                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                          children: [
+                            Container(
+                                alignment: Alignment.centerLeft,
+                                margin: const EdgeInsets.fromLTRB(30, 20, 0, 0),
+                                child: const Text("연체금액",
+                                    style: TextStyle(
+                                        color: ZeplinColors.black,
+                                        fontFamily: 'IBMPlexSans',
+                                        fontSize: 16,
+                                        fontWeight: FontWeight.w400))),
+                            Container(
+                                alignment: Alignment.centerLeft,
+                                margin: const EdgeInsets.fromLTRB(0, 20, 30, 0),
+                                child: const Text("3000원 / 6시간",
+                                    style: TextStyle(
+                                        color: ZeplinColors.black,
+                                        fontFamily: 'IBMPlexSans',
+                                        fontSize: 16,
+                                        fontWeight: FontWeight.w400)))
+                          ],
+                        ),
+                        const Padding(padding: EdgeInsets.only(bottom: 30))
+                      ],
+                    ),
                   ),
-                  Column(
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    children: [
-                      Container(
-                          alignment: Alignment.centerLeft,
-                          margin: const EdgeInsets.fromLTRB(30, 39, 0, 0),
-                          child: const Text("결제수단",
-                              style: TextStyle(
-                                  fontFamily: 'IBMPlexSans',
-                                  fontSize: 16,
-                                  fontWeight: FontWeight.w600))),
-                      Container(
-                          margin: const EdgeInsets.fromLTRB(5, 10, 0, 0),
-                          child: const RadioButtons()),
-                    ],
+                  Container(
+                    color: Colors.white,
+                    child: Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: [
+                        Container(
+                            alignment: Alignment.centerLeft,
+                            margin: const EdgeInsets.fromLTRB(30, 39, 0, 0),
+                            child: const Text("결제수단",
+                                style: TextStyle(
+                                    fontFamily: 'IBMPlexSans',
+                                    fontSize: 16,
+                                    fontWeight: FontWeight.w600))),
+                        Container(
+                            margin: const EdgeInsets.fromLTRB(5, 10, 0, 0),
+                            child: const RadioButtons()),
+                        const Padding(padding: EdgeInsets.only(bottom: 30))
+                      ],
+                    ),
                   ),
                 ],
               ),

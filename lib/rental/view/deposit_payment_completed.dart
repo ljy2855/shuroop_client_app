@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:shuroop_client_app/colors.dart';
 import 'package:shuroop_client_app/rental/view/scanner.dart';
 
 class DepositPaymentCompleted extends StatelessWidget {
@@ -18,34 +19,25 @@ class DepositPaymentCompleted extends StatelessWidget {
                 fontWeight: FontWeight.w700)),
       ),
       body: Column(
+        mainAxisAlignment: MainAxisAlignment.center,
         children: [
+          const Text("보증금 결제에 성공했어요!",
+              style: TextStyle(
+                  fontFamily: 'IBMPlexSans',
+                  fontWeight: FontWeight.w700,
+                  fontSize: 16)),
           Container(
-            width: 175,
-            height: 21,
-            margin: const EdgeInsets.fromLTRB(0, 130, 0, 0),
-            child: const Text("보증금 결제에 성공했어요!",
-                style: TextStyle(
-                    fontFamily: 'IBMPlexSans',
-                    fontWeight: FontWeight.w700,
-                    fontSize: 16)),
-          ),
-          Container(
-            width: 103,
-            height: 103,
+            width: 120,
+            height: 120,
             margin: const EdgeInsets.fromLTRB(0, 70, 0, 0),
             child: Image.asset("assets/images/check.png"),
           ),
-          Container(
-            alignment: Alignment.center,
-            width: 123,
-            height: 16,
-            margin: const EdgeInsets.fromLTRB(0, 75, 0, 0),
-            child: const Text("우산 대여소로 가볼까요?",
-                style: TextStyle(
-                    fontFamily: 'IBMPlexSans',
-                    fontWeight: FontWeight.w400,
-                    fontSize: 12)),
-          ),
+          const Padding(padding: EdgeInsets.only(top: 60)),
+          const Text("우산 대여소로 가볼까요?",
+              style: TextStyle(
+                  fontFamily: 'IBMPlexSans',
+                  fontWeight: FontWeight.w400,
+                  fontSize: 12)),
           Container()
         ],
       ),
@@ -57,7 +49,8 @@ class DepositPaymentCompleted extends StatelessWidget {
             ElevatedButton(
                 style: ElevatedButton.styleFrom(
                     minimumSize: const Size(147, 45),
-                    backgroundColor: Colors.grey,
+                    elevation: 0,
+                    backgroundColor: ZeplinColors.soft_suggestion_background,
                     shape: RoundedRectangleBorder(
                         borderRadius: BorderRadius.circular(50))),
                 onPressed: () =>
@@ -66,10 +59,12 @@ class DepositPaymentCompleted extends StatelessWidget {
                     style: TextStyle(
                         fontFamily: 'IBMPlexSans',
                         fontWeight: FontWeight.w700,
+                        color: ZeplinColors.sub_text,
                         fontSize: 16))),
             ElevatedButton(
                 style: ElevatedButton.styleFrom(
                     minimumSize: const Size(147, 45),
+                    elevation: 0,
                     backgroundColor: const Color(0xFFFCB93F),
                     shape: RoundedRectangleBorder(
                         borderRadius: BorderRadius.circular(50))),

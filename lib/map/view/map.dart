@@ -71,6 +71,15 @@ class MainMapPageState extends State<MainMapPage> {
             if (profile.getProfile() != null) {
               Navigator.of(context).push(MaterialPageRoute(
                   builder: ((context) => const NotificationPage())));
+            } else {
+              Fluttertoast.showToast(
+                msg: "로그인 후 이용해주세요!",
+                toastLength: Toast.LENGTH_SHORT,
+                gravity: ToastGravity.BOTTOM,
+                backgroundColor: ZeplinColors.return_alert_background,
+                textColor: Colors.white,
+                fontSize: 12,
+              );
             }
           },
         ),
@@ -307,6 +316,16 @@ class MainMapPageState extends State<MainMapPage> {
                                 .then((value) {
                               setState(() {});
                             });
+                          } else {
+                            Fluttertoast.showToast(
+                              msg: "로그인 후 이용해주세요!",
+                              toastLength: Toast.LENGTH_SHORT,
+                              gravity: ToastGravity.BOTTOM,
+                              backgroundColor:
+                                  ZeplinColors.return_alert_background,
+                              textColor: Colors.white,
+                              fontSize: 12,
+                            );
                           }
                         },
                         child: Padding(

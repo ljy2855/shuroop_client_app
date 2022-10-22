@@ -74,7 +74,7 @@ class PersonalInfo extends StatelessWidget {
               child: TextButton(
                 onPressed: () => Navigator.of(context).push(MaterialPageRoute(
                     builder: (((context) => const AutomaticPaymentMethod())))),
-                child: const Text("자동 결제 수단  등록/변경",
+                child: const Text("자동 결제 수단 등록/변경",
                     style: TextStyle(
                         fontSize: 14,
                         fontFamily: 'IBMPlexSansKR',

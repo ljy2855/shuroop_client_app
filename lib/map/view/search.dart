@@ -42,6 +42,25 @@ class _SearchPageState extends State<SearchPage> with TickerProviderStateMixin {
           ),
           title: TextField(
             controller: textController,
+            onSubmitted: (text) async {
+              if (text != '') {
+                await searchPlacesWithKeyword(text).then((places) => places
+                        .isEmpty
+                    ? Navigator.of(context).push(MaterialPageRoute(
+                        builder: ((context) =>
+                            SearchedFailPage(keyword: textController.text))))
+                    : Navigator.of(context)
+                        .push(MaterialPageRoute(
+                        builder: ((context) => SearchedMapPage(
+                              keyword: textController.text,
+                              places: places,
+                            )),
+                      ))
+                        .then((_) {
+                        setState(() {});
+                      }));
+              }
+            },
             decoration: const InputDecoration(
                 hintText: '장소, 주소 검색',
                 hintStyle: TextStyle(
