@@ -1,4 +1,4 @@
-package com.example.shuroop_client_app
+package com.shuroop
 
 import io.flutter.embedding.android.FlutterActivity
 
